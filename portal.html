@@ -26,6 +26,22 @@
             overflow-x: hidden;
         }
 
+        /* --- [MỚI] LOADING OVERLAY (BẢO MẬT) --- */
+        #loadingOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; z-index: 9999;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        .spinner {
+            width: 50px; height: 50px;
+            border: 5px solid #f3f3f3; border-top: 5px solid #3498db;
+            border-radius: 50%; animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
         /* --- LOGO WATERMARK --- */
         .watermark-logo {
             position: fixed;
@@ -168,6 +184,12 @@
 </head>
 <body>
 
+    <!-- [MỚI] MÀN HÌNH CHỜ (LOADING SCREEN) -->
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <p class="text-gray-500 font-medium animate-pulse">Đang xác thực bảo mật...</p>
+    </div>
+
     <!-- LOGO CHÌM -->
     <div class="watermark-logo"></div>
 
@@ -199,8 +221,8 @@
         </div>
     </div>
 
-    <!-- PHẦN ĐĂNG NHẬP -->
-    <div id="loginSection" class="min-h-screen flex flex-col justify-center items-center px-4 relative z-10">
+    <!-- PHẦN ĐĂNG NHẬP (Mặc định ẩn, chờ JS quyết định) -->
+    <div id="loginSection" class="hidden min-h-screen flex flex-col justify-center items-center px-4 relative z-10">
         <div class="max-w-md w-full glass-card rounded-3xl p-10 fade-in-up">
             <div class="flex justify-center mb-6">
                 <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-2 shadow-inner">
@@ -216,13 +238,14 @@
                 <div>
                     <input type="password" id="code" placeholder="Nhập mã truy cập..." class="w-full px-5 py-4 rounded-xl input-modern outline-none text-lg text-center tracking-widest" onkeypress="handleKeyPress(event)">
                 </div>
-                <button id="loginBtn" class="w-full py-4 px-4 rounded-xl font-bold text-white transition-all duration-300 btn-modern tracking-wide" onclick="checkCode()">ĐĂNG NHẬP</button>
+                <!-- Sửa onclick gọi hàm mới -->
+                <button id="loginBtn" class="w-full py-4 px-4 rounded-xl font-bold text-white transition-all duration-300 btn-modern tracking-wide" onclick="handleManualLogin()">ĐĂNG NHẬP</button>
                 <div id="message" class="text-center font-medium text-sm mt-4 hidden bg-white/50 py-2 rounded-lg"></div>
             </div>
         </div>
     </div>
 
-    <!-- NỘI DUNG CHÍNH -->
+    <!-- NỘI DUNG CHÍNH (Mặc định ẩn) -->
     <div id="mainContent" class="hidden relative z-10 min-h-screen flex flex-col">
         <header class="py-12 fade-in-up">
             <div class="max-w-5xl mx-auto px-4 text-center">
@@ -274,7 +297,7 @@
 
             <hr class="border-gray-200/50 mb-12">
 
-            <!-- 2. BÀI TẬP VỀ NHÀ (HSK 1-6) - Đã gắn onclick -->
+            <!-- 2. BÀI TẬP VỀ NHÀ (HSK 1-6) -->
             <section id="section-btvn" class="mb-16 fade-in-up" style="animation-delay: 0.3s;">
                 <div class="flex items-center mb-6">
                     <div class="w-1.5 h-8 bg-green-500 rounded-full mr-4"></div>
@@ -329,7 +352,7 @@
                 </div>
             </section>
 
-            <!-- 3. BÀI TẬP TƯƠNG TÁC - Đã gắn onclick -->
+            <!-- 3. BÀI TẬP TƯƠNG TÁC -->
             <section id="section-tuong-tac" class="mb-16 fade-in-up" style="animation-delay: 0.4s;">
                 <div class="flex items-center mb-6">
                     <div class="w-1.5 h-8 bg-purple-600 rounded-full mr-4"></div>
@@ -365,7 +388,7 @@
                 </div>
             </section>
 
-            <!-- 4. BÀI TẬP NÂNG CAO - Đã gắn onclick -->
+            <!-- 4. BÀI TẬP NÂNG CAO -->
             <section id="section-nang-cao" class="mb-12 fade-in-up" style="animation-delay: 0.5s;">
                 <div class="flex items-center mb-6">
                     <div class="w-1.5 h-8 bg-gray-700 rounded-full mr-4"></div>
@@ -438,7 +461,7 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0UuBeAYAEUcmx81DU6S1MxpJBm_VOutbkBvTGzl__bV2FvEPAtllTcBpn0gizsWEa/exec";
 
-        // --- CẤU HÌNH DỮ LIỆU BÀI TẬP (BẠN CHỈ CẦN SỬA Ở ĐÂY) ---
+        // --- CẤU HÌNH DỮ LIỆU BÀI TẬP (GIỮ NGUYÊN NHƯ CŨ) ---
         const resourceData = {
             // == BTVN HSK ==
             "btvn_hsk1": {
@@ -545,7 +568,7 @@
             }
         };
 
-        // --- HÀM XỬ LÝ MODAL ---
+        // --- HÀM XỬ LÝ MODAL (GIỮ NGUYÊN) ---
         function openModal(key) {
             const data = resourceData[key];
             if (!data) return;
@@ -582,7 +605,6 @@
         }
 
         function closeModal(event) {
-            // Chỉ đóng khi click vào vùng tối (overlay), không đóng khi click vào nội dung
             if (event.target.id === 'linkModal') {
                 document.getElementById('linkModal').classList.add('hidden');
             }
@@ -592,83 +614,119 @@
             document.getElementById('linkModal').classList.add('hidden');
         }
 
-        // --- LOGIC CŨ (LOGIN) ---
+        // --- LOGIC BẢO MẬT MỚI (STRICT SECURITY) ---
+        
+        // 1. Khi tải trang: Kiểm tra ngay lập tức
         document.addEventListener('DOMContentLoaded', function() {
-            const isLoggedIn = localStorage.getItem('ddkLoggedIn');
-            if (isLoggedIn === 'true') {
-                showMainContent();
+            const storedCode = localStorage.getItem('ddkTeacherCode'); // Lấy mã đã lưu
+            
+            if (storedCode) {
+                // Nếu có mã, gọi hàm kiểm tra bảo mật (background check)
+                verifySession(storedCode);
+            } else {
+                // Nếu không có mã, tắt loading, hiện màn hình đăng nhập
+                hideLoader();
+                showLoginScreen();
             }
         });
 
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') checkCode();
+        // Hàm xác thực mỗi lần tải trang
+        async function verifySession(code) {
+            try {
+                // Gửi request lên Google Sheets
+                const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(code)}`, {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
+                
+                // Vì Google trả về 302, cần xử lý cẩn thận hoặc dùng text() rồi parse
+                const textResult = await response.text();
+                let data;
+                try { data = JSON.parse(textResult); } catch (e) { throw new Error("Lỗi dữ liệu server"); }
+
+                if (data.valid === true) {
+                    // CÒN HẠN: Cho vào
+                    hideLoader();
+                    showMainContent();
+                } else {
+                    // HẾT HẠN/ĐỔI PASS: Đá ra
+                    alert("Phiên đăng nhập đã hết hạn hoặc mã truy cập đã bị thay đổi. Vui lòng đăng nhập lại.");
+                    logout();
+                }
+            } catch (error) {
+                console.error("Lỗi xác thực:", error);
+                // Nếu mất mạng hoặc lỗi server, để an toàn -> Đá ra (hoặc có thể cho vào tạm tùy bạn, ở đây tôi chọn đá ra để bảo mật cao nhất)
+                alert("Không thể xác thực bảo mật. Vui lòng kiểm tra kết nối internet.");
+                logout();
+            }
         }
 
-        async function checkCode() {
+        function handleKeyPress(event) { if (event.key === 'Enter') handleManualLogin(); }
+
+        // Hàm xử lý khi bấm nút Đăng nhập
+        async function handleManualLogin() {
             const inputEl = document.getElementById('code');
             const code = inputEl.value.trim(); 
             const message = document.getElementById('message');
             const loginBtn = document.getElementById('loginBtn');
             
-            if (!code) {
-                showMessage('Vui lòng nhập mã truy cập!', 'error');
-                return;
-            }
+            if (!code) { showMessage('Vui lòng nhập mã truy cập!', 'error'); return; }
 
-            loginBtn.innerHTML = 'ĐANG KIỂM TRA...';
-            loginBtn.disabled = true;
-            message.classList.add('hidden'); 
+            loginBtn.innerHTML = 'ĐANG KIỂM TRA...'; loginBtn.disabled = true; message.classList.add('hidden'); 
 
             try {
-                const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(code)}`, {
-                    method: 'GET',
-                    redirect: 'follow' 
-                });
-
+                const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(code)}`, { method: 'GET', redirect: 'follow' });
                 const textResult = await response.text();
-                let data;
-                try { data = JSON.parse(textResult); } catch (e) { throw new Error("Lỗi kết nối Server."); }
+                let data; try { data = JSON.parse(textResult); } catch (e) { throw new Error("Lỗi kết nối."); }
                 
                 if (data.valid === true) {
                     showMessage(data.message || 'Thành công!', 'success');
-                    localStorage.setItem('ddkLoggedIn', 'true');
-                    setTimeout(showMainContent, 1000);
+                    
+                    // LƯU QUAN TRỌNG: Lưu mã code chứ không lưu boolean
+                    localStorage.setItem('ddkTeacherCode', code);
+                    
+                    setTimeout(() => {
+                        showMainContent();
+                        // Ẩn login screen đi
+                        document.getElementById('loginSection').classList.add('hidden');
+                    }, 1000);
                 } else {
                     showMessage(data.message || 'Sai mã!', 'error');
                 }
             } catch (error) {
-                console.error(error);
-                showMessage('Lỗi kết nối', 'error');
+                showMessage('Lỗi kết nối server', 'error');
             } finally {
-                if(localStorage.getItem('ddkLoggedIn') !== 'true') {
-                    loginBtn.innerHTML = 'ĐĂNG NHẬP';
-                    loginBtn.disabled = false;
-                }
+                loginBtn.innerHTML = 'ĐĂNG NHẬP'; loginBtn.disabled = false;
             }
         }
 
         function showMessage(text, type) {
-            const message = document.getElementById('message');
-            message.textContent = text;
-            message.classList.remove('hidden');
-            if (type === 'success') {
-                message.className = "text-center font-medium text-sm mt-4 bg-green-50 text-green-700 py-2 rounded-lg border border-green-200";
-            } else {
-                message.className = "text-center font-medium text-sm mt-4 bg-red-50 text-red-700 py-2 rounded-lg border border-red-200";
-            }
+            const message = document.getElementById('message'); message.textContent = text; message.classList.remove('hidden');
+            message.className = type === 'success' ? "text-center font-medium text-sm mt-4 bg-green-50 text-green-700 py-2 rounded-lg border border-green-200" : "text-center font-medium text-sm mt-4 bg-red-50 text-red-700 py-2 rounded-lg border border-red-200";
         }
 
         function showMainContent() {
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('mainContent').classList.remove('hidden');
-            document.querySelectorAll('a').forEach(link => {
-                link.removeAttribute('rel'); link.setAttribute('rel', 'opener');
-            });
+            // Cập nhật link để bypass referrer check ở các web con
+            document.querySelectorAll('a').forEach(link => { link.removeAttribute('rel'); link.setAttribute('rel', 'opener'); });
+        }
+
+        function showLoginScreen() {
+            document.getElementById('loadingOverlay').style.display = 'none'; // Đảm bảo tắt loading
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('mainContent').classList.add('hidden');
+        }
+
+        function hideLoader() {
+            const loader = document.getElementById('loadingOverlay');
+            loader.style.opacity = '0';
+            setTimeout(() => { loader.style.display = 'none'; }, 500);
         }
 
         function logout() {
-            localStorage.removeItem('ddkLoggedIn');
-            location.reload();
+            localStorage.removeItem('ddkTeacherCode'); // Xóa mã gốc
+            location.reload(); // Tải lại trang để hiện login
         }
     </script>
 </body>
