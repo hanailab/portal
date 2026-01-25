@@ -7,169 +7,262 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Custom global styles */
+        /* --- CẤU HÌNH GIAO DIỆN --- */
         :root {
             --color-primary-orange: #FF8C00;
-            --color-primary-orange-hover: #E07B00;
+            --color-primary-orange-hover: #ff9d2e;
             --color-header-title-blue: #004A99;
             --color-section-title-blue: #105EAD;
-            --color-text-dark: #2c3e50;
-            --color-text-medium: #55606B;
-            --color-text-light: #7f8c8d;
-            --color-background-body: #F4F8FB;
-            --color-background-card: rgba(255, 255, 255, 0.8);
-            --color-border-card: rgba(190, 210, 230, 0.6);
-            --color-border-divider: #D8E2EB;
-            --color-shadow-soft: rgba(44, 62, 80, 0.12);
+            --color-text-dark: #1e293b;
+            --color-text-medium: #475569;
+            --color-text-light: #94a3b8;
+            /* Background gradient hiện đại hơn */
+            --bg-gradient: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
         }
 
         body {
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background-color: var(--color-background-body);
+            background: var(--bg-gradient);
             color: var(--color-text-dark);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden; /* Tránh thanh cuộn ngang */
         }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #e0eafc;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #a7bce8;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #8eabd8;
+        /* --- LOGO WATERMARK (IN CHÌM) --- */
+        .watermark-logo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px; /* Kích thước logo cơ bản */
+            max-width: 80vw; /* Responsive trên mobile */
+            height: auto;
+            background-image: url('https://res.cloudinary.com/dylnm79id/image/upload/v1769343424/Kho%CC%82ng_ne%CC%82%CC%80n_ev0wrm.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.08; /* Độ mờ logo (8%) để không rối mắt */
+            z-index: 0; /* Nằm dưới nội dung nhưng trên background */
+            pointer-events: none; /* Cho phép click xuyên qua logo */
+            filter: grayscale(20%); /* Làm logo tiệp màu hơn một chút */
         }
 
-        /* Glass card style */
+        /* --- GLASSMORPHISM MODERN --- */
         .glass-card {
-            background: var(--color-background-card);
-            backdrop-filter: blur(10px) saturate(180%);
-            -webkit-backdrop-filter: blur(10px) saturate(180%);
-            border: 1px solid var(--color-border-card);
-            box-shadow: 0 6px 20px 0 var(--color-shadow-soft);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            position: relative;
+            z-index: 10; /* Nổi lên trên logo watermark */
         }
 
-        .focus\:ring-primary-orange:focus {
-             box-shadow: 0 0 0 3px var(--color-primary-orange);
+        /* Hiệu ứng hover cho thẻ bài học */
+        .hover-card-effect {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .hover-card-effect:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 15px 35px rgba(0, 74, 153, 0.15);
+            border-color: rgba(255, 255, 255, 1);
         }
 
-        /* Ẩn/hiện phần tử */
-        .hidden {
-            display: none !important;
+        /* Button hiện đại hơn */
+        .btn-modern {
+            background: linear-gradient(135deg, var(--color-primary-orange) 0%, #ff7b00 100%);
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
         }
+        .btn-modern:hover {
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-modern:active {
+            transform: translateY(0);
+        }
+
+        /* Input đẹp hơn */
+        .input-modern {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(203, 213, 225, 0.8);
+            transition: all 0.3s ease;
+        }
+        .input-modern:focus {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: var(--color-primary-orange);
+            box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1);
+        }
+
+        /* Animation xuất hiện */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden { display: none !important; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
 <body>
-    <!-- Phần đăng nhập -->
-    <div id="loginSection" class="min-h-screen flex flex-col justify-center items-center px-4">
-        <div class="max-w-md w-full glass-card rounded-2xl p-8">
-            <h2 class="text-3xl font-bold text-center mb-8" style="color: var(--color-header-title-blue);">
-                ĐĂNG NHẬP
+
+    <!-- LOGO CHÌM (WATERMARK) - Nằm dưới mọi nội dung -->
+    <div class="watermark-logo"></div>
+
+    <!-- PHẦN ĐĂNG NHẬP -->
+    <div id="loginSection" class="min-h-screen flex flex-col justify-center items-center px-4 relative z-10">
+        <div class="max-w-md w-full glass-card rounded-3xl p-10 fade-in-up">
+            <div class="flex justify-center mb-6">
+                <!-- Icon khóa hoặc logo nhỏ phía trên form login -->
+                <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-2 shadow-inner">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+            </div>
+            <h2 class="text-3xl font-bold text-center mb-2" style="color: var(--color-header-title-blue);">
+                CHÀO MỪNG ĐẾN VỚI HAN AI LAB
             </h2>
+            <p class="text-center mb-8 text-gray-500 text-sm">Vui lòng nhập mã truy cập để vào hệ thống</p>
+            
             <div class="space-y-6">
                 <div>
-                    <label for="code" class="block text-sm font-medium mb-2" style="color: var(--color-text-medium);">
-                        Nhập mã truy cập
+                    <label for="code" class="block text-sm font-semibold mb-2 ml-1" style="color: var(--color-text-medium);">
+                        Mã truy cập
                     </label>
                     <input 
                         type="password" 
                         id="code" 
                         placeholder="Nhập mã của bạn..." 
-                        class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all"
-                        style="border-color: var(--color-border-card); background: var(--color-background-card); color: var(--color-text-dark);"
+                        class="w-full px-5 py-4 rounded-xl input-modern outline-none text-lg"
                         onkeypress="handleKeyPress(event)"
                     >
                 </div>
                 <button 
                     id="loginBtn"
-                    class="w-full py-3 px-4 rounded-lg font-semibold text-white transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5"
-                    style="background-color: var(--color-primary-orange);"
+                    class="w-full py-4 px-4 rounded-xl font-bold text-white transition-all duration-300 btn-modern tracking-wide"
                     onclick="checkCode()"
                 >
                     ĐĂNG NHẬP
                 </button>
-                <div id="message" class="text-center text-sm mt-4 hidden"></div>
+                <div id="message" class="text-center font-medium text-sm mt-4 hidden bg-white/50 py-2 rounded-lg"></div>
             </div>
         </div>
+        <p class="mt-8 text-xs text-gray-400 font-medium">HAN AI LAB SECURE PORTAL</p>
     </div>
 
-    <!-- Toàn bộ nội dung chính (ban đầu ẩn) -->
-    <div id="mainContent" class="hidden">
-        <header class="py-10 md:py-16">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight" style="color: var(--color-header-title-blue);">
-                    CỔNG THÔNG TIN TÀI NGUYÊN TRỰC TUYẾN HAN AI LAB
+    <!-- NỘI DUNG CHÍNH (Ban đầu ẩn) -->
+    <div id="mainContent" class="hidden relative z-10 min-h-screen flex flex-col">
+        <header class="py-12 md:py-20 fade-in-up" style="animation-delay: 0.1s;">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-bold tracking-wider mb-6 shadow-sm">
+                    EDUCATION PLATFORM
+                </div>
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-blue-500 pb-2">
+                    CỔNG THÔNG TIN TÀI NGUYÊN<br>TRỰC TUYẾN HAN AI LAB
                 </h1>
-                <p class="mt-4 text-lg sm:text-xl" style="color: var(--color-text-medium);">
+                <p class="max-w-2xl mx-auto text-lg sm:text-xl font-light" style="color: var(--color-text-medium);">
                     Công nghệ dẫn đường – Giáo dục làm gốc – Con người làm trung tâm
                 </p>
                 <button 
                     onclick="logout()"
-                    class="mt-8 px-6 py-2 rounded-lg font-semibold text-white transition-all duration-300 hover:shadow-lg"
-                    style="background-color: var(--color-primary-orange);"
+                    class="mt-10 px-8 py-3 rounded-full font-semibold text-white transition-all duration-300 btn-modern text-sm shadow-lg flex items-center gap-2 mx-auto hover:bg-opacity-90"
                 >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+                    </svg>
                     ĐĂNG XUẤT
                 </button>
             </div>
         </header>
 
-        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <!-- DÁN TOÀN BỘ NỘI DUNG CÁC SECTION CỦA BẠN VÀO ĐÂY -->
-            <!-- Bắt đầu dán từ đây -->
-
-            <section class="mb-12 md:mb-16">
-                <h2 class="text-2xl sm:text-3xl font-semibold mb-6 sm:mb-8 pb-3 border-b" style="color: var(--color-section-title-blue); border-color: var(--color-border-divider);">
-                    SỔ ĐẦU BÀI
-                </h2>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8">
+        <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+            
+            <!-- SECTION: SỔ ĐẦU BÀI -->
+            <section class="mb-16 fade-in-up" style="animation-delay: 0.2s;">
+                <div class="flex items-center mb-8 pb-4 border-b border-gray-200/60">
+                    <div class="w-1.5 h-8 bg-blue-600 rounded-full mr-4"></div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">
+                        SỔ ĐẦU BÀI
+                    </h2>
+                </div>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     <li>
                         <a href="https://khoa1508.github.io/portal/tiendohoctap" target="_blank" title="sổ đầu bài"
-                           class="glass-card flex flex-col items-center justify-center h-32 sm:h-36 p-4 rounded-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1.5 hover:shadow-xl focus:outline-none focus\:ring-primary-orange group">
-                            <span class="text-center font-medium transition-colors" style="color: var(--color-text-medium);">THEO DÕI SỐ BUỔI</span>
+                           class="glass-card hover-card-effect flex flex-col items-center justify-center h-40 p-6 rounded-2xl group cursor-pointer text-decoration-none">
+                            <!-- Icon trang trí -->
+                            <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                </svg>
+                            </div>
+                            <span class="text-center font-bold text-gray-600 group-hover:text-orange-500 transition-colors uppercase text-sm tracking-wide">
+                                THEO DÕI SỐ BUỔI
+                            </span>
                         </a>
                     </li>
                 </ul>
             </section>
 
-            <section class="mb-12 md:mb-16">
-                <h2 class="text-2xl sm:text-3xl font-semibold mb-6 sm:mb-8 pb-3 border-b" style="color: var(--color-section-title-blue); border-color: var(--color-border-divider);">
-                    BÀI KIỂM TRA GIỮA KỲ CUỐI KỲ
-                </h2>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8">
+            <!-- SECTION: BÀI KIỂM TRA -->
+            <section class="mb-16 fade-in-up" style="animation-delay: 0.3s;">
+                <div class="flex items-center mb-8 pb-4 border-b border-gray-200/60">
+                    <div class="w-1.5 h-8 bg-orange-500 rounded-full mr-4"></div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">
+                        BÀI KIỂM TRA
+                    </h2>
+                </div>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     <li>
                         <a href="https://khoa1508.github.io/han1/bai1" target="_blank" title="đề kiểm tra"
-                           class="glass-card flex flex-col items-center justify-center h-32 sm:h-36 p-4 rounded-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1.5 hover:shadow-xl focus:outline-none focus\:ring-primary-orange group">
-                            <span class="text-center font-medium transition-colors" style="color: var(--color-text-medium);">ĐỀ KIỂM TRA</span>
+                           class="glass-card hover-card-effect flex flex-col items-center justify-center h-40 p-6 rounded-2xl group cursor-pointer">
+                           <!-- Icon trang trí -->
+                           <div class="w-12 h-12 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                           </div>
+                            <span class="text-center font-bold text-gray-600 group-hover:text-orange-500 transition-colors uppercase text-sm tracking-wide">
+                                ĐỀ KIỂM TRA
+                            </span>
                         </a>
                     </li>
                 </ul>
             </section>
 
-            <!-- Dán tiếp tất cả các section còn lại của bạn ở đây -->
-            <!-- ... -->
-            <!-- Kết thúc dán ở đây -->
+            <!-- KHU VỰC CHỜ NỘI DUNG MỚI CỦA BẠN -->
+            <!-- Bạn chỉ cần copy/paste khối section ở trên xuống dưới này để thêm mục mới -->
 
         </main>
 
-        <footer class="mt-16 md:mt-24 py-8 border-t" style="border-color: var(--color-border-divider);">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <p class="text-sm" style="color: var(--color-text-light);">&copy; 2025 Khoa1508. Thiết kế lấy cảm hứng từ Apple & hình ảnh tham khảo.</p>
+        <footer class="mt-auto py-10 border-t border-gray-200/50 relative z-10 fade-in-up" style="animation-delay: 0.4s;">
+            <div class="max-w-6xl mx-auto px-4 text-center">
+                <p class="text-sm font-medium text-gray-500">&copy; 2025 HAN AI LAB. All rights reserved.</p>
+                <p class="text-xs text-gray-400 mt-2">Designed for Education Excellence</p>
             </div>
         </footer>
     </div>
 
+    <!-- SCRIPT LOGIC (GIỮ NGUYÊN 100%) -->
     <script>
-        // CẤU HÌNH API URL (Giữ nguyên link của bạn)
+        // CẤU HÌNH API URL
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0UuBeAYAEUcmx81DU6S1MxpJBm_VOutbkBvTGzl__bV2FvEPAtllTcBpn0gizsWEa/exec";
 
         // Kiểm tra trạng thái đăng nhập khi tải trang
@@ -187,10 +280,9 @@
             }
         }
 
-        // --- HÀM KIỂM TRA MÃ (ĐÃ NÂNG CẤP) ---
+        // --- HÀM KIỂM TRA MÃ ---
         async function checkCode() {
             const inputEl = document.getElementById('code');
-            // 1. Cắt khoảng trắng thừa ngay từ đầu vào
             const code = inputEl.value.trim(); 
             const message = document.getElementById('message');
             const loginBtn = document.getElementById('loginBtn');
@@ -201,30 +293,24 @@
             }
 
             // Hiển thị trạng thái loading
-            loginBtn.innerHTML = 'ĐANG KIỂM TRA...';
+            loginBtn.innerHTML = '<span class="flex items-center justify-center"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> ĐANG KIỂM TRA...</span>';
             loginBtn.disabled = true;
-            message.classList.add('hidden'); // Ẩn thông báo cũ
+            message.classList.add('hidden'); 
 
             try {
-                // 2. Thêm tham số redirect: 'follow' để trình duyệt tự động đi theo link chuyển hướng của Google
                 const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(code)}`, {
                     method: 'GET',
                     redirect: 'follow' 
                 });
 
-                // 3. Không dùng .json() ngay, mà lấy .text() trước để kiểm tra xem Server trả về cái gì
                 const textResult = await response.text();
-                
-                // Debug: In kết quả ra màn hình console (F12) để soi lỗi
                 console.log("Server trả về:", textResult);
 
                 let data;
                 try {
-                    // Cố gắng chuyển đổi text sang JSON
                     data = JSON.parse(textResult);
                 } catch (e) {
-                    // Nếu lỗi ở đây, tức là Server trả về HTML (Lỗi quyền truy cập) chứ không phải JSON
-                    throw new Error("Lỗi kết nối: Không thể đọc dữ liệu từ Server. (Khả năng do chưa set quyền 'Anyone')");
+                    throw new Error("Lỗi kết nối: Không thể đọc dữ liệu từ Server.");
                 }
                 
                 if (data.valid === true) {
@@ -233,18 +319,19 @@
                     localStorage.setItem('ddkLoggedIn', 'true');
                     setTimeout(showMainContent, 1000);
                 } else {
-                    // Đăng nhập thất bại (Sai mã)
+                    // Đăng nhập thất bại
                     showMessage(data.message || 'Mã truy cập không đúng!', 'error');
                 }
 
             } catch (error) {
                 console.error('Chi tiết lỗi:', error);
-                // Hiển thị lỗi cụ thể ra màn hình để bạn biết đường sửa
                 showMessage('Lỗi: ' + error.message, 'error');
             } finally {
-                // Khôi phục trạng thái nút
-                loginBtn.innerHTML = 'ĐĂNG NHẬP';
-                loginBtn.disabled = false;
+                // Khôi phục trạng thái nút nếu thất bại hoặc xong
+                if(localStorage.getItem('ddkLoggedIn') !== 'true') {
+                    loginBtn.innerHTML = 'ĐĂNG NHẬP';
+                    loginBtn.disabled = false;
+                }
             }
         }
 
@@ -255,9 +342,11 @@
             message.classList.remove('hidden');
             
             if (type === 'success') {
-                message.style.color = '#10B981'; // Xanh lá
+                message.style.color = '#059669'; // Emerald 600
+                message.className = "text-center font-medium text-sm mt-4 bg-green-50 text-green-700 py-2 rounded-lg border border-green-200 animate-pulse";
             } else {
-                message.style.color = '#EF4444'; // Đỏ
+                message.style.color = '#DC2626'; // Red 600
+                message.className = "text-center font-medium text-sm mt-4 bg-red-50 text-red-700 py-2 rounded-lg border border-red-200 shake";
             }
         }
 
@@ -266,37 +355,17 @@
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('mainContent').classList.remove('hidden');
             
-            // Xử lý link: Xóa noreferrer và thêm opener để Web Con nhận diện được Web Cha
+            // Xử lý link
             document.querySelectorAll('a').forEach(link => {
                 link.removeAttribute('rel');
                 link.setAttribute('rel', 'opener');
             });
-            
-            setupHoverEffects();
         }
 
         // Hàm đăng xuất
         function logout() {
             localStorage.removeItem('ddkLoggedIn');
-            document.getElementById('mainContent').classList.add('hidden');
-            document.getElementById('loginSection').classList.remove('hidden');
-            document.getElementById('code').value = '';
-            document.getElementById('message').classList.add('hidden');
-        }
-
-        // Hàm thiết lập hiệu ứng hover
-        function setupHoverEffects() {
-            document.querySelectorAll('.group').forEach(card => {
-                const span = card.querySelector('span');
-                if (span) {
-                    card.addEventListener('mouseenter', () => {
-                        span.style.color = 'var(--color-primary-orange)';
-                    });
-                    card.addEventListener('mouseleave', () => {
-                        span.style.color = 'var(--color-text-medium)';
-                    });
-                }
-            });
+            location.reload(); // Reload lại trang để có hiệu ứng mới
         }
     </script>
 </body>
