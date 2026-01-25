@@ -26,7 +26,7 @@
             overflow-x: hidden;
         }
 
-        /* --- [MỚI] LOADING OVERLAY (BẢO MẬT) --- */
+        /* --- LOADING OVERLAY --- */
         #loadingOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #ffffff; z-index: 9999;
@@ -83,108 +83,86 @@
         }
 
         /* Modal Styles */
-        #linkModal {
-            backdrop-filter: blur(8px);
-        }
-        .modal-content {
-            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        @keyframes modalPop {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        #linkModal { backdrop-filter: blur(8px); }
+        .modal-content { animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes modalPop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
         /* Nav Sticky */
         .sticky-nav {
-            position: sticky;
-            top: 1rem;
-            z-index: 50;
-            margin: 0 auto;
-            max-width: fit-content;
-            border-radius: 9999px;
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
+            position: sticky; top: 1rem; z-index: 50; margin: 0 auto; max-width: fit-content;
+            border-radius: 9999px; padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            white-space: nowrap;
+            display: flex; gap: 0.5rem; overflow-x: auto; white-space: nowrap;
         }
-        
-        /* Hide scrollbar for nav */
         .sticky-nav::-webkit-scrollbar { display: none; }
         .sticky-nav { -ms-overflow-style: none; scrollbar-width: none; }
 
         .nav-item {
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #64748b;
-            transition: all 0.3s;
-            text-decoration: none;
+            padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600;
+            color: #64748b; transition: all 0.3s; text-decoration: none;
         }
-        .nav-item:hover, .nav-item.active {
-            background: white;
-            color: #0f172a;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
+        .nav-item:hover, .nav-item.active { background: white; color: #0f172a; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 
         /* Button & Input */
         .btn-modern {
             background: linear-gradient(135deg, #FF8C00 0%, #ff7b00 100%);
             box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
         }
-        .btn-modern:hover {
-            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
-            transform: translateY(-2px);
-        }
+        .btn-modern:hover { box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4); transform: translateY(-2px); }
         
         .input-modern {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(203, 213, 225, 0.8);
+            background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(203, 213, 225, 0.8);
             transition: all 0.3s ease;
         }
-        .input-modern:focus {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: #FF8C00;
-            box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1);
-        }
+        .input-modern:focus { background: rgba(255, 255, 255, 0.9); border-color: #FF8C00; box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1); }
 
         /* Animation */
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
         .hidden { display: none !important; }
         
-        /* HSK Colors - Gradients */
-        .hsk-1 { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
-        .hsk-2 { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); }
-        .hsk-3 { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
-        .hsk-4 { background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); }
-        .hsk-5 { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-        .hsk-6 { background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%); }
+        /* === HỆ THỐNG MÀU SẮC PHÂN BIỆT === */
 
-        .text-hsk-1 { color: #059669; }
-        .text-hsk-2 { color: #0284c7; }
-        .text-hsk-3 { color: #7c3aed; }
-        .text-hsk-4 { color: #e11d48; }
-        .text-hsk-5 { color: #d97706; }
-        .text-hsk-6 { color: #991b1b; }
+        /* 1. BTVN (Giữ nguyên - Hệ màu chuẩn) */
+        .hsk-1 { background: linear-gradient(135deg, #10b981 0%, #059669 100%); } /* Green */
+        .hsk-2 { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); } /* Sky */
+        .hsk-3 { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); } /* Violet */
+        .hsk-4 { background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); } /* Rose */
+        .hsk-5 { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); } /* Amber */
+        .hsk-6 { background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%); } /* Red */
+
+        .text-hsk-1 { color: #059669; } .text-hsk-2 { color: #0284c7; } .text-hsk-3 { color: #7c3aed; }
+        .text-hsk-4 { color: #e11d48; } .text-hsk-5 { color: #d97706; } .text-hsk-6 { color: #991b1b; }
+
+        /* 2. HOẠT ĐỘNG NHÓM (Hệ màu Lạnh/Trí tuệ - Blue/Teal Spectrum) */
+        .group-bg-1 { background: linear-gradient(135deg, #2dd4bf 0%, #0d9488 100%); } /* Teal */
+        .group-bg-2 { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); } /* Cyan */
+        .group-bg-3 { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); } /* Blue */
+        .group-bg-4 { background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%); } /* Indigo */
+        .group-bg-5 { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); } /* Violet */
+        .group-bg-6 { background: linear-gradient(135deg, #475569 0%, #1e293b 100%); } /* Slate */
+
+        .text-group-1 { color: #0f766e; } .text-group-2 { color: #0e7490; } .text-group-3 { color: #1e40af; }
+        .text-group-4 { color: #3730a3; } .text-group-5 { color: #5b21b6; } .text-group-6 { color: #334155; }
+
+        /* 3. HOẠT ĐỘNG 1-1 (Hệ màu Ấm/Năng động - Warm/Vibrant Spectrum) */
+        .one-bg-1 { background: linear-gradient(135deg, #a3e635 0%, #4d7c0f 100%); } /* Lime */
+        .one-bg-2 { background: linear-gradient(135deg, #facc15 0%, #ca8a04 100%); } /* Yellow */
+        .one-bg-3 { background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%); } /* Orange */
+        .one-bg-4 { background: linear-gradient(135deg, #ff6b6b 0%, #ee5253 100%); } /* Coral */
+        .one-bg-5 { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); } /* Pink */
+        .one-bg-6 { background: linear-gradient(135deg, #be123c 0%, #881337 100%); } /* Rose */
+
+        .text-one-1 { color: #3f6212; } .text-one-2 { color: #854d0e; } .text-one-3 { color: #9a3412; }
+        .text-one-4 { color: #c0392b; } .text-one-5 { color: #9d174d; } .text-one-6 { color: #881337; }
 
     </style>
 </head>
 <body>
 
-    <!-- [MỚI] MÀN HÌNH CHỜ (LOADING SCREEN) -->
+    <!-- [MỚI] MÀN HÌNH CHỜ -->
     <div id="loadingOverlay">
         <div class="spinner"></div>
         <p class="text-gray-500 font-medium animate-pulse">Đang xác thực bảo mật...</p>
@@ -193,10 +171,9 @@
     <!-- LOGO CHÌM -->
     <div class="watermark-logo"></div>
 
-    <!-- MODAL POPUP (Ẩn mặc định) -->
+    <!-- MODAL POPUP -->
     <div id="linkModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4" onclick="closeModal(event)">
         <div class="modal-content glass-card w-full max-w-lg rounded-2xl p-0 overflow-hidden shadow-2xl relative bg-white" onclick="event.stopPropagation()">
-            <!-- Header Modal -->
             <div id="modalHeader" class="p-6 bg-gradient-to-r from-gray-100 to-gray-50 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <h3 id="modalTitle" class="text-xl font-bold text-gray-800">Tiêu đề</h3>
@@ -208,20 +185,16 @@
                 </div>
                 <p id="modalSubtitle" class="text-sm text-gray-500 mt-1">Chọn bài tập bên dưới để bắt đầu</p>
             </div>
-            
-            <!-- Body Modal (Danh sách Link) -->
             <div id="modalBody" class="p-6 max-h-[60vh] overflow-y-auto space-y-3 bg-white/80">
                 <!-- Links sẽ được JS chèn vào đây -->
             </div>
-
-            <!-- Footer Modal -->
             <div class="p-4 bg-gray-50 border-t border-gray-100 text-center">
                 <button onclick="closeModalDirect()" class="px-6 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition-colors">Đóng</button>
             </div>
         </div>
     </div>
 
-    <!-- PHẦN ĐĂNG NHẬP (Mặc định ẩn, chờ JS quyết định) -->
+    <!-- PHẦN ĐĂNG NHẬP -->
     <div id="loginSection" class="hidden min-h-screen flex flex-col justify-center items-center px-4 relative z-10">
         <div class="max-w-md w-full glass-card rounded-3xl p-10 fade-in-up">
             <div class="flex justify-center mb-6">
@@ -233,37 +206,33 @@
             </div>
             <h2 class="text-3xl font-bold text-center mb-2 text-blue-800">HAN AI LAB XIN CHÀO</h2>
             <p class="text-center mb-8 text-gray-500 text-sm">Vui lòng nhập mã truy cập để vào hệ thống</p>
-            
             <div class="space-y-6">
                 <div>
                     <input type="password" id="code" placeholder="Nhập mã truy cập..." class="w-full px-5 py-4 rounded-xl input-modern outline-none text-lg text-center tracking-widest" onkeypress="handleKeyPress(event)">
                 </div>
-                <!-- Sửa onclick gọi hàm mới -->
                 <button id="loginBtn" class="w-full py-4 px-4 rounded-xl font-bold text-white transition-all duration-300 btn-modern tracking-wide" onclick="handleManualLogin()">ĐĂNG NHẬP</button>
                 <div id="message" class="text-center font-medium text-sm mt-4 hidden bg-white/50 py-2 rounded-lg"></div>
             </div>
         </div>
     </div>
 
-    <!-- NỘI DUNG CHÍNH (Mặc định ẩn) -->
+    <!-- NỘI DUNG CHÍNH -->
     <div id="mainContent" class="hidden relative z-10 min-h-screen flex flex-col">
         <header class="py-12 fade-in-up">
             <div class="max-w-5xl mx-auto px-4 text-center">
                 <div class="inline-block px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-bold tracking-wider mb-4 shadow-sm">HAN AI LAB EDUCATION</div>
                 <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-blue-500">CỔNG THÔNG TIN TÀI NGUYÊN<br>TRỰC TUYẾN</h1>
-                
                 <button onclick="logout()" class="mt-4 px-6 py-2 rounded-full font-semibold text-gray-500 bg-white/50 hover:bg-white transition-all text-xs border border-gray-200">Đăng xuất</button>
             </div>
         </header>
 
-        <!-- THANH ĐIỀU HƯỚNG NHANH (ĐÃ THÊM 2 LINK MỚI) -->
+        <!-- THANH ĐIỀU HƯỚNG -->
         <nav class="sticky-nav mb-10 fade-in-up" style="animation-delay: 0.1s;">
             <a href="#section-so-dau-bai" class="nav-item">Sổ đầu bài</a>
             <a href="#section-kiem-tra" class="nav-item">Kiểm tra</a>
             <a href="#section-btvn" class="nav-item">BTVN (HSK)</a>
             <a href="#section-tuong-tac" class="nav-item">Tương tác</a>
             <a href="#section-nang-cao" class="nav-item">Nâng cao</a>
-            <!-- [MỚI] Link dự phòng -->
             <a href="#section-du-phong-1" class="nav-item">Mở rộng 1</a>
             <a href="#section-du-phong-2" class="nav-item">Mở rộng 2</a>
         </nav>
@@ -300,7 +269,7 @@
 
             <hr class="border-gray-200/50 mb-12">
 
-            <!-- 2. BÀI TẬP VỀ NHÀ (HSK 1-6) -->
+            <!-- 2. BÀI TẬP VỀ NHÀ (HSK 1-6) - MÀU CHUẨN -->
             <section id="section-btvn" class="mb-16 fade-in-up" style="animation-delay: 0.3s;">
                 <div class="flex items-center mb-6">
                     <div class="w-1.5 h-8 bg-green-500 rounded-full mr-4"></div>
@@ -355,37 +324,120 @@
                 </div>
             </section>
 
-            <!-- 3. BÀI TẬP TƯƠNG TÁC -->
+            <!-- 3. BÀI TẬP TƯƠNG TÁC (ĐỔI MÀU PHÂN BIỆT) -->
             <section id="section-tuong-tac" class="mb-16 fade-in-up" style="animation-delay: 0.4s;">
                 <div class="flex items-center mb-6">
-                    <div class="w-1.5 h-8 bg-purple-600 rounded-full mr-4"></div>
+                    <div class="w-1.5 h-8 bg-blue-600 rounded-full mr-4"></div>
                     <div>
                         <h2 class="text-2xl font-bold text-gray-800">TƯƠNG TÁC TRÊN LỚP</h2>
-                        <p class="text-sm text-gray-500">Hoạt động nhóm và cá nhân</p>
+                        <p class="text-sm text-gray-500">Hoạt động nhóm và cá nhân theo cấp độ</p>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- NHÓM -->
-                    <div onclick="openModal('tuongtac_nhom')" class="glass-card hover-card-effect p-6 rounded-2xl flex flex-row items-center relative overflow-hidden group">
-                        <div class="absolute right-0 top-0 w-32 h-32 bg-purple-200 rounded-full opacity-20 -mr-10 -mt-10 group-hover:scale-150 transition-transform duration-500"></div>
-                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white flex items-center justify-center shadow-lg mr-6 flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+
+                <!-- 3.1 TƯƠNG TÁC NHÓM (THEME: COOL/INTELLECTUAL - Xanh/Chàm/Tím) -->
+                <div class="mb-10">
+                    <h3 class="text-lg font-bold text-indigo-700 mb-4 flex items-center uppercase tracking-wide">
+                        <span class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center mr-3 text-indigo-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                        </span>
+                        HOẠT ĐỘNG NHÓM
+                    </h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        <!-- HSK 1 - Teal -->
+                        <div onclick="openModal('tuongtac_nhom_hsk1')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 group-bg-1"></div>
+                            <div class="w-10 h-10 rounded-full bg-teal-50 text-group-1 flex items-center justify-center mb-2 font-bold text-lg border border-teal-100">1</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-teal-600 transition-colors">HSK 1</div>
+                            <span class="text-xs text-gray-400">Nhóm</span>
                         </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-800 mb-1">Tương tác Nhóm</h3>
-                            <p class="text-sm text-gray-500">Hoạt động thảo luận và bài tập team</p>
+                        <!-- HSK 2 - Cyan -->
+                        <div onclick="openModal('tuongtac_nhom_hsk2')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 group-bg-2"></div>
+                            <div class="w-10 h-10 rounded-full bg-cyan-50 text-group-2 flex items-center justify-center mb-2 font-bold text-lg border border-cyan-100">2</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-cyan-600 transition-colors">HSK 2</div>
+                            <span class="text-xs text-gray-400">Nhóm</span>
+                        </div>
+                        <!-- HSK 3 - Blue -->
+                        <div onclick="openModal('tuongtac_nhom_hsk3')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 group-bg-3"></div>
+                            <div class="w-10 h-10 rounded-full bg-blue-50 text-group-3 flex items-center justify-center mb-2 font-bold text-lg border border-blue-100">3</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-blue-600 transition-colors">HSK 3</div>
+                            <span class="text-xs text-gray-400">Nhóm</span>
+                        </div>
+                        <!-- HSK 4 - Indigo -->
+                        <div onclick="openModal('tuongtac_nhom_hsk4')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 group-bg-4"></div>
+                            <div class="w-10 h-10 rounded-full bg-indigo-50 text-group-4 flex items-center justify-center mb-2 font-bold text-lg border border-indigo-100">4</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">HSK 4</div>
+                            <span class="text-xs text-gray-400">Nhóm</span>
+                        </div>
+                        <!-- HSK 5 - Violet -->
+                        <div onclick="openModal('tuongtac_nhom_hsk5')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 group-bg-5"></div>
+                            <div class="w-10 h-10 rounded-full bg-violet-50 text-group-5 flex items-center justify-center mb-2 font-bold text-lg border border-violet-100">5</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-violet-600 transition-colors">HSK 5</div>
+                            <span class="text-xs text-gray-400">Nhóm</span>
+                        </div>
+                        <!-- HSK 6 - Slate -->
+                        <div onclick="openModal('tuongtac_nhom_hsk6')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 group-bg-6"></div>
+                            <div class="w-10 h-10 rounded-full bg-slate-100 text-group-6 flex items-center justify-center mb-2 font-bold text-lg border border-slate-200">6</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-slate-600 transition-colors">HSK 6</div>
+                            <span class="text-xs text-gray-400">Nhóm</span>
                         </div>
                     </div>
+                </div>
 
-                    <!-- 1-1 -->
-                    <div onclick="openModal('tuongtac_11')" class="glass-card hover-card-effect p-6 rounded-2xl flex flex-row items-center relative overflow-hidden group">
-                        <div class="absolute right-0 top-0 w-32 h-32 bg-pink-200 rounded-full opacity-20 -mr-10 -mt-10 group-hover:scale-150 transition-transform duration-500"></div>
-                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 text-white flex items-center justify-center shadow-lg mr-6 flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                <!-- 3.2 TƯƠNG TÁC 1-1 (THEME: WARM/VIBRANT - Vàng/Cam/Hồng) -->
+                <div>
+                    <h3 class="text-lg font-bold text-pink-700 mb-4 flex items-center uppercase tracking-wide">
+                        <span class="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center mr-3 text-pink-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                        </span>
+                        HOẠT ĐỘNG 1-1
+                    </h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        <!-- HSK 1 - Lime -->
+                        <div onclick="openModal('tuongtac_11_hsk1')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 one-bg-1"></div>
+                            <div class="w-10 h-10 rounded-full bg-lime-50 text-one-1 flex items-center justify-center mb-2 font-bold text-lg border border-lime-100">1</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-lime-600 transition-colors">HSK 1</div>
+                            <span class="text-xs text-gray-400">1-1</span>
                         </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-800 mb-1">Tương tác 1-1</h3>
-                            <p class="text-sm text-gray-500">Luyện tập cá nhân cùng giáo viên</p>
+                        <!-- HSK 2 - Yellow -->
+                        <div onclick="openModal('tuongtac_11_hsk2')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 one-bg-2"></div>
+                            <div class="w-10 h-10 rounded-full bg-yellow-50 text-one-2 flex items-center justify-center mb-2 font-bold text-lg border border-yellow-100">2</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-yellow-600 transition-colors">HSK 2</div>
+                            <span class="text-xs text-gray-400">1-1</span>
+                        </div>
+                        <!-- HSK 3 - Orange -->
+                        <div onclick="openModal('tuongtac_11_hsk3')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 one-bg-3"></div>
+                            <div class="w-10 h-10 rounded-full bg-orange-50 text-one-3 flex items-center justify-center mb-2 font-bold text-lg border border-orange-100">3</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-orange-600 transition-colors">HSK 3</div>
+                            <span class="text-xs text-gray-400">1-1</span>
+                        </div>
+                        <!-- HSK 4 - Coral/Red-Orange -->
+                        <div onclick="openModal('tuongtac_11_hsk4')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 one-bg-4"></div>
+                            <div class="w-10 h-10 rounded-full bg-red-50 text-one-4 flex items-center justify-center mb-2 font-bold text-lg border border-red-100">4</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-red-500 transition-colors">HSK 4</div>
+                            <span class="text-xs text-gray-400">1-1</span>
+                        </div>
+                        <!-- HSK 5 - Pink -->
+                        <div onclick="openModal('tuongtac_11_hsk5')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 one-bg-5"></div>
+                            <div class="w-10 h-10 rounded-full bg-pink-50 text-one-5 flex items-center justify-center mb-2 font-bold text-lg border border-pink-100">5</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-pink-600 transition-colors">HSK 5</div>
+                            <span class="text-xs text-gray-400">1-1</span>
+                        </div>
+                        <!-- HSK 6 - Deep Rose -->
+                        <div onclick="openModal('tuongtac_11_hsk6')" class="glass-card hover-card-effect p-4 rounded-xl flex flex-col items-center justify-center text-center group h-36 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1 one-bg-6"></div>
+                            <div class="w-10 h-10 rounded-full bg-rose-50 text-one-6 flex items-center justify-center mb-2 font-bold text-lg border border-rose-100">6</div>
+                            <div class="text-xl font-bold text-gray-700 mb-1 group-hover:text-rose-700 transition-colors">HSK 6</div>
+                            <span class="text-xs text-gray-400">1-1</span>
                         </div>
                     </div>
                 </div>
@@ -544,255 +596,101 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0UuBeAYAEUcmx81DU6S1MxpJBm_VOutbkBvTGzl__bV2FvEPAtllTcBpn0gizsWEa/exec";
 
-        // --- CẤU HÌNH DỮ LIỆU BÀI TẬP ---
+        // --- CẤU HÌNH DỮ LIỆU BÀI TẬP (GIỮ NGUYÊN NHƯ CŨ) ---
         const resourceData = {
             // == BTVN HSK ==
-            "btvn_hsk1": {
-                title: "Bài tập về nhà - HSK 1",
-                subtitle: "Các bài luyện tập cơ bản cho HSK 1",
-                links: [
-                    { name: "Bài 1: Xin chào (你好)", url: "https://example.com/hsk1/bai1" },
-                    { name: "Bài 2: Cảm ơn (谢谢)", url: "https://example.com/hsk1/bai2" },
-                    { name: "Bài 3: Tên bạn là gì?", url: "https://example.com/hsk1/bai3" },
-                ]
-            },
-            "btvn_hsk2": {
-                title: "Bài tập về nhà - HSK 2",
-                subtitle: "Luyện tập sơ cấp 2",
-                links: [
-                    { name: "Bài 1: Ngày tháng năm", url: "https://example.com/hsk2/bai1" },
-                    { name: "Bài 2: Gia đình", url: "https://example.com/hsk2/bai2" },
-                ]
-            },
-            "btvn_hsk3": {
-                title: "Bài tập về nhà - HSK 3",
-                subtitle: "Luyện tập trung cấp 1",
-                links: [
-                    { name: "Bài 1: Cuối tuần", url: "#" },
-                    { name: "Bài 2: Sở thích", url: "#" },
-                ]
-            },
-            "btvn_hsk4": {
-                title: "Bài tập về nhà - HSK 4",
-                subtitle: "Luyện tập trung cấp 2",
-                links: [
-                    { name: "Bài 1: Công việc", url: "#" },
-                    { name: "Bài 2: Du lịch", url: "#" },
-                ]
-            },
-            "btvn_hsk5": {
-                title: "Bài tập về nhà - HSK 5",
-                subtitle: "Luyện tập cao cấp 1",
-                links: [
-                    { name: "Bài 1: Kinh tế", url: "#" },
-                ]
-            },
-            "btvn_hsk6": {
-                title: "Bài tập về nhà - HSK 6",
-                subtitle: "Luyện tập cao cấp 2",
-                links: [
-                    { name: "Bài 1: Văn hóa", url: "#" },
-                ]
-            },
+            "btvn_hsk1": { title: "Bài tập về nhà - HSK 1", subtitle: "Các bài luyện tập cơ bản cho HSK 1", links: [{ name: "Bài 1: Xin chào (你好)", url: "https://example.com/hsk1/bai1" }, { name: "Bài 2: Cảm ơn (谢谢)", url: "https://example.com/hsk1/bai2" }, { name: "Bài 3: Tên bạn là gì?", url: "https://example.com/hsk1/bai3" }] },
+            "btvn_hsk2": { title: "Bài tập về nhà - HSK 2", subtitle: "Luyện tập sơ cấp 2", links: [{ name: "Bài 1: Ngày tháng năm", url: "https://example.com/hsk2/bai1" }, { name: "Bài 2: Gia đình", url: "https://example.com/hsk2/bai2" }] },
+            "btvn_hsk3": { title: "Bài tập về nhà - HSK 3", subtitle: "Luyện tập trung cấp 1", links: [{ name: "Bài 1: Cuối tuần", url: "#" }, { name: "Bài 2: Sở thích", url: "#" }] },
+            "btvn_hsk4": { title: "Bài tập về nhà - HSK 4", subtitle: "Luyện tập trung cấp 2", links: [{ name: "Bài 1: Công việc", url: "#" }, { name: "Bài 2: Du lịch", url: "#" }] },
+            "btvn_hsk5": { title: "Bài tập về nhà - HSK 5", subtitle: "Luyện tập cao cấp 1", links: [{ name: "Bài 1: Kinh tế", url: "#" }] },
+            "btvn_hsk6": { title: "Bài tập về nhà - HSK 6", subtitle: "Luyện tập cao cấp 2", links: [{ name: "Bài 1: Văn hóa", url: "#" }] },
 
-            // == TƯƠNG TÁC ==
-            "tuongtac_nhom": {
-                title: "Tương tác Nhóm",
-                subtitle: "Các bài tập thảo luận nhóm",
-                links: [
-                    { name: "Thảo luận Chủ đề 1: Mua sắm", url: "https://example.com/group/topic1" },
-                    { name: "Dự án nhóm: Thuyết trình văn hóa", url: "https://example.com/group/project1" },
-                ]
-            },
-            "tuongtac_11": {
-                title: "Tương tác 1-1",
-                subtitle: "Luyện tập cá nhân cùng giáo viên",
-                links: [
-                    { name: "Luyện khẩu ngữ: Bài 1", url: "https://example.com/1on1/bai1" },
-                    { name: "Sửa bài viết: Bài 2", url: "https://example.com/1on1/bai2" },
-                ]
-            },
+            // == [MỚI] TƯƠNG TÁC NHÓM (CHIA THEO HSK) ==
+            "tuongtac_nhom_hsk1": { title: "Tương tác Nhóm - HSK 1", subtitle: "Hoạt động nhóm Sơ cấp 1", links: [{ name: "Thảo luận: Giới thiệu bản thân", url: "#" }] },
+            "tuongtac_nhom_hsk2": { title: "Tương tác Nhóm - HSK 2", subtitle: "Hoạt động nhóm Sơ cấp 2", links: [{ name: "Thảo luận: Mua sắm", url: "#" }] },
+            "tuongtac_nhom_hsk3": { title: "Tương tác Nhóm - HSK 3", subtitle: "Hoạt động nhóm Trung cấp 1", links: [{ name: "Dự án: Kế hoạch cuối tuần", url: "#" }] },
+            "tuongtac_nhom_hsk4": { title: "Tương tác Nhóm - HSK 4", subtitle: "Hoạt động nhóm Trung cấp 2", links: [{ name: "Tranh luận: Lợi ích internet", url: "#" }] },
+            "tuongtac_nhom_hsk5": { title: "Tương tác Nhóm - HSK 5", subtitle: "Hoạt động nhóm Cao cấp 1", links: [{ name: "Thuyết trình: Văn hóa doanh nghiệp", url: "#" }] },
+            "tuongtac_nhom_hsk6": { title: "Tương tác Nhóm - HSK 6", subtitle: "Hoạt động nhóm Cao cấp 2", links: [{ name: "Phân tích tin tức", url: "#" }] },
+
+            // == [MỚI] TƯƠNG TÁC 1-1 (CHIA THEO HSK) ==
+            "tuongtac_11_hsk1": { title: "Tương tác 1-1 - HSK 1", subtitle: "Luyện tập cá nhân Sơ cấp 1", links: [{ name: "Luyện phát âm cơ bản", url: "#" }] },
+            "tuongtac_11_hsk2": { title: "Tương tác 1-1 - HSK 2", subtitle: "Luyện tập cá nhân Sơ cấp 2", links: [{ name: "Hội thoại: Đi khám bệnh", url: "#" }] },
+            "tuongtac_11_hsk3": { title: "Tương tác 1-1 - HSK 3", subtitle: "Luyện tập cá nhân Trung cấp 1", links: [{ name: "Phỏng vấn xin việc giả định", url: "#" }] },
+            "tuongtac_11_hsk4": { title: "Tương tác 1-1 - HSK 4", subtitle: "Luyện tập cá nhân Trung cấp 2", links: [{ name: "Sửa bài viết luận", url: "#" }] },
+            "tuongtac_11_hsk5": { title: "Tương tác 1-1 - HSK 5", subtitle: "Luyện tập cá nhân Cao cấp 1", links: [{ name: "Phản biện xã hội", url: "#" }] },
+            "tuongtac_11_hsk6": { title: "Tương tác 1-1 - HSK 6", subtitle: "Luyện tập cá nhân Cao cấp 2", links: [{ name: "Dịch thuật chuyên sâu", url: "#" }] },
 
             // == NÂNG CAO ==
-            "nangcao_hsk1": {
-                title: "Nâng cao - HSK 1 Pro",
-                subtitle: "Thử thách khó cho trình độ 1",
-                links: [
-                    { name: "Thử thách nghe hiểu nhanh", url: "#" },
-                    { name: "Dịch câu phức", url: "#" },
-                ]
-            },
-            "nangcao_hsk2": {
-                title: "Nâng cao - HSK 2 Pro",
-                subtitle: "Thử thách khó cho trình độ 2",
-                links: [
-                    { name: "Bài đọc hiểu mở rộng", url: "#" },
-                ]
-            },
-             "nangcao_hsk3": {
-                title: "Nâng cao - HSK 3 Pro",
-                subtitle: "Thử thách khó cho trình độ 3",
-                links: [{ name: "Bài tập tổng hợp", url: "#" }]
-            },
-             "nangcao_hsk4": {
-                title: "Nâng cao - HSK 4 Pro",
-                subtitle: "Thử thách khó cho trình độ 4",
-                links: [{ name: "Bài tập tổng hợp", url: "#" }]
-            },
-             "nangcao_hsk5": {
-                title: "Nâng cao - HSK 5 Pro",
-                subtitle: "Thử thách khó cho trình độ 5",
-                links: [{ name: "Bài tập tổng hợp", url: "#" }]
-            },
-             "nangcao_hsk6": {
-                title: "Nâng cao - HSK 6 Pro",
-                subtitle: "Thử thách khó cho trình độ 6",
-                links: [{ name: "Bài tập tổng hợp", url: "#" }]
-            },
+            "nangcao_hsk1": { title: "Nâng cao - HSK 1 Pro", subtitle: "Thử thách khó cho trình độ 1", links: [{ name: "Thử thách nghe hiểu nhanh", url: "#" }, { name: "Dịch câu phức", url: "#" }] },
+            "nangcao_hsk2": { title: "Nâng cao - HSK 2 Pro", subtitle: "Thử thách khó cho trình độ 2", links: [{ name: "Bài đọc hiểu mở rộng", url: "#" }] },
+            "nangcao_hsk3": { title: "Nâng cao - HSK 3 Pro", subtitle: "Thử thách khó cho trình độ 3", links: [{ name: "Bài tập tổng hợp", url: "#" }] },
+            "nangcao_hsk4": { title: "Nâng cao - HSK 4 Pro", subtitle: "Thử thách khó cho trình độ 4", links: [{ name: "Bài tập tổng hợp", url: "#" }] },
+            "nangcao_hsk5": { title: "Nâng cao - HSK 5 Pro", subtitle: "Thử thách khó cho trình độ 5", links: [{ name: "Bài tập tổng hợp", url: "#" }] },
+            "nangcao_hsk6": { title: "Nâng cao - HSK 6 Pro", subtitle: "Thử thách khó cho trình độ 6", links: [{ name: "Bài tập tổng hợp", url: "#" }] },
 
-            // == [MỚI] DỮ LIỆU DỰ PHÒNG ==
-            "duphong1_item1": {
-                title: "Video Bài Giảng (Dự phòng 1)",
-                subtitle: "Danh sách video bổ trợ",
-                links: [{ name: "Video giới thiệu", url: "#" }]
-            },
-            "duphong1_item2": {
-                title: "Góc Văn Hóa (Dự phòng 1)",
-                subtitle: "Tìm hiểu văn hóa Trung Hoa",
-                links: [{ name: "Bài viết về Tết Nguyên Đán", url: "#" }]
-            },
-            "duphong1_item3": {
-                title: "Tài liệu khác (Dự phòng 1)",
-                subtitle: "Các file PDF và tài liệu tải về",
-                links: []
-            },
-            "duphong2_item1": {
-                title: "Góc giải trí (Dự phòng 2)",
-                subtitle: "Game và câu đố",
-                links: [{ name: "Game từ vựng HSK 1", url: "#" }]
-            },
-            "duphong2_item2": {
-                title: "Thông báo chung (Dự phòng 2)",
-                subtitle: "Tin tức mới nhất",
-                links: []
-            }
+            // == DỰ PHÒNG ==
+            "duphong1_item1": { title: "Video Bài Giảng (Dự phòng 1)", subtitle: "Danh sách video bổ trợ", links: [{ name: "Video giới thiệu", url: "#" }] },
+            "duphong1_item2": { title: "Góc Văn Hóa (Dự phòng 1)", subtitle: "Tìm hiểu văn hóa Trung Hoa", links: [{ name: "Bài viết về Tết Nguyên Đán", url: "#" }] },
+            "duphong1_item3": { title: "Tài liệu khác (Dự phòng 1)", subtitle: "Các file PDF và tài liệu tải về", links: [] },
+            "duphong2_item1": { title: "Góc giải trí (Dự phòng 2)", subtitle: "Game và câu đố", links: [{ name: "Game từ vựng HSK 1", url: "#" }] },
+            "duphong2_item2": { title: "Thông báo chung (Dự phòng 2)", subtitle: "Tin tức mới nhất", links: [] }
         };
 
         // --- HÀM XỬ LÝ MODAL (GIỮ NGUYÊN) ---
         function openModal(key) {
             const data = resourceData[key];
             if (!data) return;
-
-            // 1. Điền thông tin
             document.getElementById('modalTitle').textContent = data.title;
             document.getElementById('modalSubtitle').textContent = data.subtitle || "Danh sách bài tập";
-
-            // 2. Tạo danh sách link
             const body = document.getElementById('modalBody');
-            body.innerHTML = ''; // Xóa cũ
-
+            body.innerHTML = '';
             if (data.links && data.links.length > 0) {
                 data.links.forEach(link => {
-                    const a = document.createElement('a');
-                    a.href = link.url;
-                    a.target = "_blank";
+                    const a = document.createElement('a'); a.href = link.url; a.target = "_blank";
                     a.className = "flex items-center justify-between p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-white hover:border-blue-200 hover:shadow-md transition-all group";
-                    a.innerHTML = `
-                        <span class="font-medium text-gray-700 group-hover:text-blue-700">${link.name}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 group-hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                    `;
+                    a.innerHTML = `<span class="font-medium text-gray-700 group-hover:text-blue-700">${link.name}</span><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 group-hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>`;
                     body.appendChild(a);
                 });
-            } else {
-                body.innerHTML = '<p class="text-center text-gray-400 italic py-4">Chưa có bài tập nào được cập nhật.</p>';
-            }
-
-            // 3. Hiển thị Modal
-            const modal = document.getElementById('linkModal');
-            modal.classList.remove('hidden');
+            } else { body.innerHTML = '<p class="text-center text-gray-400 italic py-4">Chưa có bài tập nào được cập nhật.</p>'; }
+            const modal = document.getElementById('linkModal'); modal.classList.remove('hidden');
         }
 
-        function closeModal(event) {
-            if (event.target.id === 'linkModal') {
-                document.getElementById('linkModal').classList.add('hidden');
-            }
-        }
-        
-        function closeModalDirect() {
-            document.getElementById('linkModal').classList.add('hidden');
-        }
+        function closeModal(event) { if (event.target.id === 'linkModal') { document.getElementById('linkModal').classList.add('hidden'); } }
+        function closeModalDirect() { document.getElementById('linkModal').classList.add('hidden'); }
 
         // --- LOGIC BẢO MẬT (GIỮ NGUYÊN) ---
         document.addEventListener('DOMContentLoaded', function() {
             const storedCode = localStorage.getItem('ddkTeacherCode'); 
-            
-            if (storedCode) {
-                verifySession(storedCode);
-            } else {
-                hideLoader();
-                showLoginScreen();
-            }
+            if (storedCode) { verifySession(storedCode); } else { hideLoader(); showLoginScreen(); }
         });
 
         async function verifySession(code) {
             try {
-                const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(code)}`, {
-                    method: 'GET',
-                    redirect: 'follow'
-                });
-                
+                const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(code)}`, { method: 'GET', redirect: 'follow' });
                 const textResult = await response.text();
-                let data;
-                try { data = JSON.parse(textResult); } catch (e) { throw new Error("Lỗi dữ liệu server"); }
-
-                if (data.valid === true) {
-                    hideLoader();
-                    showMainContent();
-                } else {
-                    alert("Phiên đăng nhập đã hết hạn hoặc mã truy cập đã bị thay đổi. Vui lòng đăng nhập lại.");
-                    logout();
-                }
-            } catch (error) {
-                console.error("Lỗi xác thực:", error);
-                alert("Không thể xác thực bảo mật. Vui lòng kiểm tra kết nối internet.");
-                logout();
-            }
+                let data; try { data = JSON.parse(textResult); } catch (e) { throw new Error("Lỗi dữ liệu server"); }
+                if (data.valid === true) { hideLoader(); showMainContent(); } else { alert("Phiên đăng nhập đã hết hạn hoặc mã truy cập đã bị thay đổi. Vui lòng đăng nhập lại."); logout(); }
+            } catch (error) { console.error("Lỗi xác thực:", error); alert("Không thể xác thực bảo mật. Vui lòng kiểm tra kết nối internet."); logout(); }
         }
 
         function handleKeyPress(event) { if (event.key === 'Enter') handleManualLogin(); }
 
         async function handleManualLogin() {
-            const inputEl = document.getElementById('code');
-            const code = inputEl.value.trim(); 
-            const message = document.getElementById('message');
-            const loginBtn = document.getElementById('loginBtn');
-            
+            const inputEl = document.getElementById('code'); const code = inputEl.value.trim(); 
+            const message = document.getElementById('message'); const loginBtn = document.getElementById('loginBtn');
             if (!code) { showMessage('Vui lòng nhập mã truy cập!', 'error'); return; }
-
             loginBtn.innerHTML = 'ĐANG KIỂM TRA...'; loginBtn.disabled = true; message.classList.add('hidden'); 
-
             try {
                 const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(code)}`, { method: 'GET', redirect: 'follow' });
                 const textResult = await response.text();
                 let data; try { data = JSON.parse(textResult); } catch (e) { throw new Error("Lỗi kết nối."); }
-                
                 if (data.valid === true) {
-                    showMessage(data.message || 'Thành công!', 'success');
-                    localStorage.setItem('ddkTeacherCode', code);
-                    setTimeout(() => {
-                        showMainContent();
-                        document.getElementById('loginSection').classList.add('hidden');
-                    }, 1000);
-                } else {
-                    showMessage(data.message || 'Sai mã!', 'error');
-                }
-            } catch (error) {
-                showMessage('Lỗi kết nối server', 'error');
-            } finally {
-                loginBtn.innerHTML = 'ĐĂNG NHẬP'; loginBtn.disabled = false;
-            }
+                    showMessage(data.message || 'Thành công!', 'success'); localStorage.setItem('ddkTeacherCode', code);
+                    setTimeout(() => { showMainContent(); document.getElementById('loginSection').classList.add('hidden'); }, 1000);
+                } else { showMessage(data.message || 'Sai mã!', 'error'); }
+            } catch (error) { showMessage('Lỗi kết nối server', 'error'); } finally { loginBtn.innerHTML = 'ĐĂNG NHẬP'; loginBtn.disabled = false; }
         }
 
         function showMessage(text, type) {
@@ -801,27 +699,13 @@
         }
 
         function showMainContent() {
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
+            document.getElementById('loginSection').classList.add('hidden'); document.getElementById('mainContent').classList.remove('hidden');
             document.querySelectorAll('a').forEach(link => { link.removeAttribute('rel'); link.setAttribute('rel', 'opener'); });
         }
 
-        function showLoginScreen() {
-            document.getElementById('loadingOverlay').style.display = 'none'; 
-            document.getElementById('loginSection').classList.remove('hidden');
-            document.getElementById('mainContent').classList.add('hidden');
-        }
-
-        function hideLoader() {
-            const loader = document.getElementById('loadingOverlay');
-            loader.style.opacity = '0';
-            setTimeout(() => { loader.style.display = 'none'; }, 500);
-        }
-
-        function logout() {
-            localStorage.removeItem('ddkTeacherCode'); 
-            location.reload(); 
-        }
+        function showLoginScreen() { document.getElementById('loadingOverlay').style.display = 'none'; document.getElementById('loginSection').classList.remove('hidden'); document.getElementById('mainContent').classList.add('hidden'); }
+        function hideLoader() { const loader = document.getElementById('loadingOverlay'); loader.style.opacity = '0'; setTimeout(() => { loader.style.display = 'none'; }, 500); }
+        function logout() { localStorage.removeItem('ddkTeacherCode'); location.reload(); }
     </script>
 </body>
 </html>
