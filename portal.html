@@ -256,13 +256,16 @@
             </div>
         </header>
 
-        <!-- THANH ĐIỀU HƯỚNG NHANH -->
+        <!-- THANH ĐIỀU HƯỚNG NHANH (ĐÃ THÊM 2 LINK MỚI) -->
         <nav class="sticky-nav mb-10 fade-in-up" style="animation-delay: 0.1s;">
             <a href="#section-so-dau-bai" class="nav-item">Sổ đầu bài</a>
             <a href="#section-kiem-tra" class="nav-item">Kiểm tra</a>
             <a href="#section-btvn" class="nav-item">BTVN (HSK)</a>
             <a href="#section-tuong-tac" class="nav-item">Tương tác</a>
             <a href="#section-nang-cao" class="nav-item">Nâng cao</a>
+            <!-- [MỚI] Link dự phòng -->
+            <a href="#section-du-phong-1" class="nav-item">Mở rộng 1</a>
+            <a href="#section-du-phong-2" class="nav-item">Mở rộng 2</a>
         </nav>
 
         <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 w-full pb-24">
@@ -454,6 +457,86 @@
                 </div>
             </section>
 
+            <!-- [MỚI] 5. SECTION DỰ PHÒNG 1 (KHU VỰC MỞ RỘNG 1) -->
+            <section id="section-du-phong-1" class="mb-16 fade-in-up" style="animation-delay: 0.6s;">
+                <div class="flex items-center mb-6">
+                    <div class="w-1.5 h-8 bg-teal-500 rounded-full mr-4"></div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">TÀI NGUYÊN MỞ RỘNG 1</h2>
+                        <p class="text-sm text-gray-500">Video, văn hóa và tài liệu tham khảo thêm</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Placeholder Item 1 -->
+                    <div onclick="openModal('duphong1_item1')" class="glass-card hover-card-effect p-6 rounded-2xl flex items-center group">
+                        <div class="w-12 h-12 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <span class="font-bold text-gray-700 group-hover:text-teal-600 transition-colors">Video bài giảng</span>
+                    </div>
+                    <!-- Placeholder Item 2 -->
+                    <div onclick="openModal('duphong1_item2')" class="glass-card hover-card-effect p-6 rounded-2xl flex items-center group">
+                        <div class="w-12 h-12 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <span class="font-bold text-gray-700 group-hover:text-teal-600 transition-colors">Góc văn hóa</span>
+                    </div>
+                    <!-- Placeholder Item 3 -->
+                    <div onclick="openModal('duphong1_item3')" class="glass-card hover-card-effect p-6 rounded-2xl flex items-center group">
+                        <div class="w-12 h-12 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                        </div>
+                        <span class="font-bold text-gray-700 group-hover:text-teal-600 transition-colors">Tài liệu khác</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- [MỚI] 6. SECTION DỰ PHÒNG 2 (KHU VỰC MỞ RỘNG 2) -->
+            <section id="section-du-phong-2" class="mb-12 fade-in-up" style="animation-delay: 0.7s;">
+                <div class="flex items-center mb-6">
+                    <div class="w-1.5 h-8 bg-indigo-500 rounded-full mr-4"></div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">KHU VỰC MỞ RỘNG 2</h2>
+                        <p class="text-sm text-gray-500">Hoạt động ngoại khóa và tiện ích</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Placeholder Item 1 -->
+                    <div onclick="openModal('duphong2_item1')" class="glass-card hover-card-effect p-6 rounded-2xl flex flex-row items-center relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 w-24 h-24 bg-indigo-100 rounded-full opacity-30 -mr-6 -mt-6 group-hover:scale-150 transition-transform duration-500"></div>
+                        <div class="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shadow-sm mr-6 flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-1">Góc giải trí</h3>
+                            <p class="text-sm text-gray-500">Game và câu đố vui</p>
+                        </div>
+                    </div>
+                    <!-- Placeholder Item 2 -->
+                    <div onclick="openModal('duphong2_item2')" class="glass-card hover-card-effect p-6 rounded-2xl flex flex-row items-center relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 w-24 h-24 bg-indigo-100 rounded-full opacity-30 -mr-6 -mt-6 group-hover:scale-150 transition-transform duration-500"></div>
+                        <div class="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shadow-sm mr-6 flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-1">Thông báo chung</h3>
+                            <p class="text-sm text-gray-500">Tin tức từ trung tâm</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -461,7 +544,7 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0UuBeAYAEUcmx81DU6S1MxpJBm_VOutbkBvTGzl__bV2FvEPAtllTcBpn0gizsWEa/exec";
 
-        // --- CẤU HÌNH DỮ LIỆU BÀI TẬP (GIỮ NGUYÊN NHƯ CŨ) ---
+        // --- CẤU HÌNH DỮ LIỆU BÀI TẬP ---
         const resourceData = {
             // == BTVN HSK ==
             "btvn_hsk1": {
@@ -565,6 +648,33 @@
                 title: "Nâng cao - HSK 6 Pro",
                 subtitle: "Thử thách khó cho trình độ 6",
                 links: [{ name: "Bài tập tổng hợp", url: "#" }]
+            },
+
+            // == [MỚI] DỮ LIỆU DỰ PHÒNG ==
+            "duphong1_item1": {
+                title: "Video Bài Giảng (Dự phòng 1)",
+                subtitle: "Danh sách video bổ trợ",
+                links: [{ name: "Video giới thiệu", url: "#" }]
+            },
+            "duphong1_item2": {
+                title: "Góc Văn Hóa (Dự phòng 1)",
+                subtitle: "Tìm hiểu văn hóa Trung Hoa",
+                links: [{ name: "Bài viết về Tết Nguyên Đán", url: "#" }]
+            },
+            "duphong1_item3": {
+                title: "Tài liệu khác (Dự phòng 1)",
+                subtitle: "Các file PDF và tài liệu tải về",
+                links: []
+            },
+            "duphong2_item1": {
+                title: "Góc giải trí (Dự phòng 2)",
+                subtitle: "Game và câu đố",
+                links: [{ name: "Game từ vựng HSK 1", url: "#" }]
+            },
+            "duphong2_item2": {
+                title: "Thông báo chung (Dự phòng 2)",
+                subtitle: "Tin tức mới nhất",
+                links: []
             }
         };
 
@@ -614,48 +724,38 @@
             document.getElementById('linkModal').classList.add('hidden');
         }
 
-        // --- LOGIC BẢO MẬT MỚI (STRICT SECURITY) ---
-        
-        // 1. Khi tải trang: Kiểm tra ngay lập tức
+        // --- LOGIC BẢO MẬT (GIỮ NGUYÊN) ---
         document.addEventListener('DOMContentLoaded', function() {
-            const storedCode = localStorage.getItem('ddkTeacherCode'); // Lấy mã đã lưu
+            const storedCode = localStorage.getItem('ddkTeacherCode'); 
             
             if (storedCode) {
-                // Nếu có mã, gọi hàm kiểm tra bảo mật (background check)
                 verifySession(storedCode);
             } else {
-                // Nếu không có mã, tắt loading, hiện màn hình đăng nhập
                 hideLoader();
                 showLoginScreen();
             }
         });
 
-        // Hàm xác thực mỗi lần tải trang
         async function verifySession(code) {
             try {
-                // Gửi request lên Google Sheets
                 const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(code)}`, {
                     method: 'GET',
                     redirect: 'follow'
                 });
                 
-                // Vì Google trả về 302, cần xử lý cẩn thận hoặc dùng text() rồi parse
                 const textResult = await response.text();
                 let data;
                 try { data = JSON.parse(textResult); } catch (e) { throw new Error("Lỗi dữ liệu server"); }
 
                 if (data.valid === true) {
-                    // CÒN HẠN: Cho vào
                     hideLoader();
                     showMainContent();
                 } else {
-                    // HẾT HẠN/ĐỔI PASS: Đá ra
                     alert("Phiên đăng nhập đã hết hạn hoặc mã truy cập đã bị thay đổi. Vui lòng đăng nhập lại.");
                     logout();
                 }
             } catch (error) {
                 console.error("Lỗi xác thực:", error);
-                // Nếu mất mạng hoặc lỗi server, để an toàn -> Đá ra (hoặc có thể cho vào tạm tùy bạn, ở đây tôi chọn đá ra để bảo mật cao nhất)
                 alert("Không thể xác thực bảo mật. Vui lòng kiểm tra kết nối internet.");
                 logout();
             }
@@ -663,7 +763,6 @@
 
         function handleKeyPress(event) { if (event.key === 'Enter') handleManualLogin(); }
 
-        // Hàm xử lý khi bấm nút Đăng nhập
         async function handleManualLogin() {
             const inputEl = document.getElementById('code');
             const code = inputEl.value.trim(); 
@@ -681,13 +780,9 @@
                 
                 if (data.valid === true) {
                     showMessage(data.message || 'Thành công!', 'success');
-                    
-                    // LƯU QUAN TRỌNG: Lưu mã code chứ không lưu boolean
                     localStorage.setItem('ddkTeacherCode', code);
-                    
                     setTimeout(() => {
                         showMainContent();
-                        // Ẩn login screen đi
                         document.getElementById('loginSection').classList.add('hidden');
                     }, 1000);
                 } else {
@@ -708,12 +803,11 @@
         function showMainContent() {
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('mainContent').classList.remove('hidden');
-            // Cập nhật link để bypass referrer check ở các web con
             document.querySelectorAll('a').forEach(link => { link.removeAttribute('rel'); link.setAttribute('rel', 'opener'); });
         }
 
         function showLoginScreen() {
-            document.getElementById('loadingOverlay').style.display = 'none'; // Đảm bảo tắt loading
+            document.getElementById('loadingOverlay').style.display = 'none'; 
             document.getElementById('loginSection').classList.remove('hidden');
             document.getElementById('mainContent').classList.add('hidden');
         }
@@ -725,8 +819,8 @@
         }
 
         function logout() {
-            localStorage.removeItem('ddkTeacherCode'); // Xóa mã gốc
-            location.reload(); // Tải lại trang để hiện login
+            localStorage.removeItem('ddkTeacherCode'); 
+            location.reload(); 
         }
     </script>
 </body>
