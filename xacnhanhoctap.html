@@ -113,44 +113,47 @@
             position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: space-between;
         }
 
-        /* Header */
+        /* Header - GIẢM MARGIN */
         .header {
-            display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid var(--primary-color); padding-bottom: 15px; margin-bottom: 35px;
+            display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid var(--primary-color); padding-bottom: 12px; margin-bottom: 25px; /* Giảm từ 35px */
         }
         .brand-area img { height: 75px; object-fit: contain; }
         .meta-info { text-align: right; color: #4b5563; font-size: 13px; line-height: 1.6; }
         .meta-info strong { color: var(--primary-color); }
 
-        /* Title */
-        .main-title { text-align: center; margin-bottom: 40px; }
+        /* Title - GIẢM MARGIN */
+        .main-title { text-align: center; margin-bottom: 30px; /* Giảm từ 40px */ }
         .main-title h1 { margin: 0; font-size: 26px; text-transform: uppercase; color: var(--primary-color); font-weight: 800; letter-spacing: 0.5px; }
         .main-title p { margin: 8px 0 0; color: #666; font-style: italic; font-size: 15px; position: relative; display: inline-block; }
         .main-title p::after { content: ''; display: block; width: 40px; height: 2px; background: #ccc; margin: 10px auto 0; }
 
-        /* Table Info */
-        .info-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 15px; }
-        .info-table td { padding: 16px 10px; border-bottom: 1px solid #f0f0f0; }
+        /* Table Info - GIẢM PADDING & MARGIN */
+        .info-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; /* Giảm từ 40px */ font-size: 15px; }
+        .info-table td { padding: 12px 10px; /* Giảm từ 16px */ border-bottom: 1px solid #f0f0f0; }
         .label-col { width: 150px; color: #555; font-weight: 600; vertical-align: top; }
         .value-col { color: #111; font-weight: 600; font-size: 16px; }
 
-        /* Thank You Box - CHỈNH SỬA: NỀN TRONG SUỐT */
+        /* Thank You Box - THU NHỎ & NỀN TRONG SUỐT */
         .thank-you-box {
-            /* Thay đổi: Dùng rgba để tạo độ trong suốt, giúp watermark hiện lên */
+            /* Nền trong suốt */
             background-color: rgba(227, 242, 253, 0.5); 
             border-left: 4px solid var(--primary-color);
-            padding: 25px; margin-bottom: 40px; font-size: 15px; line-height: 1.8; color: #374151; border-radius: 0 8px 8px 0; text-align: justify;
-            backdrop-filter: blur(1px); /* Hiệu ứng mờ nhẹ phía sau */
+            padding: 15px; /* Giảm từ 25px */
+            margin-bottom: 20px; /* Giảm từ 40px */
+            font-size: 14px; /* Giảm nhẹ font size */
+            line-height: 1.6;
+            color: #374151; border-radius: 0 8px 8px 0; text-align: justify;
+            backdrop-filter: blur(1px);
         }
-        .thank-you-box h3 { margin-top: 0; color: var(--primary-color); font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .thank-you-box h3 { margin-top: 0; color: var(--primary-color); font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
 
-        /* --- SIGNATURE & STAMP FIX --- */
+        /* --- SIGNATURE --- */
         .signature-section { 
             display: flex; 
             justify-content: flex-end; 
             margin-top: auto; 
-            /* CHỈNH SỬA: Tăng padding bottom lớn hơn nữa (100px) để đẩy nội dung lên, tránh cắt đáy */
-            padding-bottom: 100px; 
-            /* CHỈNH SỬA: Tăng padding right (60px) để đẩy con dấu sang trái, tránh cắt phải */
+            /* Giữ khoảng cách lớn ở đáy để bảo vệ con dấu */
+            padding-bottom: 80px; 
             padding-right: 60px;
         }
         .sign-block { 
@@ -161,7 +164,7 @@
         .sign-title { 
             font-weight: 700; 
             font-size: 15px; 
-            margin-bottom: 40px; /* Tăng khoảng cách title và dấu */
+            margin-bottom: 40px; 
             display: block; 
             text-transform: uppercase; 
         }
@@ -178,7 +181,7 @@
             transform: rotate(-10deg);
             opacity: 0.9;
             letter-spacing: 1.5px;
-            background: rgba(255, 255, 255, 0.85); /* Nền mộc hơi trong để thấy chút watermark nếu có */
+            background: rgba(255, 255, 255, 0.85);
             box-shadow: 0 0 0 1px rgba(211, 47, 47, 0.1);
             font-family: 'Courier New', Courier, monospace;
             position: relative;
@@ -251,7 +254,7 @@
             <div class="note-text">
                 <i class="fas fa-info-circle"></i> File PDF gồm 8 trang:<br>
                 1 Xác nhận + 2 Quyền lợi + 5 Nội quy.<br>
-                Đã chỉnh sửa hiển thị Mộc & Nền trong suốt.
+                Đã thu nhỏ "Chào mừng" để bảo toàn Mộc.
             </div>
         </div>
     </div>
@@ -284,7 +287,7 @@
                     </table>
                     <div class="thank-you-box">
                         <h3><i class="fas fa-bullhorn"></i> Chào mừng thành viên mới!</h3>
-                        <p>Chúc mừng bạn <strong id="txtNoteName" style="color: var(--primary-color);">Nguyễn Văn A</strong> đã đăng ký lớp học thành công! Trung tâm <strong>HAN AI LAB</strong> đã ghi nhận đầy đủ thông tin của bạn.<br><br>Cảm ơn bạn đã tin tưởng và lựa chọn đồng hành cùng chúng mình trong hành trình học tập sắp tới. Chúng mình sẽ sớm liên hệ để cung cấp thêm thông tin chi tiết về lớp học và các hướng dẫn cần thiết.<br><br>Rất mong được gặp bạn trong lớp học! 🌱</p>
+                        <p>Chúc mừng bạn <strong id="txtNoteName" style="color: var(--primary-color);">Nguyễn Văn A</strong> đã đăng ký lớp học thành công! Trung tâm <strong>HAN AI LAB</strong> đã ghi nhận đầy đủ thông tin của bạn.<br>Cảm ơn bạn đã tin tưởng và lựa chọn đồng hành cùng chúng mình trong hành trình học tập sắp tới. Chúng mình sẽ sớm liên hệ để cung cấp thêm thông tin chi tiết về lớp học và các hướng dẫn cần thiết.<br>Rất mong được gặp bạn trong lớp học! 🌱</p>
                     </div>
                 </div>
                 <div class="signature-section">
