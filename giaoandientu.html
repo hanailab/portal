@@ -3,66 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trình Soạn Thảo Giáo Án 3.3 (Auto-Expand)</title>
+    <title>Trình Soạn Thảo Giáo Án 3.5 (Glass UI)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
         /* --- CSS CƠ BẢN --- */
         textarea {
-            /* TÍNH NĂNG TỰ ĐỘNG GIÃN DÒNG QUAN TRỌNG */
             field-sizing: content; 
             min-height: 1.5rem;
             width: 100%;
             resize: none;
-            overflow: hidden; /* Ẩn thanh cuộn vì ô sẽ tự cao lên */
+            overflow: hidden;
             display: block;
             background: transparent;
             line-height: 1.6;
         }
         
-        /* Fallback cho trình duyệt chưa hỗ trợ field-sizing */
         textarea:not([style*="height"]) {
             height: auto;
+        }
+
+        /* --- GLASS UI CLASSES (MỚI) --- */
+        /* Hiệu ứng kính cho các ô nội dung */
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.65); /* Trắng trong suốt 65% */
+            backdrop-filter: blur(2px); /* Làm mờ nhẹ nền sau lưng để chữ dễ đọc hơn */
+            -webkit-backdrop-filter: blur(2px);
+        }
+
+        /* Kính màu Đỏ (cho Trọng điểm) */
+        .glass-red {
+            background-color: rgba(254, 242, 242, 0.4); /* Red-50 nhưng trong suốt 40% */
+            border: 1px solid rgba(252, 165, 165, 0.5); /* Viền đỏ nhạt */
+        }
+
+        /* Kính màu Cam (cho Điểm khó) */
+        .glass-orange {
+            background-color: rgba(255, 247, 237, 0.4); /* Orange-50 nhưng trong suốt 40% */
+            border: 1px solid rgba(253, 186, 116, 0.5); /* Viền cam nhạt */
+        }
+        
+        /* Kính màu Xanh (cho Phản tư) */
+        .glass-green {
+            background-color: rgba(240, 253, 244, 0.4);
+            border: 1px solid rgba(134, 239, 172, 0.5);
         }
 
         /* --- CSS CHO PHẦN PHẢN TƯ --- */
         .reflection-box {
             width: 100%;
-            min-height: 120px; /* Chiều cao tối thiểu */
+            min-height: 120px;
             padding: 0.75rem;
-            background-color: #ffffff;
+            /* Thay nền trắng đặc bằng trong suốt để hiện logo */
+            background-color: rgba(255, 255, 255, 0.5); 
             border: 1px solid #e5e7eb;
             border-radius: 0.5rem;
-            white-space: pre-wrap; /* Giữ định dạng xuống dòng */
+            white-space: pre-wrap;
         }
 
         /* --- LOGO & WATERMARK STYLE --- */
         .watermark {
-            position: absolute;
+            position: fixed; 
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 50%; /* Độ rộng của hình chìm */
-            opacity: 0.08; /* Độ mờ rất nhẹ để không rối mắt */
-            pointer-events: none; /* Cho phép click xuyên qua để gõ chữ */
-            z-index: 0; /* Nằm dưới cùng */
+            width: 60%; /* Tăng kích thước chút */
+            opacity: 0.12; /* Tăng độ đậm lên 12% vì giờ nó nằm sau lớp kính */
+            pointer-events: none;
+            z-index: 0; 
             user-select: none;
-            filter: grayscale(100%); /* (Tuỳ chọn) Chuyển sang đen trắng cho đỡ rối màu */
+            object-fit: contain;
         }
 
         .top-logo {
             display: block;
             margin: 0 auto 1rem auto;
-            height: 80px; /* Chiều cao logo trên đầu trang */
+            height: 80px; 
             width: auto;
             object-fit: contain;
         }
 
-        /* Lớp phủ nội dung để đảm bảo chữ nằm trên watermark */
         .content-layer {
             position: relative;
             z-index: 10;
+            background: transparent;
         }
 
         /* --- MOBILE RESPONSIVE TABLE --- */
@@ -75,7 +100,7 @@
                 margin-bottom: 1.5rem;
                 border: 1px solid #e5e7eb;
                 border-radius: 0.5rem;
-                background-color: #f9fafb;
+                background-color: rgba(249, 250, 251, 0.8); /* Mobile background mờ */
                 padding: 1rem;
                 box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             }
@@ -101,31 +126,71 @@
             }
         }
         
+        /* --- CẤU HÌNH IN ẤN --- */
         @media print {
-            @page { margin: 1cm; size: A4; }
-            body { background: white; -webkit-print-color-adjust: exact; }
+            @page { 
+                margin: 1cm; 
+                size: A4; 
+            }
+            
+            body { 
+                background: white; 
+                -webkit-print-color-adjust: exact; 
+                min-height: 100vh;
+            }
+            
             .no-print { display: none !important; }
             
             .responsive-table thead { display: table-header-group !important; }
-            .responsive-table tr { display: table-row !important; border: none !important; background: transparent !important; padding: 0 !important; margin: 0 !important; box-shadow: none !important;}
-            .responsive-table td { display: table-cell !important; border-bottom: 1px solid #e5e7eb !important; padding: 0.5rem !important; }
+            .responsive-table tr { 
+                display: table-row !important; 
+                border: none !important; 
+                background: transparent !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                box-shadow: none !important;
+                page-break-inside: avoid;
+            }
+            .responsive-table td { 
+                display: table-cell !important; 
+                border-bottom: 1px solid #e5e7eb !important; 
+                padding: 0.5rem !important; 
+            }
             .mobile-label { display: none !important; }
             
             input::placeholder, textarea::placeholder { color: transparent; }
             .shadow-xl, .shadow-sm { box-shadow: none !important; }
             
-            img { break-inside: avoid; }
+            h3, .border-l-4 { page-break-after: avoid; page-break-inside: avoid; }
+            img { page-break-inside: avoid; }
             
-            /* Khi in, viền ô phản tư sẽ mờ đi để đẹp hơn */
-            .reflection-box {
-                border: 1px solid #ddd !important;
+            .reflection-box { border: 1px solid #ddd !important; }
+
+            .watermark {
+                position: fixed !important;
+                top: 50% !important;
+                left: 50% !important;
+                width: 60% !important;
+                opacity: 0.12 !important; /* Giữ độ đậm khi in */
+                display: block !important;
+                z-index: -1 !important;
+            }
+            
+            /* Tắt nền trắng khi in để hiện watermark */
+            .bg-white, .bg-slate-100 { background-color: transparent !important; }
+            
+            /* Các lớp kính khi in sẽ trong suốt hơn một chút để tiết kiệm mực */
+            .glass-panel, .glass-red, .glass-orange, .glass-green {
+                background-color: rgba(255, 255, 255, 0.4) !important;
             }
 
-            /* Đảm bảo watermark in ra được */
-            .watermark {
-                opacity: 0.08 !important;
-                display: block !important;
-                filter: none; /* In màu nếu muốn */
+            .max-w-5xl {
+                max-width: none !important;
+                width: 100% !important;
+                overflow: visible !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
         }
     </style>
@@ -137,7 +202,7 @@
         <div class="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-2">
             <div class="flex items-center gap-2 text-blue-700 font-bold text-lg md:text-xl truncate">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                <span class="truncate">Giáo Án điện tử HANAI LAB</span>
+                <span class="truncate">Giáo Án 3.5 (Glass UI)</span>
             </div>
             <div class="flex gap-2">
                 <button onclick="resetData()" class="flex items-center gap-1 sm:gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded transition font-medium border border-red-100 sm:border-transparent">
@@ -153,43 +218,43 @@
     </div>
 
     <!-- MAIN CONTENT PAPER -->
-    <!-- Thêm relative và overflow-hidden để chứa watermark -->
-    <div class="max-w-5xl mx-auto bg-white p-4 md:p-14 shadow-xl min-h-screen print:shadow-none print:p-0 print:max-w-none print:w-full relative overflow-hidden">
+    <!-- Đổi bg-white thành bg-white/90 hoặc trong suốt để thấy background body, nhưng ta muốn giấy trắng -->
+    <!-- Giải pháp: Giữ giấy trắng nhưng các ô bên trong trong suốt -->
+    <div class="max-w-5xl mx-auto bg-white p-4 md:p-14 shadow-xl min-h-screen print:shadow-none print:p-0 print:max-w-none print:w-full relative">
         
-        <!-- WATERMARK -->
+        <!-- WATERMARK (VỊ TRÍ FIXED) -->
         <img src="https://res.cloudinary.com/dylnm79id/image/upload/v1769343424/Kho%CC%82ng_ne%CC%82%CC%80n_ev0wrm.png" class="watermark" alt="Watermark">
 
-        <!-- CONTENT LAYER (Để đè lên watermark) -->
+        <!-- CONTENT LAYER -->
         <div class="content-layer">
             
             <!-- HEADER -->
             <div class="text-center mb-10 border-b-2 border-double border-gray-300 pb-8 print:border-black">
-                <!-- LOGO TRÊN CÙNG -->
                 <img src="https://res.cloudinary.com/dylnm79id/image/upload/v1769343424/Kho%CC%82ng_ne%CC%82%CC%80n_ev0wrm.png" class="top-logo" alt="Logo">
 
                 <textarea id="lessonName" oninput="updateMeta('lessonName', this.value)" class="text-3xl md:text-4xl font-extrabold text-center text-blue-900 mb-4 font-serif bg-transparent focus:outline-none print:text-black" placeholder="TÊN BÀI HỌC" rows="1"></textarea>
                 
                 <div class="flex flex-col md:flex-row flex-wrap justify-center gap-4 md:gap-8 text-gray-600 mt-4 print:text-black print:flex-row">
-                    <div class="flex items-center justify-between md:justify-center gap-2 bg-gray-50 px-3 py-1 rounded print:bg-transparent print:p-0">
+                    <div class="flex items-center justify-between md:justify-center gap-2 glass-panel px-3 py-1 rounded print:bg-transparent print:p-0">
                         <span class="font-bold text-sm uppercase tracking-wider">Giáo viên:</span>
                         <input id="teacher" oninput="updateMeta('teacher', this.value)" class="bg-transparent border-b border-dashed border-gray-400 focus:border-blue-500 outline-none text-right md:text-center font-medium w-32 md:w-auto" placeholder="...">
                     </div>
-                    <div class="flex items-center justify-between md:justify-center gap-2 bg-gray-50 px-3 py-1 rounded print:bg-transparent print:p-0">
+                    <div class="flex items-center justify-between md:justify-center gap-2 glass-panel px-3 py-1 rounded print:bg-transparent print:p-0">
                         <span class="font-bold text-sm uppercase tracking-wider">Lớp:</span>
                         <input id="classInfo" oninput="updateMeta('classInfo', this.value)" class="bg-transparent border-b border-dashed border-gray-400 focus:border-blue-500 outline-none text-right md:text-center font-medium w-32 md:w-auto" placeholder="...">
                     </div>
-                    <div class="flex items-center justify-between md:justify-center gap-2 bg-gray-50 px-3 py-1 rounded print:bg-transparent print:p-0">
+                    <div class="flex items-center justify-between md:justify-center gap-2 glass-panel px-3 py-1 rounded print:bg-transparent print:p-0">
                         <span class="font-bold text-sm uppercase tracking-wider">Ngày:</span>
                         <input id="date" oninput="updateMeta('date', this.value)" class="bg-transparent border-b border-dashed border-gray-400 focus:border-blue-500 outline-none text-right md:text-center font-medium w-32 md:w-auto" placeholder="...">
                     </div>
                 </div>
             </div>
 
-            <!-- INFO GRID (I - IV) -->
+            <!-- INFO GRID (I - IV) - ÁP DỤNG GLASS PANEL -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8 print:gap-6">
                 <!-- I -->
-                <div class="border-l-4 border-indigo-400 bg-white shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:break-inside-avoid">
-                    <div class="bg-gradient-to-r from-gray-50 to-white px-4 py-2 border-b border-gray-100 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
+                <div class="border-l-4 border-indigo-400 glass-panel shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:break-inside-avoid">
+                    <div class="bg-gradient-to-r from-gray-50/50 to-white/50 px-4 py-2 border-b border-gray-100/50 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
                         <h3 class="font-bold text-lg text-slate-800 uppercase print:text-black">I. Loại hình lớp học</h3>
                         <span class="text-slate-500 font-medium text-sm print:text-gray-600 font-serif">课型</span>
                     </div>
@@ -198,8 +263,8 @@
                     </div>
                 </div>
                  <!-- II -->
-                 <div class="border-l-4 border-indigo-400 bg-white shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:break-inside-avoid">
-                    <div class="bg-gradient-to-r from-gray-50 to-white px-4 py-2 border-b border-gray-100 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
+                 <div class="border-l-4 border-indigo-400 glass-panel shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:break-inside-avoid">
+                    <div class="bg-gradient-to-r from-gray-50/50 to-white/50 px-4 py-2 border-b border-gray-100/50 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
                         <h3 class="font-bold text-lg text-slate-800 uppercase print:text-black">II. Đối tượng</h3>
                         <span class="text-slate-500 font-medium text-sm print:text-gray-600 font-serif">教学对象</span>
                     </div>
@@ -208,8 +273,8 @@
                     </div>
                 </div>
                  <!-- III -->
-                 <div class="border-l-4 border-indigo-400 bg-white shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:break-inside-avoid">
-                    <div class="bg-gradient-to-r from-gray-50 to-white px-4 py-2 border-b border-gray-100 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
+                 <div class="border-l-4 border-indigo-400 glass-panel shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:break-inside-avoid">
+                    <div class="bg-gradient-to-r from-gray-50/50 to-white/50 px-4 py-2 border-b border-gray-100/50 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
                         <h3 class="font-bold text-lg text-slate-800 uppercase print:text-black">III. Giáo trình</h3>
                         <span class="text-slate-500 font-medium text-sm print:text-gray-600 font-serif">使用教材</span>
                     </div>
@@ -218,8 +283,8 @@
                     </div>
                 </div>
                  <!-- IV -->
-                 <div class="border-l-4 border-indigo-400 bg-white shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:break-inside-avoid">
-                    <div class="bg-gradient-to-r from-gray-50 to-white px-4 py-2 border-b border-gray-100 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
+                 <div class="border-l-4 border-indigo-400 glass-panel shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:break-inside-avoid">
+                    <div class="bg-gradient-to-r from-gray-50/50 to-white/50 px-4 py-2 border-b border-gray-100/50 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
                         <h3 class="font-bold text-lg text-slate-800 uppercase print:text-black">IV. Công cụ</h3>
                         <span class="text-slate-500 font-medium text-sm print:text-gray-600 font-serif">教学工具</span>
                     </div>
@@ -233,10 +298,10 @@
             <div id="content-section-container"></div>
             <div id="objectives-section-container"></div>
 
-            <!-- KEY POINTS (VII, VIII) -->
+            <!-- KEY POINTS (VII, VIII) - ÁP DỤNG GLASS-RED & GLASS-ORANGE -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 <!-- VII -->
-                <div class="border border-red-100 bg-red-50/50 rounded-xl p-5 shadow-sm print:border-black print:bg-white print:p-0 print:shadow-none print:break-inside-avoid">
+                <div class="glass-red rounded-xl p-5 shadow-sm print:border-black print:bg-transparent print:p-0 print:shadow-none print:break-inside-avoid">
                     <div class="flex items-center gap-2 mb-3">
                         <div class="w-1 h-6 bg-red-500 rounded-full"></div>
                         <div>
@@ -247,7 +312,7 @@
                     <textarea id="emphasis" oninput="updateKeyPoints('emphasis', this.value)" class="bg-transparent min-h-[60px] focus:outline-none" rows="2"></textarea>
                 </div>
                 <!-- VIII -->
-                <div class="border border-orange-100 bg-orange-50/50 rounded-xl p-5 shadow-sm print:border-black print:bg-white print:p-0 print:shadow-none print:break-inside-avoid">
+                <div class="glass-orange rounded-xl p-5 shadow-sm print:border-black print:bg-transparent print:p-0 print:shadow-none print:break-inside-avoid">
                     <div class="flex items-center gap-2 mb-3">
                         <div class="w-1 h-6 bg-orange-500 rounded-full"></div>
                         <div>
@@ -262,9 +327,9 @@
             <!-- CREATIVE (IX) -->
             <div id="creative-section-container"></div>
 
-            <!-- PROCESS (X) - BẢNG TIẾN TRÌNH RESPONSIVE -->
-            <div class="mb-8 border-l-4 border-blue-600 bg-white shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:mb-6 print:break-inside-avoid">
-                <div class="bg-gradient-to-r from-gray-50 to-white px-4 py-3 border-b border-gray-100 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
+            <!-- PROCESS (X) -->
+            <div class="mb-8 border-l-4 border-blue-600 glass-panel shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:mb-6 print:break-inside-avoid">
+                <div class="bg-gradient-to-r from-gray-50/50 to-white/50 px-4 py-3 border-b border-gray-100/50 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
                     <h3 class="font-bold text-lg text-slate-800 uppercase print:text-black">X. Tiến trình dạy học</h3>
                     <span class="text-slate-500 font-medium text-sm print:text-gray-600 font-serif">教学过程</span>
                 </div>
@@ -272,7 +337,7 @@
                     <!-- Bảng Responsive -->
                     <table class="w-full border-collapse text-sm responsive-table">
                         <thead>
-                            <tr class="bg-gray-100 text-left print:bg-gray-200 text-gray-700">
+                            <tr class="bg-gray-100/70 text-left print:bg-gray-200 text-gray-700">
                                 <th class="border-b-2 border-gray-300 p-3 w-16">Thời gian</th>
                                 <th class="border-b-2 border-gray-300 p-3 w-1/4">Bước / Nội dung</th>
                                 <th class="border-b-2 border-gray-300 p-3">Hoạt động Giáo Viên</th>
@@ -286,39 +351,37 @@
                         </tbody>
                     </table>
                     
-                    <button onclick="addProcessItem()" class="mt-4 flex items-center justify-center gap-2 text-blue-600 font-bold hover:bg-blue-50 px-4 py-3 rounded-xl transition no-print border border-blue-200 shadow-sm mx-auto w-full md:w-auto">
+                    <button onclick="addProcessItem()" class="mt-4 flex items-center justify-center gap-2 text-blue-600 font-bold hover:bg-blue-50/50 px-4 py-3 rounded-xl transition no-print border border-blue-200 shadow-sm mx-auto w-full md:w-auto">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                         Thêm bước tiến trình
                     </button>
                 </div>
             </div>
 
-            <!-- REFLECTION (TỰ ĐỘNG CO GIÃN - KHÔNG CUỘN) -->
-            <div class="mt-10 p-6 rounded-xl bg-gray-50 border border-gray-200 print:bg-white print:border-none print:p-0 print:mt-6 print:break-inside-avoid">
-                <div class="flex items-baseline gap-2 mb-6 border-b border-gray-200 pb-3 print:border-none">
+            <!-- REFLECTION -->
+            <div class="mt-10 p-6 rounded-xl glass-panel border border-gray-200 print:bg-transparent print:border-none print:p-0 print:mt-6 print:break-inside-avoid">
+                <div class="flex items-baseline gap-2 mb-6 border-b border-gray-200/50 pb-3 print:border-none">
                     <h3 class="font-bold text-2xl text-slate-800 uppercase print:text-black">Phản tư sau giảng dạy</h3>
                     <span class="text-slate-500 font-medium text-lg print:text-gray-600">教学反思</span>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 print:gap-6">
-                    <!-- Card 1: Vấn đề -->
-                    <div class="bg-orange-50 rounded-lg p-4 border border-orange-100 shadow-sm print:bg-white print:border-none print:shadow-none print:p-0">
+                    <!-- Card 1: Vấn đề (GLASS ORANGE) -->
+                    <div class="glass-orange rounded-lg p-4 shadow-sm print:bg-transparent print:border-none print:shadow-none print:p-0">
                         <div class="flex items-center gap-2 mb-3">
                             <div class="p-1.5 bg-orange-200 rounded text-orange-700"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
                             <label class="font-bold text-orange-800 uppercase tracking-wide">Vấn đề tồn tại</label>
                         </div>
-                        <!-- Ô nhập liệu tự động giãn -->
                         <textarea id="reflection-situation" oninput="updateReflection('situation', this.value); autoResize(this)" class="reflection-box focus:ring-2 focus:ring-orange-200 focus:outline-none" placeholder="Nhập các vấn đề cần lưu ý..."></textarea>
                         <div id="reflection-situation-images-container" class="mt-3"></div>
                     </div>
 
-                    <!-- Card 2: Giải pháp -->
-                    <div class="bg-green-50 rounded-lg p-4 border border-green-100 shadow-sm print:bg-white print:border-none print:shadow-none print:p-0">
+                    <!-- Card 2: Giải pháp (GLASS GREEN) -->
+                    <div class="glass-green rounded-lg p-4 shadow-sm print:bg-transparent print:border-none print:shadow-none print:p-0">
                          <div class="flex items-center gap-2 mb-3">
                             <div class="p-1.5 bg-green-200 rounded text-green-700"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
                             <label class="font-bold text-green-800 uppercase tracking-wide">Hướng cải thiện</label>
                         </div>
-                        <!-- Ô nhập liệu tự động giãn -->
                         <textarea id="reflection-solution" oninput="updateReflection('solution', this.value); autoResize(this)" class="reflection-box focus:ring-2 focus:ring-green-200 focus:outline-none" placeholder="Nhập các giải pháp đề xuất..."></textarea>
                         <div id="reflection-solution-images-container" class="mt-3"></div>
                     </div>
@@ -463,11 +526,12 @@
             container.innerHTML = "";
 
             const wrapper = document.createElement('div');
-            wrapper.className = `mb-8 border-l-4 border-${sectionName === 'content' || sectionName === 'objectives' ? 'teal-500' : 'purple-500'} bg-white shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:mb-6 print:break-inside-avoid`;
+            // Thay bg-white bằng glass-panel
+            wrapper.className = `mb-8 border-l-4 border-${sectionName === 'content' || sectionName === 'objectives' ? 'teal-500' : 'purple-500'} glass-panel shadow-sm rounded-r-lg print:shadow-none print:border-l-2 print:mb-6 print:break-inside-avoid`;
             
             let titles = { content: ["V. Nội dung giảng dạy", "教学内容"], objectives: ["VI. Mục tiêu dạy học", "教学目标"], creative: ["IX. Sáng tạo & Mở rộng", "教学创新"] };
             wrapper.innerHTML = `
-                <div class="bg-gradient-to-r from-gray-50 to-white px-4 py-3 border-b border-gray-100 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
+                <div class="bg-gradient-to-r from-gray-50/50 to-white/50 px-4 py-3 border-b border-gray-100/50 rounded-tr-lg flex items-baseline gap-3 print:bg-transparent print:border-none print:px-4 print:py-0">
                     <h3 class="font-bold text-lg text-slate-800 uppercase print:text-black">${titles[sectionName][0]}</h3>
                     <span class="text-slate-500 font-medium text-sm print:text-gray-600 font-serif">${titles[sectionName][1]}</span>
                 </div>
@@ -503,7 +567,7 @@
             });
 
             const addBtn = document.createElement('button');
-            addBtn.className = "flex items-center gap-2 text-sm text-blue-600 font-medium hover:bg-blue-50 px-4 py-2 rounded-lg transition no-print border border-blue-100 shadow-sm justify-center w-full md:w-auto";
+            addBtn.className = "flex items-center gap-2 text-sm text-blue-600 font-medium hover:bg-blue-50/50 px-4 py-2 rounded-lg transition no-print border border-blue-100 shadow-sm justify-center w-full md:w-auto";
             addBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg> Thêm nội dung`;
             addBtn.onclick = () => addListItem(sectionName);
             listBody.appendChild(addBtn);
@@ -538,7 +602,7 @@
             tbody.innerHTML = "";
             appData.process.forEach(row => {
                 const tr = document.createElement('tr');
-                tr.className = "group border-b border-gray-100 hover:bg-gray-50 print:hover:bg-transparent print:border-gray-300";
+                tr.className = "group border-b border-gray-100 hover:bg-gray-50/50 print:hover:bg-transparent print:border-gray-300";
                 
                 const imageHTML = renderMultiImageHTML(row.images || [], `process-${row.id}`);
 
@@ -663,7 +727,7 @@
             safeImages.forEach((img, index) => {
                 html += `
                 <div class="relative group inline-block">
-                    <img src="${img}" class="h-20 md:h-24 rounded shadow-sm border border-gray-200 object-contain bg-white">
+                    <img src="${img}" class="h-20 md:h-24 rounded shadow-sm border border-gray-200 object-contain bg-white/80">
                     <button onclick="removeMultiImage('${keyIdPrefix}', ${index})" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition shadow-md no-print hover:bg-red-600 z-10">
                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                     </button>
@@ -671,7 +735,7 @@
             });
 
             html += `
-                <label class="cursor-pointer flex flex-col items-center justify-center h-20 md:h-24 w-20 md:w-24 bg-blue-50 hover:bg-blue-100 border-2 border-dashed border-blue-200 rounded transition text-blue-400 hover:text-blue-600 no-print">
+                <label class="cursor-pointer flex flex-col items-center justify-center h-20 md:h-24 w-20 md:w-24 bg-blue-50/50 hover:bg-blue-100/50 border-2 border-dashed border-blue-200 rounded transition text-blue-400 hover:text-blue-600 no-print">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
                     <span class="text-[10px] uppercase font-bold mt-1">Thêm ảnh</span>
                     <input type="file" onchange="handleMultiImageUpload(this, '${keyIdPrefix}')" accept="image/*" class="hidden">
