@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HANAI LAB - Trung tâm tiếng Trung</title>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel để dịch mã JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Cấu hình Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        blue: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Tùy chỉnh thanh cuộn cho đẹp */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- ĐỊNH NGHĨA ICON (SVG) ---
+        const IconWrapper = ({ children, size = 24, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                {children}
+            </svg>
+        );
+
+        const BookOpen = (props) => (
+            <IconWrapper {...props}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></IconWrapper>
+        );
+        const Users = (props) => (
+            <IconWrapper {...props}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></IconWrapper>
+        );
+        const CheckCircle = (props) => (
+            <IconWrapper {...props}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></IconWrapper>
+        );
+        const Menu = (props) => (
+            <IconWrapper {...props}><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></IconWrapper>
+        );
+        const X = (props) => (
+            <IconWrapper {...props}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></IconWrapper>
+        );
+        const Star = (props) => (
+            <IconWrapper {...props}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></IconWrapper>
+        );
+        const Globe = (props) => (
+            <IconWrapper {...props}><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></IconWrapper>
+        );
+        const MessageCircle = (props) => (
+            <IconWrapper {...props}><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></IconWrapper>
+        );
+
+        // --- ỨNG DỤNG CHÍNH ---
+        const App = () => {
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+            const [scrolled, setScrolled] = useState(false);
+            const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
+
+            // Danh sách ảnh Hero
+            const heroImages = [
+                "https://res.cloudinary.com/dylnm79id/image/upload/v1770020560/4_ambeys.png",
+                "https://res.cloudinary.com/dylnm79id/image/upload/v1770020560/4_ambeys.png",
+                "https://res.cloudinary.com/dylnm79id/image/upload/v1770020782/5_muuoft.png",
+                "https://res.cloudinary.com/dylnm79id/image/upload/v1770020558/3_ufjqzn.png",
+                "https://res.cloudinary.com/dylnm79id/image/upload/v1770020558/1_hpgjtr.png"
+            ];
+
+            // Slideshow tự động
+            useEffect(() => {
+                const slideInterval = setInterval(() => {
+                    setCurrentHeroSlide((prev) => (prev + 1) % heroImages.length);
+                }, 3000);
+                return () => clearInterval(slideInterval);
+            }, [heroImages.length]);
+
+            // Scroll Header
+            useEffect(() => {
+                const handleScroll = () => {
+                    setScrolled(window.scrollY > 20);
+                };
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const scrollToSection = (id) => {
+                setIsMenuOpen(false);
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            const courses = [
+                {
+                    title: "HSK 1 (Sơ Cấp)",
+                    description: "Làm quen với Pinyin, nét chữ Hán và 150 từ vựng căn bản nhất.",
+                    image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" 
+                },
+                {
+                    title: "HSK 2 (Sơ Cấp)",
+                    description: "Nắm vững 300 từ vựng, giao tiếp các chủ đề hàng ngày đơn giản.",
+                    image: "https://images.unsplash.com/photo-1528747045269-390fe33c19f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" 
+                },
+                {
+                    title: "HSK 3 (Trung Cấp)",
+                    description: "Bước ngoặt quan trọng với 600 từ vựng, bắt đầu giao tiếp trôi chảy hơn.",
+                    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" 
+                },
+                {
+                    title: "HSK 4 (Trung Cấp)",
+                    description: "1200 từ vựng, đủ điều kiện du học và làm việc tại các công ty Trung Quốc.",
+                    image: "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" 
+                },
+                {
+                    title: "HSK 5 (Cao Cấp)",
+                    description: "2500 từ vựng, đọc hiểu báo chí, xem phim và viết luận văn.",
+                    image: "https://images.unsplash.com/photo-1550592704-6c76defa9985?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" 
+                },
+                {
+                    title: "HSK 6 (Thượng Thừa)",
+                    description: "Hơn 5000 từ vựng, thành thạo như người bản xứ, biên phiên dịch chuyên nghiệp.",
+                    image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" 
+                },
+                {
+                    title: "Tiếng Trung Trẻ Em",
+                    description: "Phương pháp 'Học mà chơi', kích thích tư duy ngôn ngữ tự nhiên cho bé.",
+                    image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" 
+                },
+                {
+                    title: "Tiếng Trung Thương Mại",
+                    description: "Từ vựng chuyên ngành kinh tế, kỹ năng đàm phán và văn hóa doanh nghiệp.",
+                    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" 
+                }
+            ];
+
+            const suitability = [
+                { question: "Người mới bắt đầu?", answer: "Lộ trình tinh gọn giúp bạn đi từ con số 0 đến giao tiếp tự tin." },
+                { question: "Muốn du học Trung Quốc?", answer: "Hỗ trợ hồ sơ, tư vấn học bổng và đào tạo HSK cấp tốc." },
+                { question: "Cần thăng tiến công việc?", answer: "Khóa thương mại giúp bạn đàm phán lương và mở rộng cơ hội." },
+                { question: "Yêu thích văn hóa?", answer: "Không chỉ học tiếng, bạn còn được trải nghiệm văn hóa Hán ngữ." },
+            ];
+
+            const teachers = [
+                {
+                    name: "Cô Thanh Hà",
+                    role: "Quản lý Trung tâm",
+                    exp: "Thạc sĩ GD Hán Ngữ - ĐH Bắc Kinh",
+                    desc: "Với 10 năm kinh nghiệm giảng dạy, cô Hà là người truyền lửa đam mê tiếng Trung cho hàng ngàn học viên.",
+                    img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ha&clothing=blazerAndShirt&hairColor=black"
+                },
+                {
+                    name: "Thầy Minh Đức",
+                    role: "Giáo viên HSK Cao Cấp",
+                    exp: "HSK 6 - 280 điểm",
+                    desc: "Phong cách dạy hài hước, dễ hiểu, chuyên trị các ca 'mất gốc' ngữ pháp.",
+                    img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Duc&clothing=collarAndSweater&hairColor=black&top=shortHair"
+                },
+                {
+                    name: "Cô Tiểu Mai",
+                    role: "Giáo viên Tiếng Trung Trẻ Em",
+                    exp: "Cử nhân Sư phạm Ngoại Ngữ",
+                    desc: "Yêu trẻ, kiên nhẫn và luôn sáng tạo các trò chơi giáo dục thú vị.",
+                    img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mai&clothing=shirtScoopNeck&hairColor=brown&top=longHair"
+                }
+            ];
+
+            return (
+                <div className="font-sans text-gray-800 bg-white overflow-x-hidden">
+                    
+                    {/* Navigation - Sticky Header */}
+                    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-2' : 'bg-white/95 py-4'}`}>
+                        <div className="container mx-auto px-4 md:px-8 flex justify-between items-center">
+                            {/* Logo & Brand Name */}
+                            <div 
+                                onClick={() => scrollToSection('home')} 
+                                className="flex items-center gap-3 cursor-pointer group"
+                            >
+                                <img 
+                                    src="https://res.cloudinary.com/dylnm79id/image/upload/v1769343424/Kho%CC%82ng_ne%CC%82%CC%80n_ev0wrm.png" 
+                                    alt="HANAI LAB Logo" 
+                                    className="h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105"
+                                />
+                                <span className="font-bold text-xl md:text-2xl text-blue-800 tracking-tight">HANAI LAB</span>
+                            </div>
+
+                            {/* Desktop Menu */}
+                            <div className="hidden md:flex items-center gap-8 font-medium text-gray-600">
+                                <button onClick={() => scrollToSection('courses')} className="hover:text-blue-600 transition-colors">Chi tiết khoá học</button>
+                                <button onClick={() => scrollToSection('teachers')} className="hover:text-blue-600 transition-colors">Đội ngũ giáo viên</button>
+                                <button onClick={() => scrollToSection('community')} className="hover:text-blue-600 transition-colors">Cộng đồng</button>
+                                
+                                {/* URL HỌC LIỆU */}
+                                <a 
+                                    href="LINK_TRUY_CAP_HOC_LIEU" 
+                                    target="_blank"
+                                    className="px-5 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+                                >
+                                    <BookOpen size={18} />
+                                    Truy cập học liệu
+                                </a>
+                            </div>
+
+                            {/* Mobile Menu Button */}
+                            <button className="md:hidden text-gray-700" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                                {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                            </button>
+                        </div>
+
+                        {/* Mobile Menu Dropdown */}
+                        {isMenuOpen && (
+                            <div className="md:hidden bg-white border-t p-4 shadow-xl flex flex-col gap-4 animate-fade-in">
+                                <button onClick={() => scrollToSection('courses')} className="text-left py-2 font-medium">Chi tiết khoá học</button>
+                                <button onClick={() => scrollToSection('teachers')} className="text-left py-2 font-medium">Đội ngũ giáo viên</button>
+                                <button onClick={() => scrollToSection('community')} className="text-left py-2 font-medium">Cộng đồng</button>
+                                <a href="LINK_TRUY_CAP_HOC_LIEU" className="w-full py-3 bg-blue-600 text-white rounded-lg font-bold text-center block">Truy cập học liệu</a>
+                            </div>
+                        )}
+                    </nav>
+
+                    {/* Hero Section */}
+                    <header id="home" className="pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-blue-50 to-white relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-100/30 rounded-l-[100px] -z-10 translate-x-20"></div>
+                        <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center gap-12">
+                            
+                            {/* Hero Content (Left) */}
+                            <div className="md:w-1/2 text-center md:text-left z-10">
+                                <span className="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-6">
+                                    #1 Trung tâm Tiếng Trung Thực Chiến
+                                </span>
+                                <h1 className="text-4xl md:text-6xl font-bold text-blue-900 leading-tight mb-6">
+                                    Chinh phục Hán Ngữ cùng <span className="text-blue-600">HANAI LAB</span>
+                                </h1>
+                                <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-xl mx-auto md:mx-0">
+                                    Môi trường học tập hiện đại, lộ trình cá nhân hóa và đội ngũ giáo viên tận tâm. Giúp bạn tự tin giao tiếp và đạt chứng chỉ HSK nhanh chóng.
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                                    {/* URL ĐĂNG KÝ TƯ VẤN */}
+                                    <a 
+                                        href="LINK_DANG_KY_TU_VAN" 
+                                        target="_blank"
+                                        className="px-8 py-3.5 bg-blue-600 text-white rounded-xl font-bold shadow-lg hover:bg-blue-700 hover:-translate-y-1 transition-all inline-block text-center"
+                                    >
+                                        Đăng ký tư vấn ngay
+                                    </a>
+                                    <button onClick={() => scrollToSection('about')} className="px-8 py-3.5 bg-white text-blue-600 border border-blue-200 rounded-xl font-bold hover:bg-blue-50 transition-all">
+                                        Tìm hiểu thêm
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Hero Slideshow (Right) */}
+                            <div className="md:w-1/2 relative w-full">
+                                <div className="relative z-10 bg-white p-3 rounded-3xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+                                    <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100">
+                                        {/* Images loop */}
+                                        {heroImages.map((img, index) => (
+                                            <img 
+                                                key={index}
+                                                src={img} 
+                                                alt={`Slideshow ${index}`} 
+                                                className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${index === currentHeroSlide ? 'opacity-100' : 'opacity-0'}`}
+                                            />
+                                        ))}
+                                    </div>
+
+                                    {/* Badge/Overlay */}
+                                    <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-lg flex items-center gap-3 animate-bounce-slow z-20 border border-gray-100">
+                                        <div className="bg-yellow-400 p-2 rounded-full text-white">
+                                            <Star fill="white" size={24} />
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-gray-800">4.9/5.0</p>
+                                            <p className="text-xs text-gray-500">Đánh giá học viên</p>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Slide Indicators */}
+                                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                                        {heroImages.map((_, idx) => (
+                                            <div 
+                                                key={idx} 
+                                                className={`h-2 rounded-full transition-all duration-300 ${idx === currentHeroSlide ? 'w-6 bg-white' : 'w-2 bg-white/50'}`}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Courses Section */}
+                    <section id="courses" className="py-20 bg-white">
+                        <div className="container mx-auto px-4 md:px-8">
+                            <div className="text-center mb-16">
+                                <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Các Khoá Học Nổi Bật</h2>
+                                <p className="text-gray-600 max-w-2xl mx-auto">Lộ trình học tập đa dạng, phù hợp với mọi nhu cầu từ cơ bản đến nâng cao, từ trẻ em đến người đi làm.</p>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {courses.map((course, index) => (
+                                    <div key={index} className="group bg-white rounded-2xl border border-gray-100 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-full">
+                                        {/* Course Image Area */}
+                                        <div className="h-48 w-full overflow-hidden bg-gray-200 relative">
+                                            <img 
+                                                src={course.image} 
+                                                alt={course.title} 
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                            />
+                                            <div className="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/10 transition-colors duration-300"></div>
+                                        </div>
+                                        
+                                        <div className="p-6 flex flex-col flex-grow">
+                                            <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors">{course.title}</h3>
+                                            <p className="text-gray-600 flex-grow mb-6 text-sm leading-relaxed">{course.description}</p>
+                                            
+                                            {/* URL CHI TIẾT KHOÁ HỌC */}
+                                            <a 
+                                                href="LINK_CHI_TIET_KHOA_HOC" 
+                                                target="_blank"
+                                                className="w-full py-2.5 rounded-lg border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-600 hover:text-white transition-all block text-center"
+                                            >
+                                                Xem chi tiết
+                                            </a>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* About Section */}
+                    <section id="about" className="py-20 bg-blue-900 text-white relative">
+                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                        <div className="container mx-auto px-4 md:px-8 relative z-10">
+                            <div className="flex flex-col md:flex-row items-center gap-12">
+                                <div className="md:w-1/2">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+                                        alt="HANAI LAB Classroom" 
+                                        className="rounded-2xl shadow-2xl border-4 border-white/20"
+                                    />
+                                </div>
+                                <div className="md:w-1/2">
+                                    <h2 className="text-3xl md:text-4xl font-bold mb-6">HANAI LAB là gì?</h2>
+                                    <p className="text-blue-100 text-lg mb-6 leading-relaxed">
+                                        HANAI LAB không chỉ là một trung tâm ngoại ngữ, mà là một "phòng thí nghiệm ngôn ngữ" nơi chúng tôi nghiên cứu và áp dụng các phương pháp giảng dạy tiếng Trung hiệu quả nhất.
+                                    </p>
+                                    <ul className="space-y-4">
+                                        <li className="flex items-start gap-3">
+                                            <CheckCircle className="text-green-400 mt-1" size={20} />
+                                            <span><strong>Phương pháp:</strong> Kết hợp giữa tư duy logic và phản xạ tự nhiên.</span>
+                                        </li>
+                                        <li className="flex items-start gap-3">
+                                            <CheckCircle className="text-green-400 mt-1" size={20} />
+                                            <span><strong>Công nghệ:</strong> Ứng dụng AI hỗ trợ chấm chữa phát âm 24/7.</span>
+                                        </li>
+                                        <li className="flex items-start gap-3">
+                                            <CheckCircle className="text-green-400 mt-1" size={20} />
+                                            <span><strong>Cam kết:</strong> Học thật, thi thật, chất lượng thật.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Teachers Section */}
+                    <section id="teachers" className="py-20 bg-gray-50">
+                        <div className="container mx-auto px-4 md:px-8">
+                            <div className="text-center mb-16">
+                                <span className="text-blue-600 font-bold uppercase tracking-wider text-sm">Người dẫn đường</span>
+                                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">Đội Ngũ Giáo Viên & Quản Lý</h2>
+                                <div className="w-20 h-1 bg-blue-600 mx-auto mt-4 rounded-full"></div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                                {teachers.map((teacher, index) => (
+                                    /* URL CHI TIẾT GIÁO VIÊN */
+                                    <a 
+                                        href="LINK_CHI_TIET_GIAO_VIEN" 
+                                        key={index} 
+                                        className="bg-white rounded-2xl shadow-lg overflow-hidden hover:-translate-y-2 transition-transform duration-300 block"
+                                    >
+                                        <div className="h-24 bg-blue-600 relative">
+                                            <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 p-1 bg-white rounded-full">
+                                                <img src={teacher.img} alt={teacher.name} className="w-24 h-24 rounded-full bg-gray-200" />
+                                            </div>
+                                        </div>
+                                        <div className="pt-14 pb-8 px-6 text-center">
+                                            <h3 className="text-xl font-bold text-gray-800">{teacher.name}</h3>
+                                            <p className="text-blue-600 font-medium text-sm mb-3">{teacher.role}</p>
+                                            <div className="inline-block px-3 py-1 bg-gray-100 rounded-full text-xs text-gray-600 mb-4">
+                                                {teacher.exp}
+                                            </div>
+                                            <p className="text-gray-600 text-sm italic">"{teacher.desc}"</p>
+                                        </div>
+                                    </a>
+                                ))}
+                            </div>
+
+                            {/* Nút Xem thêm giáo viên */}
+                            <div className="text-center">
+                                <a 
+                                    href="LINK_XEM_THEM_GIAO_VIEN" 
+                                    className="inline-block px-6 py-2.5 border border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+                                >
+                                    Xem thêm giáo viên
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Suitability Check */}
+                    <section className="py-20 bg-white">
+                        <div className="container mx-auto px-4 md:px-8">
+                            <div className="bg-blue-50 rounded-3xl p-8 md:p-12 border border-blue-100">
+                                <div className="flex flex-col md:flex-row gap-12">
+                                <div className="md:w-1/3">
+                                    <h2 className="text-3xl font-bold text-blue-900 mb-4">Tôi có phù hợp với HANAI LAB không?</h2>
+                                    <p className="text-gray-600 mb-6">Đừng lo lắng nếu bạn chưa biết bắt đầu từ đâu. HANAI LAB thiết kế để phù hợp với nhiều đối tượng khác nhau.</p>
+                                    <button className="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold shadow hover:bg-blue-700 transition-colors w-full md:w-auto">
+                                    Làm bài test trình độ
+                                    </button>
+                                </div>
+                                <div className="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    {suitability.map((item, idx) => (
+                                    <div key={idx} className="bg-white p-5 rounded-xl shadow-sm border border-blue-100 flex items-start gap-4">
+                                        <div className="mt-1 text-blue-500"><CheckCircle size={24} /></div>
+                                        <div>
+                                        <h4 className="font-bold text-gray-800 mb-1">{item.question}</h4>
+                                        <p className="text-sm text-gray-600">{item.answer}</p>
+                                        </div>
+                                    </div>
+                                    ))}
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Community Section */}
+                    <section id="community" className="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white text-center">
+                        <div className="container mx-auto px-4">
+                            <Users size={48} className="mx-auto mb-4 opacity-80" />
+                            <h2 className="text-3xl font-bold mb-4">Tham gia Cộng Đồng Học Tiếng Trung</h2>
+                            <p className="text-blue-100 mb-8 max-w-2xl mx-auto">Cùng hơn 5000+ thành viên trao đổi kiến thức, chia sẻ tài liệu và tìm bạn đồng hành.</p>
+                            <div className="flex justify-center gap-4">
+                                {/* URL GROUP FACEBOOK */}
+                                <a 
+                                    href="LINK_FACEBOOK" 
+                                    target="_blank"
+                                    className="bg-white text-blue-800 px-6 py-3 rounded-full font-bold hover:bg-gray-100 transition flex items-center gap-2"
+                                >
+                                    <Globe size={18} /> Group Facebook
+                                </a>
+                                {/* URL ZALO */}
+                                <a 
+                                    href="LINK_ZALO" 
+                                    target="_blank"
+                                    className="bg-transparent border border-white px-6 py-3 rounded-full font-bold hover:bg-white/10 transition flex items-center gap-2"
+                                >
+                                    <MessageCircle size={18} /> Zalo Hỗ Trợ
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="bg-gray-900 text-gray-400 py-12">
+                        <div className="container mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+                            <div>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <img 
+                                        src="https://res.cloudinary.com/dylnm79id/image/upload/v1769343424/Kho%CC%82ng_ne%CC%82%CC%80n_ev0wrm.png" 
+                                        alt="Logo" 
+                                        className="h-8 w-auto brightness-0 invert" 
+                                    />
+                                    <span className="text-white font-bold text-xl">HANAI LAB</span>
+                                </div>
+                                <p className="text-sm mb-4">Trung tâm đào tạo tiếng Trung hàng đầu với phương pháp hiện đại và tận tâm.</p>
+                            </div>
+                            
+                            <div>
+                                <h4 className="text-white font-bold mb-4">Khoá học</h4>
+                                <ul className="space-y-2 text-sm">
+                                    <li><a href="#" className="hover:text-blue-400">HSK 1 - 6</a></li>
+                                    <li><a href="#" className="hover:text-blue-400">Tiếng Trung Trẻ Em</a></li>
+                                    <li><a href="#" className="hover:text-blue-400">Tiếng Trung Thương Mại</a></li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 className="text-white font-bold mb-4">Liên hệ</h4>
+                                <ul className="space-y-2 text-sm">
+                                    <li>Hotline: 0987.xxx.xxx</li>
+                                    <li>Email: contact@hanailab.edu.vn</li>
+                                    <li>Địa chỉ: [Địa chỉ trung tâm của bạn]</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 className="text-white font-bold mb-4">Đăng ký nhận tin</h4>
+                                <div className="flex gap-2">
+                                    <input type="email" placeholder="Email của bạn" className="bg-gray-800 border-none rounded-lg px-3 py-2 text-sm w-full focus:ring-1 focus:ring-blue-500 text-white" />
+                                    <button className="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-blue-700">Gửi</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="text-center mt-12 pt-8 border-t border-gray-800 text-xs">
+                            © 2024 HANAI LAB. All rights reserved.
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
