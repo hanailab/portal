@@ -111,7 +111,7 @@
 
             // Danh sách ảnh Hero
             const heroImages = [
-                "https://res.cloudinary.com/dylnm79id/image/upload/v1770020560/4_ambeys.png",
+                 "https://res.cloudinary.com/dylnm79id/image/upload/v1770020560/4_ambeys.png",
                 "https://res.cloudinary.com/dylnm79id/image/upload/v1770020560/4_ambeys.png",
                 "https://res.cloudinary.com/dylnm79id/image/upload/v1770020782/5_muuoft.png",
                 "https://res.cloudinary.com/dylnm79id/image/upload/v1770020558/3_ufjqzn.png",
@@ -275,8 +275,8 @@
                         <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-100/30 rounded-l-[100px] -z-10 translate-x-20"></div>
                         <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center gap-12">
                             
-                            {/* Hero Content (Left) */}
-                            <div className="md:w-1/2 text-center md:text-left z-10">
+                            {/* Hero Content (Left) - GIẢM WIDTH XUỐNG CÒN 5/12 ĐỂ NHƯỜNG CHỖ CHO ẢNH */}
+                            <div className="md:w-5/12 text-center md:text-left z-10">
                                 <span className="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-6">
                                     #1 Trung tâm Tiếng Trung Thực Chiến
                                 </span>
@@ -301,9 +301,10 @@
                                 </div>
                             </div>
 
-                            {/* Hero Slideshow (Right) */}
-                            <div className="md:w-1/2 relative w-full">
-                                <div className="relative z-10 bg-white p-3 rounded-3xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+                            {/* Hero Slideshow (Right) - TĂNG WIDTH LÊN 7/12 */}
+                            <div className="md:w-7/12 relative w-full">
+                                {/* GIẢM PADDING XUỐNG p-2 ĐỂ ẢNH TO HƠN */}
+                                <div className="relative z-10 bg-white p-2 rounded-3xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
                                     <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100">
                                         {/* Images loop */}
                                         {heroImages.map((img, index) => (
@@ -311,7 +312,8 @@
                                                 key={index}
                                                 src={img} 
                                                 alt={`Slideshow ${index}`} 
-                                                className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${index === currentHeroSlide ? 'opacity-100' : 'opacity-0'}`}
+                                                /* THÊM object-top ĐỂ KHÔNG CẮT MẤT LOGO Ở TRÊN */
+                                                className={`absolute top-0 left-0 w-full h-full object-cover object-top transition-opacity duration-1000 ${index === currentHeroSlide ? 'opacity-100' : 'opacity-0'}`}
                                             />
                                         ))}
                                     </div>
