@@ -83,7 +83,7 @@
         }
 
         /* Modal Styles */
-        #linkModal { backdrop-filter: blur(8px); }
+        #linkModal, #videoSecurityModal { backdrop-filter: blur(8px); }
         .modal-content { animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes modalPop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
@@ -171,7 +171,7 @@
     <!-- LOGO CHÌM -->
     <div class="watermark-logo"></div>
 
-    <!-- MODAL POPUP -->
+    <!-- MODAL POPUP HIỂN THỊ LINKS -->
     <div id="linkModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4" onclick="closeModal(event)">
         <div class="modal-content glass-card w-full max-w-lg rounded-2xl p-0 overflow-hidden shadow-2xl relative bg-white" onclick="event.stopPropagation()">
             <div id="modalHeader" class="p-6 bg-gradient-to-r from-gray-100 to-gray-50 border-b border-gray-200">
@@ -191,6 +191,30 @@
             <div class="p-4 bg-gray-50 border-t border-gray-100 text-center">
                 <button onclick="closeModalDirect()" class="px-6 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-200 transition-colors">Đóng</button>
             </div>
+        </div>
+    </div>
+
+    <!-- [MỚI] MODAL BẢO MẬT RIÊNG CHO VIDEO -->
+    <div id="videoSecurityModal" class="hidden fixed inset-0 z-[110] flex items-center justify-center bg-black/50 p-4" onclick="closeVideoModal(event)">
+        <div class="modal-content glass-card w-full max-w-md rounded-2xl p-6 shadow-2xl relative bg-white" onclick="event.stopPropagation()">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4 text-teal-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">Video Bài Giảng</h3>
+                <p class="text-sm text-gray-500 mt-2">Nội dung này yêu cầu mã truy cập đặc biệt (VD: vid.xxx)</p>
+            </div>
+            <div class="space-y-4">
+                <input type="password" id="videoPassInput" placeholder="Nhập mã truy cập..." class="w-full px-4 py-3 rounded-xl input-modern outline-none text-center" onkeypress="if(event.key==='Enter') unlockVideoContent()">
+                <button id="btnUnlockVideo" onclick="unlockVideoContent()" class="w-full py-3 rounded-xl font-bold text-white bg-teal-500 hover:bg-teal-600 transition-colors shadow-lg">MỞ KHÓA</button>
+            </div>
+            <button onclick="closeVideoModalDirect()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
     </div>
 
@@ -234,17 +258,86 @@
 
         <!-- THANH ĐIỀU HƯỚNG -->
         <nav class="sticky-nav mb-10 fade-in-up" style="animation-delay: 0.1s;">
+            <a href="#section-teacher" class="nav-item text-red-500 font-bold border border-red-100 bg-red-50 hover:bg-red-100">Dành cho Giáo viên</a>
+            <div class="w-px h-6 bg-gray-300 mx-2"></div>
             <a href="#section-so-dau-bai" class="nav-item">Sổ đầu bài</a>
             <a href="#section-kiem-tra" class="nav-item">Kiểm tra</a>
             <a href="#section-btvn" class="nav-item">BTVN (HSK)</a>
             <a href="#section-tuong-tac" class="nav-item">Tương tác</a>
             <a href="#section-nang-cao" class="nav-item">Nâng cao</a>
             <a href="#section-du-phong-1" class="nav-item">Mở rộng 1</a>
-            <a href="#section-du-phong-2" class="nav-item">Mở rộng 2</a>
         </nav>
 
         <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 w-full pb-24">
             
+            <!-- [MỚI] 0. KHU VỰC DÀNH RIÊNG CHO GIÁO VIÊN -->
+            <section id="section-teacher" class="max-w-4xl mx-auto mb-16 fade-in-up" style="animation-delay: 0.15s;">
+                <!-- Trạng thái 1: Bị khóa -->
+                <div id="teacher-locked" class="glass-card p-6 rounded-2xl border-l-4 border-red-500 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md bg-red-50/30">
+                    <div class="flex items-center">
+                        <div class="w-14 h-14 rounded-full bg-red-100 text-red-500 flex items-center justify-center mr-5 shrink-0 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-lg uppercase tracking-wide">Khu vực Giáo viên</h3>
+                            <p class="text-sm text-gray-500">Yêu cầu mã định danh Giáo viên (VD: gv.xxx)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 w-full md:w-auto bg-white p-1 rounded-xl border border-gray-200 shadow-inner">
+                        <input type="password" id="teacherPass" placeholder="Nhập mã (gv...)" class="outline-none bg-transparent px-3 py-2 text-sm w-full md:w-40 text-gray-700 placeholder-gray-400" onkeypress="if(event.key==='Enter') unlockTeacherContent()">
+                        <button id="btnUnlockTeacher" onclick="unlockTeacherContent()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-xs transition-colors shrink-0 shadow-md">MỞ KHÓA</button>
+                    </div>
+                </div>
+
+                <!-- Trạng thái 2: Đã mở khóa (Ẩn mặc định) -->
+                <div id="teacher-unlocked" class="hidden glass-card p-8 rounded-2xl border-t-4 border-emerald-500 bg-white shadow-xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-bl-full -mr-4 -mt-4 opacity-50 z-0"></div>
+                    
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <h3 class="font-bold text-emerald-800 text-xl flex items-center">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center mr-3 text-emerald-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </span>
+                            TÀI NGUYÊN GIẢNG DẠY
+                        </h3>
+                        <button onclick="lockTeacherContent()" class="px-3 py-1 rounded-full bg-gray-100 text-gray-500 text-xs font-medium hover:bg-red-50 hover:text-red-500 transition-colors flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                            Khóa lại
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
+                        <!-- Teacher Link 1 -->
+                        <a href="https://example.com/giao-an" target="_blank" class="block p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-emerald-50 hover:border-emerald-200 transition-all group text-center">
+                            <div class="text-3xl mb-2">📂</div>
+                            <div class="font-bold text-gray-700 text-sm group-hover:text-emerald-700">Kho Giáo Án</div>
+                        </a>
+                        <!-- Teacher Link 2 -->
+                        <a href="https://example.com/dap-an" target="_blank" class="block p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-emerald-50 hover:border-emerald-200 transition-all group text-center">
+                            <div class="text-3xl mb-2">🔑</div>
+                            <div class="font-bold text-gray-700 text-sm group-hover:text-emerald-700">Đáp Án BTVN</div>
+                        </a>
+                        <!-- Teacher Link 3 -->
+                        <a href="https://example.com/diem-so" target="_blank" class="block p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-emerald-50 hover:border-emerald-200 transition-all group text-center">
+                            <div class="text-3xl mb-2">📊</div>
+                            <div class="font-bold text-gray-700 text-sm group-hover:text-emerald-700">Quản Lý Điểm</div>
+                        </a>
+                        <!-- Teacher Link 4 -->
+                        <a href="https://example.com/admin" target="_blank" class="block p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-emerald-50 hover:border-emerald-200 transition-all group text-center">
+                            <div class="text-3xl mb-2">⚙️</div>
+                            <div class="font-bold text-gray-700 text-sm group-hover:text-emerald-700">Cài Đặt Lớp</div>
+                        </a>
+                    </div>
+                    <p class="text-center text-xs text-gray-400 mt-6 italic">Lưu ý: Vui lòng khóa lại sau khi sử dụng để bảo mật thông tin.</p>
+                </div>
+            </section>
+            
+            <hr class="border-gray-200/50 mb-12">
+
             <!-- 1. SỔ ĐẦU BÀI & KIỂM TRA -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 fade-in-up" style="animation-delay: 0.2s;">
                 <div id="section-so-dau-bai">
@@ -525,8 +618,13 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Placeholder Item 1 -->
-                    <div onclick="openModal('duphong1_item1')" class="glass-card hover-card-effect p-6 rounded-2xl flex items-center group">
+                    <!-- Placeholder Item 1: VIDEO BÀI GIẢNG (ĐÃ THÊM KHÓA BẢO MẬT) -->
+                    <div onclick="handleVideoClick()" class="glass-card hover-card-effect p-6 rounded-2xl flex items-center group cursor-pointer relative">
+                         <!-- Icon Lock -->
+                        <div class="absolute top-2 right-2 text-gray-300">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        </div>
+
                         <div class="w-12 h-12 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mr-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -602,41 +700,164 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0UuBeAYAEUcmx81DU6S1MxpJBm_VOutbkBvTGzl__bV2FvEPAtllTcBpn0gizsWEa/exec";
 
-        // --- CẤU HÌNH DỮ LIỆU BÀI TẬP (GIỮ NGUYÊN NHƯ CŨ) ---
+        // --- 1. LOGIC GIÁO VIÊN (Yêu cầu mã bắt đầu bằng "gv.") ---
+        async function unlockTeacherContent() {
+            const passInput = document.getElementById('teacherPass');
+            const pass = passInput.value.trim().toLowerCase(); // Chuyển về chữ thường để dễ so sánh
+            const btn = document.getElementById('btnUnlockTeacher');
+
+            if (!pass) {
+                alert('Vui lòng nhập mật khẩu!');
+                return;
+            }
+
+            // [LOGIC MỚI] Kiểm tra tiền tố "gv."
+            if (!pass.startsWith('gv.')) {
+                alert('Mã này không phải mã Giáo viên. Vui lòng nhập mã có định dạng gv.xxx');
+                passInput.value = '';
+                passInput.focus();
+                return;
+            }
+
+            // Hiệu ứng Loading
+            const originalText = btn.innerText;
+            btn.innerText = 'Đang kiểm tra...';
+            btn.disabled = true;
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            try {
+                // Gọi tới AppScript để kiểm tra
+                const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(pass)}`, { method: 'GET', redirect: 'follow' });
+                const textResult = await response.text();
+                
+                let data; 
+                try { data = JSON.parse(textResult); } 
+                catch (e) { throw new Error("Lỗi dữ liệu server"); }
+
+                if (data.valid === true) {
+                    document.getElementById('teacher-locked').classList.add('hidden');
+                    document.getElementById('teacher-unlocked').classList.remove('hidden');
+                    document.getElementById('teacher-unlocked').classList.add('fade-in-up');
+                    passInput.value = '';
+                } else {
+                    alert('Mã không đúng hoặc chưa được kích hoạt!');
+                    passInput.value = '';
+                    passInput.focus();
+                }
+            } catch (error) {
+                console.error("Lỗi xác thực:", error);
+                alert("Lỗi kết nối đến máy chủ xác thực. Vui lòng thử lại.");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+                btn.classList.remove('opacity-70', 'cursor-not-allowed');
+            }
+        }
+
+        function lockTeacherContent() {
+             document.getElementById('teacher-unlocked').classList.add('hidden');
+             document.getElementById('teacher-locked').classList.remove('hidden');
+             document.getElementById('teacherPass').value = '';
+        }
+
+        // --- 2. LOGIC VIDEO (Yêu cầu mã bắt đầu bằng "vid.") ---
+        function handleVideoClick() {
+            if (sessionStorage.getItem('videoUnlocked') === 'true') {
+                openModal('duphong1_item1');
+            } else {
+                document.getElementById('videoSecurityModal').classList.remove('hidden');
+                document.getElementById('videoPassInput').focus();
+            }
+        }
+
+        function closeVideoModal(event) {
+             if (event.target.id === 'videoSecurityModal') {
+                document.getElementById('videoSecurityModal').classList.add('hidden');
+             }
+        }
+        
+        function closeVideoModalDirect() {
+            document.getElementById('videoSecurityModal').classList.add('hidden');
+        }
+
+        async function unlockVideoContent() {
+            const passInput = document.getElementById('videoPassInput');
+            const pass = passInput.value.trim().toLowerCase();
+            const btn = document.getElementById('btnUnlockVideo');
+
+            if (!pass) {
+                alert('Vui lòng nhập mã truy cập video!');
+                return;
+            }
+
+            // [LOGIC MỚI] Kiểm tra tiền tố "vid."
+            if (!pass.startsWith('vid.')) {
+                alert('Mã này không phải mã Video. Vui lòng nhập mã có định dạng vid.xxx');
+                passInput.value = '';
+                passInput.focus();
+                return;
+            }
+
+            const originalText = btn.innerText;
+            btn.innerText = 'Đang xác thực...';
+            btn.disabled = true;
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            try {
+                const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(pass)}`, { method: 'GET', redirect: 'follow' });
+                const textResult = await response.text();
+                
+                let data; 
+                try { data = JSON.parse(textResult); } 
+                catch (e) { throw new Error("Lỗi dữ liệu server"); }
+
+                if (data.valid === true) {
+                    sessionStorage.setItem('videoUnlocked', 'true');
+                    document.getElementById('videoSecurityModal').classList.add('hidden');
+                    passInput.value = '';
+                    openModal('duphong1_item1');
+                } else {
+                    alert('Mã không tồn tại hoặc chưa kích hoạt!');
+                    passInput.value = '';
+                    passInput.focus();
+                }
+            } catch (error) {
+                console.error("Lỗi xác thực:", error);
+                alert("Lỗi kết nối. Vui lòng thử lại.");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+                btn.classList.remove('opacity-70', 'cursor-not-allowed');
+            }
+        }
+
+
+        // --- CẤU HÌNH DỮ LIỆU BÀI TẬP (GIỮ NGUYÊN) ---
         const resourceData = {
-            // == BTVN HSK ==
             "btvn_hsk1": { title: "Bài tập về nhà - HSK 1", subtitle: "Các bài luyện tập cơ bản cho HSK 1", links: [{ name: "Bài 1: Xin chào (你好)", url: "https://example.com/hsk1/bai1" }, { name: "Bài 2: Cảm ơn (谢谢)", url: "https://example.com/hsk1/bai2" }, { name: "Bài 3: Tên bạn là gì?", url: "https://example.com/hsk1/bai3" }] },
             "btvn_hsk2": { title: "Bài tập về nhà - HSK 2", subtitle: "Luyện tập sơ cấp 2", links: [{ name: "Bài 1: Ngày tháng năm", url: "https://example.com/hsk2/bai1" }, { name: "Bài 2: Gia đình", url: "https://example.com/hsk2/bai2" }] },
             "btvn_hsk3": { title: "Bài tập về nhà - HSK 3", subtitle: "Luyện tập trung cấp 1", links: [{ name: "Bài 1: Cuối tuần", url: "#" }, { name: "Bài 2: Sở thích", url: "#" }] },
             "btvn_hsk4": { title: "Bài tập về nhà - HSK 4", subtitle: "Luyện tập trung cấp 2", links: [{ name: "Bài 1: Công việc", url: "#" }, { name: "Bài 2: Du lịch", url: "#" }] },
             "btvn_hsk5": { title: "Bài tập về nhà - HSK 5", subtitle: "Luyện tập cao cấp 1", links: [{ name: "Bài 1: Kinh tế", url: "#" }] },
             "btvn_hsk6": { title: "Bài tập về nhà - HSK 6", subtitle: "Luyện tập cao cấp 2", links: [{ name: "Bài 1: Văn hóa", url: "#" }] },
-
-            // == [MỚI] TƯƠNG TÁC NHÓM (CHIA THEO HSK) ==
             "tuongtac_nhom_hsk1": { title: "Tương tác Nhóm - HSK 1", subtitle: "Hoạt động nhóm Sơ cấp 1", links: [{ name: "Đếm số", url: "https://hanailab.github.io/tuongtachsk1/demso" }] },
             "tuongtac_nhom_hsk2": { title: "Tương tác Nhóm - HSK 2", subtitle: "Hoạt động nhóm Sơ cấp 2", links: [{ name: "Thảo luận: Mua sắm", url: "#" }] },
             "tuongtac_nhom_hsk3": { title: "Tương tác Nhóm - HSK 3", subtitle: "Hoạt động nhóm Trung cấp 1", links: [{ name: "Dự án: Kế hoạch cuối tuần", url: "#" }] },
             "tuongtac_nhom_hsk4": { title: "Tương tác Nhóm - HSK 4", subtitle: "Hoạt động nhóm Trung cấp 2", links: [{ name: "Tranh luận: Lợi ích internet", url: "#" }] },
             "tuongtac_nhom_hsk5": { title: "Tương tác Nhóm - HSK 5", subtitle: "Hoạt động nhóm Cao cấp 1", links: [{ name: "Thuyết trình: Văn hóa doanh nghiệp", url: "#" }] },
             "tuongtac_nhom_hsk6": { title: "Tương tác Nhóm - HSK 6", subtitle: "Hoạt động nhóm Cao cấp 2", links: [{ name: "Phân tích tin tức", url: "#" }] },
-
-            // == [MỚI] TƯƠNG TÁC 1-1 (CHIA THEO HSK) ==
             "tuongtac_11_hsk1": { title: "Tương tác 1-1 - HSK 1", subtitle: "Luyện tập cá nhân Sơ cấp 1", links: [{ name: "Luyện phát âm cơ bản", url: "#" }] },
             "tuongtac_11_hsk2": { title: "Tương tác 1-1 - HSK 2", subtitle: "Luyện tập cá nhân Sơ cấp 2", links: [{ name: "Hội thoại: Đi khám bệnh", url: "#" }] },
             "tuongtac_11_hsk3": { title: "Tương tác 1-1 - HSK 3", subtitle: "Luyện tập cá nhân Trung cấp 1", links: [{ name: "Phỏng vấn xin việc giả định", url: "#" }] },
             "tuongtac_11_hsk4": { title: "Tương tác 1-1 - HSK 4", subtitle: "Luyện tập cá nhân Trung cấp 2", links: [{ name: "Sửa bài viết luận", url: "#" }] },
             "tuongtac_11_hsk5": { title: "Tương tác 1-1 - HSK 5", subtitle: "Luyện tập cá nhân Cao cấp 1", links: [{ name: "Phản biện xã hội", url: "#" }] },
             "tuongtac_11_hsk6": { title: "Tương tác 1-1 - HSK 6", subtitle: "Luyện tập cá nhân Cao cấp 2", links: [{ name: "Dịch thuật chuyên sâu", url: "#" }] },
-
-            // == NÂNG CAO ==
             "nangcao_hsk1": { title: "Nâng cao - HSK 1 Pro", subtitle: "Thử thách khó cho trình độ 1", links: [{ name: "Thử thách nghe hiểu nhanh", url: "#" }, { name: "Dịch câu phức", url: "#" }] },
             "nangcao_hsk2": { title: "Nâng cao - HSK 2 Pro", subtitle: "Thử thách khó cho trình độ 2", links: [{ name: "Bài đọc hiểu mở rộng", url: "#" }] },
             "nangcao_hsk3": { title: "Nâng cao - HSK 3 Pro", subtitle: "Thử thách khó cho trình độ 3", links: [{ name: "Bài tập tổng hợp", url: "#" }] },
             "nangcao_hsk4": { title: "Nâng cao - HSK 4 Pro", subtitle: "Thử thách khó cho trình độ 4", links: [{ name: "Bài tập tổng hợp", url: "#" }] },
             "nangcao_hsk5": { title: "Nâng cao - HSK 5 Pro", subtitle: "Thử thách khó cho trình độ 5", links: [{ name: "Bài tập tổng hợp", url: "#" }] },
             "nangcao_hsk6": { title: "Nâng cao - HSK 6 Pro", subtitle: "Thử thách khó cho trình độ 6", links: [{ name: "Bài tập tổng hợp", url: "#" }] },
-
-            // == DỰ PHÒNG ==
             "duphong1_item1": { title: "Video Bài Giảng (Dự phòng 1)", subtitle: "Danh sách video bổ trợ", links: [{ name: "Video giới thiệu", url: "#" }] },
             "duphong1_item2": { title: "Góc Văn Hóa (Dự phòng 1)", subtitle: "Tìm hiểu văn hóa Trung Hoa", links: [{ name: "Bài viết về Tết Nguyên Đán", url: "#" }] },
             "duphong1_item3": { title: "Tài liệu khác (Dự phòng 1)", subtitle: "Các file PDF và tài liệu tải về", links: [] },
@@ -644,7 +865,6 @@
             "duphong2_item2": { title: "Thông báo chung (Dự phòng 2)", subtitle: "Tin tức mới nhất", links: [] }
         };
 
-        // --- HÀM XỬ LÝ MODAL (GIỮ NGUYÊN) ---
         function openModal(key) {
             const data = resourceData[key];
             if (!data) return;
@@ -666,7 +886,6 @@
         function closeModal(event) { if (event.target.id === 'linkModal') { document.getElementById('linkModal').classList.add('hidden'); } }
         function closeModalDirect() { document.getElementById('linkModal').classList.add('hidden'); }
 
-        // --- LOGIC BẢO MẬT (GIỮ NGUYÊN) ---
         document.addEventListener('DOMContentLoaded', function() {
             const storedCode = localStorage.getItem('ddkTeacherCode'); 
             if (storedCode) { verifySession(storedCode); } else { hideLoader(); showLoginScreen(); }
