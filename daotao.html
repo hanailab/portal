@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sổ Tay Đào Tạo Nội Bộ - HANAI LAB (High Contrast)</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <script>
@@ -19,7 +16,6 @@
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                     },
                     colors: {
-                        // Tăng độ đậm cho thương hiệu để nổi bật hơn
                         brand: {
                             50: '#f0f9ff',
                             100: '#e0f2fe',
@@ -36,19 +32,18 @@
     <style>
         /* --- 1. NỀN & MÀU SẮC (High Contrast) --- */
         body {
-            /* Nền tối hơn một chút để làm nổi bật các Card trắng */
             background-color: #f1f5f9; 
             background-image: 
                 radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.08) 0px, transparent 50%),
                 radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%);
             background-attachment: fixed;
-            color: #1e293b; /* Chữ mặc định đậm hơn (Slate-800) */
+            color: #1e293b;
         }
 
-        /* Card thiết kế lại: Trắng hoàn toàn, bóng đổ rõ, viền nét */
+        /* Card thiết kế lại */
         .glass-card {
             background: #ffffff; 
-            border: 1px solid #cbd5e1; /* Viền xám rõ hơn */
+            border: 1px solid #cbd5e1;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             border-radius: 1rem;
             position: relative;
@@ -56,7 +51,7 @@
             transition: all 0.3s ease;
         }
 
-        /* Logo Watermark (Giữ nguyên) */
+        /* Logo Watermark */
         .glass-card::before {
             content: "";
             position: absolute;
@@ -81,14 +76,14 @@
 
         .glass-card:hover {
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            border-color: #3b82f6; /* Hover chuyển viền xanh */
+            border-color: #3b82f6;
         }
 
         /* --- 2. TIMELINE & FLOWCHART STYLES --- */
         .timeline-item {
             position: relative;
             padding-left: 2.5rem;
-            border-left: 2px solid #cbd5e1; /* Đường kẻ timeline đậm hơn */
+            border-left: 2px solid #cbd5e1;
             transition: border-color 0.3s;
         }
         
@@ -104,7 +99,7 @@
             height: 16px;
             border-radius: 50%;
             background: white;
-            border: 3px solid #94a3b8; /* Viền dot dày hơn */
+            border: 3px solid #94a3b8;
             transition: all 0.3s;
         }
 
@@ -119,42 +114,35 @@
             body { 
                 background: white !important; 
                 color: black !important;
-                font-size: 11pt; /* Cỡ chữ chuẩn in ấn */
+                font-size: 11pt;
             }
             
-            /* Ẩn các nút điều hướng không cần thiết */
             .no-print, nav, header button { display: none !important; }
             
-            /* Reset Card styles cho in ấn sạch sẽ */
             .glass-card {
                 box-shadow: none !important;
                 border: 1px solid #ccc !important;
                 background: white !important;
                 margin-bottom: 20px !important;
-                
-                /* QUAN TRỌNG: Ngăn ngắt trang giữa chừng card */
                 break-inside: avoid !important;
                 page-break-inside: avoid !important;
             }
 
             .glass-card::before {
-                opacity: 0.08 !important; /* Tăng nhẹ độ đậm logo khi in trắng đen */
+                opacity: 0.08 !important;
             }
             
-            /* Xử lý lỗi ngắt dòng trong Flowchart */
             .print-break-avoid {
                 break-inside: avoid !important;
                 page-break-inside: avoid !important;
-                display: block !important; /* Đảm bảo block để break-inside hoạt động tốt */
+                display: block !important;
             }
 
-            /* Đảm bảo màu nền được in ra (Background Graphics) */
             * {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
 
-            /* Khoảng cách an toàn cho trang in */
             @page {
                 margin: 1.5cm;
             }
@@ -163,7 +151,6 @@
 </head>
 <body class="antialiased">
 
-    <!-- Floating Navigation (Left) - Giữ nguyên -->
     <nav class="fixed left-4 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col gap-3 no-print">
         <a href="#section-1" class="w-10 h-10 rounded-full bg-white shadow-md border border-slate-200 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-300 transition-all tooltip-container group relative">
             <i class="fas fa-building"></i>
@@ -175,7 +162,7 @@
         </a>
         <a href="#section-3" class="w-10 h-10 rounded-full bg-white shadow-md border border-slate-200 flex items-center justify-center text-slate-400 hover:text-pink-600 hover:bg-pink-50 hover:border-pink-300 transition-all group relative">
             <i class="fas fa-headset"></i>
-            <span class="absolute left-12 bg-slate-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Kỹ năng & Flow</span>
+            <span class="absolute left-12 bg-slate-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Quy trình Tư vấn</span>
         </a>
         <a href="#section-4" class="w-10 h-10 rounded-full bg-white shadow-md border border-slate-200 flex items-center justify-center text-slate-400 hover:text-yellow-600 hover:bg-yellow-50 hover:border-yellow-300 transition-all group relative">
             <i class="fas fa-tags"></i>
@@ -187,7 +174,6 @@
         </a>
     </nav>
 
-    <!-- Print Button - Giữ nguyên -->
     <div class="fixed bottom-8 right-8 z-50 no-print">
         <button onclick="window.print()" class="group flex items-center gap-3 bg-slate-800 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-xl transition-all transform hover:scale-105 active:scale-95 border-2 border-slate-700 hover:border-blue-500">
             <i class="fas fa-print text-lg group-hover:animate-bounce"></i>
@@ -195,7 +181,6 @@
         </button>
     </div>
 
-    <!-- Hero Header -->
     <header class="relative bg-white border-b border-slate-300 sticky top-0 z-30 shadow-md">
         <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
@@ -211,10 +196,8 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="max-w-5xl mx-auto px-4 py-8 space-y-10">
 
-        <!-- MODULE 1 -->
         <section id="section-1" class="glass-card p-8 scroll-mt-24">
             <div class="card-content">
                 <div class="flex items-center gap-4 mb-6">
@@ -257,7 +240,6 @@
             </div>
         </section>
 
-        <!-- MODULE 2 -->
         <section id="section-2" class="glass-card p-8 scroll-mt-24">
             <div class="card-content">
                 <div class="flex items-center gap-4 mb-6">
@@ -270,8 +252,7 @@
                     </div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
-                    <!-- Contact Card 1 -->
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
                     <div class="relative overflow-hidden rounded-xl border border-slate-200 p-6 group hover:shadow-md transition-all bg-white print-break-avoid">
                         <div class="absolute top-0 right-0 w-20 h-20 bg-blue-50 rounded-bl-full -mr-10 -mt-10 transition-transform group-hover:scale-150 group-hover:bg-blue-100 border-l border-b border-blue-100"></div>
                         <div class="relative z-10">
@@ -283,7 +264,9 @@
                                 </div>
                             </div>
                             <div class="space-y-2 text-sm text-slate-700 font-medium">
-                                <p class="flex items-center gap-3"><i class="fas fa-envelope text-slate-400"></i> Ruandezhong175@nenu.edu.cn</p>
+                                <a href="mailto:trungkio050701@gmail.com" class="flex items-center gap-3 hover:text-blue-600 transition-colors">
+                                    <i class="fas fa-envelope text-slate-400"></i> trungkio050701@gmail.com
+                                </a>
                                 <p class="flex items-center gap-3"><i class="fas fa-phone text-slate-400"></i> 070 640 5461</p>
                             </div>
                             <div class="mt-4 pt-4 border-t border-slate-100 text-xs text-slate-500 font-medium">
@@ -292,7 +275,6 @@
                         </div>
                     </div>
 
-                    <!-- Contact Card 2 -->
                     <div class="relative overflow-hidden rounded-xl border border-slate-200 p-6 group hover:shadow-md transition-all bg-white print-break-avoid">
                         <div class="absolute top-0 right-0 w-20 h-20 bg-green-50 rounded-bl-full -mr-10 -mt-10 transition-transform group-hover:scale-150 group-hover:bg-green-100 border-l border-b border-green-100"></div>
                         <div class="relative z-10">
@@ -304,7 +286,9 @@
                                 </div>
                             </div>
                             <div class="space-y-2 text-sm text-slate-700 font-medium">
-                                <p class="flex items-center gap-3"><i class="fas fa-envelope text-slate-400"></i> dangkhoachinese.work@gmail.com</p>
+                                <a href="mailto:dangkhoachinese.work@gmail.com" class="flex items-center gap-3 hover:text-green-600 transition-colors">
+                                    <i class="fas fa-envelope text-slate-400"></i> dangkhoachinese.work@gmail.com
+                                </a>
                                 <p class="flex items-center gap-3"><i class="fas fa-phone text-slate-400"></i> 093 806 5101</p>
                             </div>
                             <div class="mt-4 pt-4 border-t border-slate-100 text-xs text-slate-500 font-medium">
@@ -313,154 +297,164 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="text-center bg-slate-50 rounded-lg p-3 border border-slate-200">
+                    <p class="text-sm text-slate-700 font-medium italic">
+                        <i class="fas fa-smile-beam text-yellow-500 text-lg mr-2"></i>
+                        Nếu có bất kỳ câu hỏi nào, các bạn cứ thoải mái và vui vẻ liên hệ với 2 thầy nhé!
+                    </p>
+                </div>
+
             </div>
         </section>
 
-        <!-- MODULE 3: CONSULTING SKILLS & FLOW -->
         <section id="section-3" class="glass-card p-8 scroll-mt-24">
             <div class="card-content">
-                <div class="flex items-center gap-4 mb-6">
+                <div class="flex items-center gap-4 mb-8">
                     <span class="p-3 bg-pink-100 text-pink-700 rounded-xl shadow-sm border border-pink-200">
                         <i class="fas fa-comments text-2xl"></i>
                     </span>
                     <div>
-                        <h2 class="text-2xl font-bold text-slate-900">3. Kỹ Năng Tư Vấn</h2>
-                        <p class="text-slate-600 text-sm font-medium">Nghệ thuật thấu hiểu & Flow tư vấn chuẩn</p>
+                        <h2 class="text-2xl font-bold text-slate-900">3. Quy Trình Tư Vấn (Flowchart)</h2>
+                        <p class="text-slate-600 text-sm font-medium">Kịch bản chi tiết dựa trên nền tảng học viên</p>
                     </div>
                 </div>
 
-                <!-- 4 Customer Groups -->
-                <div class="grid lg:grid-cols-4 gap-4 mb-8">
-                    <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-pink-300 transition-colors print-break-avoid">
-                        <div class="text-pink-600 mb-2"><i class="fas fa-seedling text-xl"></i></div>
-                        <h4 class="font-bold text-slate-900 text-sm mb-1">Mới học / Mất gốc</h4>
-                        <p class="text-xs text-slate-600 font-medium">Cần sự ân cần, an toàn. Tránh thuật ngữ khó.</p>
+                <div class="flex flex-col items-center mb-8 relative">
+                    <div class="bg-slate-800 text-white px-8 py-3 rounded-full font-bold shadow-lg border-2 border-slate-600 z-10">
+                        <i class="fas fa-rocket mr-2"></i>TIẾP NHẬN TƯ VẤN
                     </div>
-                    <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-blue-300 transition-colors print-break-avoid">
-                        <div class="text-blue-600 mb-2"><i class="fas fa-graduation-cap text-xl"></i></div>
-                        <h4 class="font-bold text-slate-900 text-sm mb-1">Thi chứng chỉ</h4>
-                        <p class="text-xs text-slate-600 font-medium">Cần lộ trình, cam kết đầu ra, giáo viên giỏi.</p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-orange-300 transition-colors print-break-avoid">
-                        <div class="text-orange-600 mb-2"><i class="fas fa-briefcase text-xl"></i></div>
-                        <h4 class="font-bold text-slate-900 text-sm mb-1">Người đi làm</h4>
-                        <p class="text-xs text-slate-600 font-medium">Cần thực tế, nhanh gọn, ứng dụng ngay.</p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-purple-300 transition-colors print-break-avoid">
-                        <div class="text-purple-600 mb-2"><i class="fas fa-child text-xl"></i></div>
-                        <h4 class="font-bold text-slate-900 text-sm mb-1">Phụ huynh</h4>
-                        <p class="text-xs text-slate-600 font-medium">Cần sự an tâm, báo cáo kết quả định kỳ.</p>
-                    </div>
-                </div>
-
-                <!-- FLOW DIAGRAM SECTION -->
-                <h3 class="text-lg font-bold text-slate-900 mb-6 border-l-4 border-indigo-600 pl-3">Sơ Đồ Quy Trình Tư Vấn (Flowchart)</h3>
-                
-                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="h-8 w-0.5 bg-slate-300"></div>
                     
-                    <!-- FLOW 1: ĐÃ HỌC QUA -->
-                    <div class="bg-blue-50/70 rounded-2xl p-6 border border-blue-200 print-break-avoid">
-                        <div class="flex items-center gap-2 mb-6 justify-center">
-                            <span class="bg-blue-700 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-sm">Đối tượng 1</span>
-                            <h4 class="font-bold text-blue-900">ĐÃ HỌC QUA</h4>
+                    <div class="bg-white border-2 border-slate-300 p-6 rounded-xl shadow-md text-center max-w-md z-10 relative">
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-white px-2">
+                            <i class="fas fa-question-circle text-2xl text-slate-400"></i>
                         </div>
-                        
-                        <div class="space-y-6 relative pl-2">
-                            <!-- Connecting Line Vertical -->
-                            <div class="absolute left-[2.25rem] top-4 bottom-4 w-1 bg-blue-200 -z-10"></div>
-
-                            <!-- Step 1 -->
-                            <div class="flex items-start gap-4 print-break-avoid">
-                                <div class="w-12 h-12 rounded-full bg-white border-2 border-blue-600 flex items-center justify-center shadow-md shrink-0 z-10 text-blue-700 font-extrabold text-lg">1</div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-100 flex-1">
-                                    <h5 class="font-bold text-xs text-blue-800 uppercase mb-1">Khai Thác</h5>
-                                    <p class="text-xs text-slate-700 font-medium">Hỏi kỹ giáo trình cũ, thời gian đã học & định hướng.</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Step 2 -->
-                            <div class="flex items-start gap-4 print-break-avoid">
-                                <div class="w-12 h-12 rounded-full bg-white border-2 border-blue-600 flex items-center justify-center shadow-md shrink-0 z-10 text-blue-700 font-extrabold text-lg">2</div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-100 flex-1">
-                                    <h5 class="font-bold text-xs text-blue-800 uppercase mb-1">Test Online</h5>
-                                    <p class="text-xs text-slate-700 font-medium">Gửi bài test nhanh (Ngữ pháp/Từ vựng) để lọc trình độ.</p>
-                                </div>
-                            </div>
-
-                            <!-- Step 3 -->
-                            <div class="flex items-start gap-4 print-break-avoid">
-                                <div class="w-12 h-12 rounded-full bg-white border-2 border-blue-600 flex items-center justify-center shadow-md shrink-0 z-10 text-blue-700 font-extrabold text-lg">3</div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-100 flex-1">
-                                    <h5 class="font-bold text-xs text-blue-800 uppercase mb-1">Phỏng vấn 1:1</h5>
-                                    <p class="text-xs text-slate-700 font-medium">GV Check phản xạ & Chỉ ra "lỗ hổng" kiến thức.</p>
-                                </div>
-                            </div>
-
-                            <!-- Step 4 -->
-                            <div class="flex items-start gap-4 print-break-avoid">
-                                <div class="w-12 h-12 rounded-full bg-blue-700 border-2 border-blue-700 flex items-center justify-center shadow-md shrink-0 z-10 text-white font-bold text-lg"><i class="fas fa-check"></i></div>
-                                <div class="bg-blue-700 p-4 rounded-lg shadow-md border border-blue-700 flex-1 text-white">
-                                    <h5 class="font-bold text-xs uppercase mb-1">Chốt & Hậu mãi</h5>
-                                    <p class="text-xs text-blue-100 font-medium">Đề xuất lộ trình lấp lỗ hổng & Mời học thử lớp phù hợp.</p>
-                                </div>
-                            </div>
+                        <h3 class="font-bold text-slate-900 mt-2">Học viên đã từng học Tiếng Trung chưa?</h3>
+                    </div>
+                    
+                    <div class="h-8 w-0.5 bg-slate-300"></div>
+                    <div class="w-[50%] h-0.5 bg-slate-300"></div> <div class="w-[50%] flex justify-between">
+                        <div class="h-8 w-0.5 bg-slate-300 relative">
+                            <div class="absolute top-2 -left-6 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">CÓ</div>
+                        </div>
+                        <div class="h-8 w-0.5 bg-slate-300 relative">
+                            <div class="absolute top-2 -right-8 bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">CHƯA</div>
                         </div>
                     </div>
-
-                    <!-- FLOW 2: CHƯA HỌC QUA -->
-                    <div class="bg-green-50/70 rounded-2xl p-6 border border-green-200 print-break-avoid">
-                        <div class="flex items-center gap-2 mb-6 justify-center">
-                            <span class="bg-green-700 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-sm">Đối tượng 2</span>
-                            <h4 class="font-bold text-green-900">CHƯA HỌC (SỐ 0)</h4>
-                        </div>
-                        
-                        <div class="space-y-6 relative pl-2">
-                            <!-- Connecting Line Vertical -->
-                            <div class="absolute left-[2.25rem] top-4 bottom-4 w-1 bg-green-200 -z-10"></div>
-
-                            <!-- Step 1 -->
-                            <div class="flex items-start gap-4 print-break-avoid">
-                                <div class="w-12 h-12 rounded-full bg-white border-2 border-green-600 flex items-center justify-center shadow-md shrink-0 z-10 text-green-700 font-extrabold text-lg">1</div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-green-100 flex-1">
-                                    <h5 class="font-bold text-xs text-green-800 uppercase mb-1">Khai Thác Mục Tiêu</h5>
-                                    <p class="text-xs text-slate-700 font-medium">Du học? Việc làm? Hay sở thích cá nhân?</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Step 2 -->
-                            <div class="flex items-start gap-4 print-break-avoid">
-                                <div class="w-12 h-12 rounded-full bg-white border-2 border-green-600 flex items-center justify-center shadow-md shrink-0 z-10 text-green-700 font-extrabold text-lg">2</div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-green-100 flex-1">
-                                    <h5 class="font-bold text-xs text-green-800 uppercase mb-1">Tư Vấn Lộ Trình</h5>
-                                    <p class="text-xs text-slate-700 font-medium">Tư vấn từ số 0 & Giải thích phương pháp độc quyền HANAI.</p>
-                                </div>
-                            </div>
-
-                            <!-- Step 3 -->
-                            <div class="flex items-start gap-4 print-break-avoid">
-                                <div class="w-12 h-12 rounded-full bg-white border-2 border-green-600 flex items-center justify-center shadow-md shrink-0 z-10 text-green-700 font-extrabold text-lg">3</div>
-                                <div class="bg-white p-4 rounded-lg shadow-sm border border-green-100 flex-1">
-                                    <h5 class="font-bold text-xs text-green-800 uppercase mb-1">Trải Nghiệm</h5>
-                                    <p class="text-xs text-slate-700 font-medium">Sắp xếp một buổi học trải nghiệm (nếu có thể).</p>
-                                </div>
-                            </div>
-
-                            <!-- Step 4 -->
-                            <div class="flex items-start gap-4 print-break-avoid">
-                                <div class="w-12 h-12 rounded-full bg-green-700 border-2 border-green-700 flex items-center justify-center shadow-md shrink-0 z-10 text-white font-bold text-lg"><i class="fas fa-check"></i></div>
-                                <div class="bg-green-700 p-4 rounded-lg shadow-md border border-green-700 flex-1 text-white">
-                                    <h5 class="font-bold text-xs uppercase mb-1">Chốt Combo</h5>
-                                    <p class="text-xs text-green-100 font-medium">Chốt gói học & Tặng "Welcome Kit" (Ebook/Tài liệu).</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
+
+                <div class="grid lg:grid-cols-2 gap-8 relative">
+                    
+                    <div class="bg-blue-50/50 rounded-2xl p-6 border border-blue-200 relative print-break-avoid">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 -mt-3 bg-blue-100 text-blue-800 text-xs font-bold px-4 py-1 rounded-full border border-blue-200 shadow-sm uppercase tracking-wide">
+                            Nhánh 1: Đã có nền tảng
+                        </div>
+
+                        <div class="space-y-6 mt-4 relative">
+                            <div class="absolute left-8 top-4 bottom-4 w-0.5 bg-blue-200 -z-10"></div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-16 h-16 rounded-full bg-white border-2 border-blue-500 flex items-center justify-center shadow-sm shrink-0 font-bold text-blue-600 text-xl">1</div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 flex-1">
+                                    <h5 class="font-bold text-blue-900 text-sm uppercase mb-1">Khai thác lịch sử</h5>
+                                    <p class="text-xs text-slate-600 font-medium">Hỏi kỹ: Giáo trình cũ? Thời gian đã học? Mục tiêu hiện tại?</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-16 h-16 rounded-full bg-white border-2 border-blue-500 flex items-center justify-center shadow-sm shrink-0 font-bold text-blue-600 text-xl">2</div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 flex-1">
+                                    <h5 class="font-bold text-blue-900 text-sm uppercase mb-1">Test Online</h5>
+                                    <p class="text-xs text-slate-600 font-medium">Gửi bài test năng lực đầu vào.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-center my-2">
+                                <div class="bg-indigo-50 border border-indigo-200 text-indigo-800 px-3 py-1 rounded text-xs font-bold flex items-center gap-2 shadow-sm">
+                                    <i class="fas fa-user-edit"></i> GV Chuyên Môn chấm bài
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-16 h-16 rounded-full bg-white border-2 border-blue-500 flex items-center justify-center shadow-sm shrink-0 font-bold text-blue-600 text-xl">3</div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 flex-1 relative overflow-visible">
+                                    <h5 class="font-bold text-blue-900 text-sm uppercase mb-1">Nhận kết quả</h5>
+                                    <p class="text-xs text-slate-600 font-medium">Nắm bắt lỗi sai & Trình độ thực tế.</p>
+                                    
+                                    <div class="mt-3 p-2 bg-red-50 border border-red-200 rounded text-[11px] text-red-700 font-bold flex items-center gap-2">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <span>Nếu Mất Gốc ➔ Chuyển sang Quy trình số 0 (Nhánh phải)</span>
+                                        <i class="fas fa-arrow-right animate-pulse"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-16 h-16 rounded-full bg-white border-2 border-blue-500 flex items-center justify-center shadow-sm shrink-0 font-bold text-blue-600 text-xl">4</div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-blue-100 flex-1">
+                                    <h5 class="font-bold text-blue-900 text-sm uppercase mb-1">Phỏng vấn 1:1</h5>
+                                    <p class="text-xs text-slate-600 font-medium">Phân tích sâu lỗ hổng kiến thức & Đề xuất giải pháp.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50/50 rounded-2xl p-6 border border-green-200 relative print-break-avoid">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 -mt-3 bg-green-100 text-green-800 text-xs font-bold px-4 py-1 rounded-full border border-green-200 shadow-sm uppercase tracking-wide">
+                            Nhánh 2: Người mới bắt đầu
+                        </div>
+
+                        <div class="space-y-6 mt-4 relative">
+                            <div class="absolute left-8 top-4 bottom-4 w-0.5 bg-green-200 -z-10"></div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-16 h-16 rounded-full bg-white border-2 border-green-500 flex items-center justify-center shadow-sm shrink-0 font-bold text-green-600 text-xl">1</div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100 flex-1">
+                                    <h5 class="font-bold text-green-900 text-sm uppercase mb-1">Khai thác mục tiêu</h5>
+                                    <p class="text-xs text-slate-600 font-medium">Du học? Việc làm? Hay sở thích cá nhân?</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-16 h-16 rounded-full bg-white border-2 border-green-500 flex items-center justify-center shadow-sm shrink-0 font-bold text-green-600 text-xl">2</div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100 flex-1 border-l-4 border-l-green-500">
+                                    <h5 class="font-bold text-green-900 text-sm uppercase mb-1">Tư vấn lộ trình 0-HSK</h5>
+                                    <p class="text-xs text-slate-600 font-medium">Giải thích phương pháp HANAI & Lộ trình chuẩn.</p>
+                                    <div class="mt-2 text-[10px] text-slate-500 italic bg-slate-50 p-1 rounded">
+                                        *Điểm tiếp nhận học viên mất gốc từ nhánh trái
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-16 h-16 rounded-full bg-white border-2 border-green-500 flex items-center justify-center shadow-sm shrink-0 font-bold text-green-600 text-xl">3</div>
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100 flex-1">
+                                    <h5 class="font-bold text-green-900 text-sm uppercase mb-1">Trải nghiệm</h5>
+                                    <p class="text-xs text-slate-600 font-medium">Học thử Demo Class (Nếu cần thiết).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center mt-8">
+                    <div class="w-[50%] flex justify-between">
+                        <div class="h-8 w-0.5 bg-blue-200"></div>
+                        <div class="h-8 w-0.5 bg-green-200"></div>
+                    </div>
+                    <div class="w-[50%] h-0.5 bg-slate-300"></div>
+                    <div class="h-8 w-0.5 bg-slate-300"></div>
+                    
+                    <div class="bg-slate-900 text-white px-10 py-4 rounded-xl font-bold shadow-xl border-2 border-slate-700 text-center w-full max-w-sm hover:scale-105 transition-transform">
+                        <div class="text-xl uppercase mb-1">🎯 CHỐT KHÓA HỌC</div>
+                        <div class="text-xs text-slate-300 font-normal">Đăng ký lộ trình & Chăm sóc hậu mãi</div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
-        <!-- MODULE 4: TUITION & PRODUCTS -->
         <section id="section-4" class="glass-card p-8 scroll-mt-24">
             <div class="card-content">
                 <div class="flex items-center gap-4 mb-6">
@@ -547,7 +541,6 @@
             </div>
         </section>
 
-        <!-- MODULE 5: SYLLABUS -->
         <section id="section-5" class="glass-card p-8 scroll-mt-24 page-break">
             <div class="card-content">
                 <div class="flex items-center gap-4 mb-8">
@@ -560,10 +553,8 @@
                     </div>
                 </div>
 
-                <!-- Timeline Container -->
                 <div class="space-y-0 relative ml-2 md:ml-4">
                     
-                    <!-- Timeline Item 1-2 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div class="group cursor-pointer">
@@ -579,7 +570,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 3 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -589,7 +579,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 4 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -599,7 +588,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 5 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -609,7 +597,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 6 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -619,7 +606,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 7 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -629,7 +615,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 8 (REVIEW) -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot bg-orange-500 border-orange-600"></div>
                         <div class="p-4 bg-orange-50 rounded-xl border border-orange-200 shadow-sm">
@@ -642,7 +627,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 9 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -652,7 +636,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 10 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -662,7 +645,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 11 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -672,7 +654,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 12 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -682,7 +663,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 13 (REVIEW) -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot bg-orange-500 border-orange-600"></div>
                         <div class="p-4 bg-orange-50 rounded-xl border border-orange-200 shadow-sm">
@@ -695,7 +675,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 14 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -705,7 +684,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 15 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -715,7 +693,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 16 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -725,7 +702,6 @@
                         </div>
                     </div>
 
-                    <!-- Timeline Item 17 -->
                     <div class="timeline-item pb-8 print-break-avoid">
                         <div class="timeline-dot"></div>
                         <div>
@@ -735,7 +711,6 @@
                         </div>
                     </div>
 
-                    <!-- FINAL EXAM -->
                     <div class="timeline-item print-break-avoid">
                         <div class="timeline-dot bg-red-600 border-red-700"></div>
                         <div class="p-6 bg-red-50 rounded-xl border border-red-200 text-center shadow-sm">
@@ -749,12 +724,18 @@
             </div>
         </section>
 
-        <!-- Footer -->
         <footer class="text-center py-10 text-slate-500 text-sm border-t border-slate-300">
-            <p class="mb-2 font-medium">© 2024 HANAI LAB - Internal Use Only</p>
+            <p class="mb-2 font-medium">© 2026 HANAI LAB - Internal Use Only</p>
             <div class="flex justify-center gap-4 text-lg text-slate-400">
-                <i class="fab fa-facebook hover:text-blue-600 cursor-pointer transition-colors"></i>
-                <i class="fas fa-globe hover:text-blue-500 cursor-pointer transition-colors"></i>
+                <a href="https://www.facebook.com/HanAILab" target="_blank" class="hover:text-blue-600 transition-colors tooltip-container group relative">
+                    <i class="fab fa-facebook"></i>
+                    <span class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Facebook</span>
+                </a>
+                
+                <a href="https://hanailab.id.vn" target="_blank" class="hover:text-blue-500 transition-colors tooltip-container group relative">
+                    <i class="fas fa-globe"></i>
+                    <span class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Website</span>
+                </a>
             </div>
         </footer>
 
