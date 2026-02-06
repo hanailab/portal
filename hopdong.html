@@ -27,11 +27,11 @@
             box-shadow: 0 0 15px rgba(0,0,0,0.1);
             color: #111827;
             font-size: 11pt;
-            line-height: 1.4; /* Giãn dòng vừa phải để tiết kiệm không gian */
+            line-height: 1.4; 
             position: relative;
         }
         
-        /* Chế độ chỉnh sửa trực tiếp */
+        /* Chế độ chỉnh sửa trực tiếp cho các trường thông tin nhỏ */
         .editable {
             border-bottom: 1px dashed transparent;
             transition: all 0.2s;
@@ -46,10 +46,20 @@
             color: #1e40af;
         }
 
+        /* Chế độ chỉnh sửa toàn bộ khu vực điều khoản */
+        .editable-area {
+            outline: 2px dashed #2563eb;
+            background-color: #f0f9ff; /* Màu nền xanh rất nhạt để nhận biết */
+            padding: 10px;
+            margin: -10px; /* Bù lại padding để không vỡ layout */
+            border-radius: 4px;
+            cursor: text;
+        }
+
         /* Class hỗ trợ Grid layout cho thông tin */
         .info-grid {
             display: grid;
-            grid-template-columns: 150px 1fr; /* Cột trái cố định 150px, cột phải tự động */
+            grid-template-columns: 150px 1fr;
             gap: 4px 12px;
             align-items: baseline;
         }
@@ -68,6 +78,7 @@
         @media print {
             .editable:empty { display: none; }
             .editable { border-bottom: none !important; }
+            .editable-area { outline: none !important; background-color: transparent !important; padding: 0 !important; margin: 0 !important; }
         }
     </style>
 </head>
@@ -94,7 +105,7 @@
         <aside class="w-full md:w-1/3 lg:w-1/4 bg-white border-r border-gray-200 overflow-y-auto p-6 z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
             
             <div class="mb-6 p-3 bg-yellow-50 border border-yellow-200 rounded-md text-sm text-yellow-800">
-                <strong>Mẹo mới:</strong> Bạn có thể nhấp chuột trực tiếp vào nội dung hợp đồng bên phải để chỉnh sửa thông tin của Bên A và Bên B.
+                <strong>Mẹo mới:</strong> Nhấp trực tiếp vào tên, địa chỉ trên hợp đồng để sửa nhanh.
             </div>
 
             <h2 class="text-lg font-semibold text-gray-800 mb-1">Nhập nhanh Bên B</h2>
@@ -143,11 +154,22 @@
                     <p id="error-back" class="text-xs text-red-500 hidden">File quá lớn (>500KB). Vui lòng chọn ảnh nhỏ hơn.</p>
                 </div>
 
+                <!-- Nút mở khóa chỉnh sửa điều khoản -->
+                <div class="mt-6 pt-4 border-t border-gray-200">
+                    <button onclick="unlockTerms()" class="w-full py-2 px-4 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 border border-transparent text-gray-700 font-medium rounded-md text-sm transition-all flex items-center justify-center gap-2 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 group-hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Sửa nội dung điều khoản
+                    </button>
+                    <p class="text-[10px] text-gray-400 mt-1 text-center">Cần mật khẩu quản trị để thực hiện</p>
+                </div>
+
             </form>
         </aside>
 
         <!-- Right Side: Preview Area -->
-        <main class="flex-1 bg-gray-100 overflow-y-auto p-4 md:p-8 flex justify-center">
+        <main class="flex-1 bg-gray-100 overflow-y-auto p-4 md:p-8 flex justify-center scroll-smooth">
             
             <!-- A4 PAGE CONTAINER -->
             <div id="contract-content" class="a4-paper">
@@ -214,8 +236,8 @@
                     </div>
                 </div>
 
-                <!-- Nội dung điều khoản -->
-                <div class="text-justify space-y-2 text-[10.5pt]">
+                <!-- Nội dung điều khoản (CÓ ID ĐỂ XỬ LÝ SỬA ĐỔI) -->
+                <div id="contract-body" class="text-justify space-y-2 text-[10.5pt]">
                     <p class="mb-1">Hai bên thống nhất ký kết hợp đồng cộng tác với các điều khoản sau:</p>
 
                     <div>
@@ -234,14 +256,29 @@
 
                     <div>
                         <strong class="block text-sm uppercase text-gray-800">ĐIỀU 3: CHẾ ĐỘ HOA HỒNG VÀ THƯỞNG</strong>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li><strong>Hoa hồng:</strong> Tính khi học viên hoàn tất đóng 100% học phí.</li>
-                            <li><strong>Thưởng doanh số:</strong> Đạt từ 10 học viên/tháng thưởng <strong>500.000 VNĐ</strong> (cộng dồn). <strong>Số liệu thưởng sẽ được chốt và tổng kết vào ngày cuối cùng của tháng thứ 3 trong mỗi Quý.</strong></li>
-                            <li><strong>Thanh toán:</strong> Sau khi chốt sổ quý, Bên B gửi báo cáo đối soát cho Cô Hạ để nhận giải ngân.</li>
-                        </ul>
+                        <div class="pl-2 space-y-2">
+                            <p><strong>1. Thời gian thanh toán hoa hồng:</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Hoa hồng được tổng kết và thanh toán vào <strong>ngày 05 hàng tháng</strong>.</li>
+                                <li>Nếu ngày 05 trùng vào Thứ 7, Chủ nhật hoặc ngày Lễ, lịch thanh toán sẽ được thực hiện <strong>sớm hơn</strong> theo lịch làm việc của bộ phận Kế toán.</li>
+                            </ul>
+                            
+                            <p><strong>2. Cơ chế tính hoa hồng (Lũy tiến):</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Từ học viên thứ 01 đến thứ 05: Hưởng <strong>5%</strong> trên doanh thu thực thu của 1 học viên/1 khóa học.</li>
+                                <li>Từ học viên thứ 06 đến thứ 10: Hưởng <strong>7%</strong> trên doanh thu thực thu của 1 học viên/1 khóa học.</li>
+                                <li>Từ học viên thứ 11 trở lên: Hưởng <strong>10%</strong> trên doanh thu thực thu của 1 học viên/1 khóa học.</li>
+                                <li class="italic text-gray-600">Lưu ý: Cách tính là lũy tiến từng phần. Ví dụ: Nếu tuyển được 6 bạn, thì 5 bạn đầu tính 5%, bạn thứ 6 tính 7% (chứ không tính toàn bộ 6 bạn là 7%).</li>
+                            </ul>
+
+                            <p><strong>3. Thưởng doanh số (Trả theo Quý):</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Đạt từ 10 học viên/tháng: Thưởng nóng <strong>500.000 VNĐ</strong> (cộng dồn).</li>
+                                <li>Khoản thưởng này sẽ được chốt và thanh toán vào <strong>ngày cuối cùng của tháng thứ 3 trong mỗi Quý</strong>.</li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <!-- ĐÃ THÊM LẠI ĐIỀU KHOẢN SỞ HỮU TRÍ TUỆ -->
                     <div>
                         <strong class="block text-sm uppercase text-gray-800">ĐIỀU 4: BẢO MẬT VÀ SỞ HỮU TRÍ TUỆ</strong>
                         <ul class="list-disc pl-5 space-y-1">
@@ -278,7 +315,6 @@
                 <div class="border-t-2 border-dashed border-gray-300 pt-2 break-inside-avoid">
                     <h3 class="text-xs font-bold uppercase mb-2 text-gray-600">HỒ SƠ ĐÍNH KÈM (CCCD)</h3>
                     <div class="grid grid-cols-2 gap-4">
-                        <!-- Thêm src="data:image/png..." để tránh lỗi html2canvas khi img rỗng -->
                         <div class="border border-gray-200 rounded-lg p-1 h-40 flex items-center justify-center bg-gray-50 relative">
                             <img id="img-front-preview" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" class="max-h-full max-w-full object-contain hidden" alt="Mặt trước CCCD">
                             <span id="placeholder-front" class="text-xs text-gray-400 text-center">Mặt trước CCCD<br>(Chưa tải lên)</span>
@@ -336,14 +372,11 @@
 
                 if (!file) return;
 
-                // Kiểm tra dung lượng (500KB = 500 * 1024 bytes)
                 if (file.size > 500 * 1024) {
                     errorEl.classList.remove('hidden');
                     this.value = ''; // Reset input
                     imgEl.classList.add('hidden');
                     placeholderEl.classList.remove('hidden');
-                    
-                    // Reset to default transparent image if error
                     imgEl.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
                     return;
                 }
@@ -363,12 +396,39 @@
         handleImageUpload('file-front', 'img-front-preview', 'placeholder-front', 'error-front');
         handleImageUpload('file-back', 'img-back-preview', 'placeholder-back', 'error-back');
 
+        // Hàm mở khóa điều khoản
+        function unlockTerms() {
+            const pass = prompt("Nhập mật khẩu quản trị để chỉnh sửa điều khoản:");
+            if (pass === "Khongcomatkhau@") {
+                const termsBody = document.getElementById('contract-body');
+                termsBody.contentEditable = "true";
+                termsBody.classList.add('editable-area');
+                
+                // Cuộn xuống vùng chỉnh sửa
+                termsBody.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                termsBody.focus();
+                
+                alert("Đã mở khóa! Bạn có thể chỉnh sửa nội dung điều khoản ngay bây giờ.");
+            } else if (pass !== null && pass !== "") {
+                alert("Mật khẩu không đúng! Vui lòng thử lại.");
+            }
+        }
+
         // Tạo PDF
         function generatePDF() {
             const element = document.getElementById('contract-content');
             const btn = document.getElementById('btn-export');
             const originalText = btn.innerHTML;
             const name = document.getElementById('input-name').value || 'CTV';
+
+            // Dọn dẹp giao diện trước khi chụp (ẩn outline edit)
+            const termsBody = document.getElementById('contract-body');
+            const wasEditable = termsBody.isContentEditable;
+            
+            if (wasEditable) {
+                termsBody.contentEditable = "false";
+                termsBody.classList.remove('editable-area');
+            }
 
             btn.innerHTML = '<span>Đang tạo file...</span>';
             btn.disabled = true;
@@ -382,13 +442,19 @@
                     scale: 2, 
                     useCORS: true, 
                     logging: false,
-                    scrollY: 0, // Fix issue with scrolled content
-                    allowTaint: true // Allow images to be rendered
+                    scrollY: 0, 
+                    allowTaint: true 
                 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
+                // Khôi phục trạng thái edit nếu đang bật
+                if (wasEditable) {
+                    termsBody.contentEditable = "true";
+                    termsBody.classList.add('editable-area');
+                }
+                
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.disabled = false;
@@ -397,6 +463,11 @@
             }).catch(err => {
                 console.error("PDF Generation Error:", err);
                 alert("Có lỗi khi tạo PDF. Hãy thử tải lại trang hoặc kiểm tra hình ảnh.");
+                // Khôi phục trạng thái edit nếu lỗi
+                if (wasEditable) {
+                    termsBody.contentEditable = "true";
+                    termsBody.classList.add('editable-area');
+                }
                 btn.innerHTML = originalText;
                 btn.disabled = false;
                 btn.classList.remove('opacity-75', 'cursor-not-allowed');
