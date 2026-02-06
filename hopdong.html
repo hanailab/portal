@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Hợp Đồng - HANAI LAB</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Thư viện tạo PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Font chữ -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        /* Style giấy A4 */
+        .a4-paper {
+            font-family: 'Noto Serif', serif;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            color: #111827;
+            font-size: 11pt;
+            line-height: 1.4; /* Giãn dòng vừa phải để tiết kiệm không gian */
+            position: relative;
+        }
+        
+        /* Chế độ chỉnh sửa trực tiếp */
+        .editable {
+            border-bottom: 1px dashed transparent;
+            transition: all 0.2s;
+            cursor: text;
+            min-width: 20px;
+            display: inline-block;
+        }
+        .editable:hover, .editable:focus {
+            background-color: #eff6ff;
+            border-bottom: 1px dashed #2563eb;
+            outline: none;
+            color: #1e40af;
+        }
+
+        /* Class hỗ trợ Grid layout cho thông tin */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr; /* Cột trái cố định 150px, cột phải tự động */
+            gap: 4px 12px;
+            align-items: baseline;
+        }
+
+        /* Ẩn scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        @media screen and (max-width: 1024px) {
+            .a4-paper { width: 100%; padding: 15mm; }
+        }
+
+        /* Khi in hoặc xuất PDF */
+        @media print {
+            .editable:empty { display: none; }
+            .editable { border-bottom: none !important; }
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-6 z-10 shadow-sm shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">H</div>
+            <h1 class="text-xl font-bold text-gray-800">HANAI LAB <span class="text-sm font-normal text-gray-500">| Contract Generator</span></h1>
+        </div>
+        <button onclick="generatePDF()" id="btn-export" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-5 rounded-lg flex items-center gap-2 transition-all shadow-md hover:shadow-lg active:scale-95">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span>Xuất PDF & Tải Về</span>
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- Left Sidebar: Tools -->
+        <aside class="w-full md:w-1/3 lg:w-1/4 bg-white border-r border-gray-200 overflow-y-auto p-6 z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+            
+            <div class="mb-6 p-3 bg-yellow-50 border border-yellow-200 rounded-md text-sm text-yellow-800">
+                <strong>Mẹo mới:</strong> Bạn có thể nhấp chuột trực tiếp vào nội dung hợp đồng bên phải để chỉnh sửa thông tin của Bên A và Bên B.
+            </div>
+
+            <h2 class="text-lg font-semibold text-gray-800 mb-1">Nhập nhanh Bên B</h2>
+            <p class="text-xs text-gray-500 mb-6">Điền vào đây hoặc sửa trực tiếp trên giấy.</p>
+
+            <form class="space-y-4" onsubmit="return false;">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Họ và tên</label>
+                    <input type="text" id="input-name" placeholder="Nguyễn Văn A" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Số CCCD</label>
+                        <input type="text" id="input-cccd" placeholder="001..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Ngày cấp</label>
+                        <input type="text" id="input-date-issue" placeholder="dd/mm/yyyy" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nơi cấp</label>
+                    <input type="text" id="input-place-issue" placeholder="Cục CS QLHC..." class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Địa chỉ thường trú</label>
+                    <textarea id="input-address" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm"></textarea>
+                </div>
+
+                <hr class="border-gray-200 my-4">
+                
+                <h3 class="text-sm font-semibold text-gray-800 mb-3">Hình ảnh CCCD (Bắt buộc)</h3>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mặt trước (Max 500KB)</label>
+                    <input type="file" id="file-front" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 mb-2">
+                    <p id="error-front" class="text-xs text-red-500 hidden">File quá lớn (>500KB). Vui lòng chọn ảnh nhỏ hơn.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mặt sau (Max 500KB)</label>
+                    <input type="file" id="file-back" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <p id="error-back" class="text-xs text-red-500 hidden">File quá lớn (>500KB). Vui lòng chọn ảnh nhỏ hơn.</p>
+                </div>
+
+            </form>
+        </aside>
+
+        <!-- Right Side: Preview Area -->
+        <main class="flex-1 bg-gray-100 overflow-y-auto p-4 md:p-8 flex justify-center">
+            
+            <!-- A4 PAGE CONTAINER -->
+            <div id="contract-content" class="a4-paper">
+                
+                <!-- Quốc hiệu tiêu ngữ -->
+                <div class="text-center mb-6">
+                    <p class="font-bold uppercase text-sm">Cộng hòa xã hội chủ nghĩa Việt Nam</p>
+                    <p class="font-bold text-sm underline underline-offset-4">Độc lập - Tự do - Hạnh phúc</p>
+                </div>
+
+                <!-- Tiêu đề -->
+                <div class="text-center mb-6">
+                    <h1 class="text-2xl font-bold uppercase mb-1">HỢP ĐỒNG CỘNG TÁC KINH DOANH</h1>
+                    <p class="italic text-sm text-gray-600">(Số: ...../2026/HĐCT-HANAI)</p>
+                </div>
+
+                <!-- Bên A (Sử dụng Grid để thẳng hàng) -->
+                <div class="mb-5">
+                    <p class="font-bold mb-2 uppercase text-blue-900 border-b border-gray-300 pb-1">BÊN A: TRUNG TÂM ĐÀO TẠO HÁN NGỮ HANAI LAB</p>
+                    <div class="info-grid">
+                        <div class="font-semibold">Đại diện:</div>
+                        <div class="font-bold editable" contenteditable="true">Lê Thiên Giao Hạ</div>
+                        
+                        <div class="font-semibold">Chức vụ:</div>
+                        <div class="editable" contenteditable="true">Quản lý học vụ và nhân sự</div>
+                        
+                        <div class="font-semibold">Số điện thoại:</div>
+                        <div class="editable" contenteditable="true">0965.709.218</div>
+                        
+                        <div class="font-semibold">Địa chỉ:</div>
+                        <div class="editable" contenteditable="true">35/75/7 Cao Lỗ, Phường Chánh Hưng, TP. HCM</div>
+                    </div>
+                </div>
+
+                <!-- Bên B (Sử dụng Grid để thẳng hàng) -->
+                <div class="mb-6">
+                    <p class="font-bold mb-2 uppercase text-blue-900 border-b border-gray-300 pb-1">BÊN B: CỘNG TÁC VIÊN KINH DOANH</p>
+                    <div class="info-grid">
+                        <div class="font-semibold">Họ và tên:</div>
+                        <div id="preview-name" class="font-bold uppercase editable" contenteditable="true">......................................................................</div>
+                        
+                        <div class="font-semibold">Số CCCD:</div>
+                        <div class="flex flex-wrap gap-x-4">
+                            <span id="preview-cccd" class="editable font-medium" contenteditable="true">.......................</span>
+                            <span>Ngày cấp: <span id="preview-date-issue" class="editable" contenteditable="true">.../.../......</span></span>
+                        </div>
+                        
+                        <div class="font-semibold">Nơi cấp:</div>
+                        <div id="preview-place-issue" class="editable" contenteditable="true">......................................................................</div>
+
+                        <div class="font-semibold">Địa chỉ thường trú:</div>
+                        <div id="preview-address" class="editable" contenteditable="true">......................................................................</div>
+                        
+                        <div class="font-semibold">Số điện thoại:</div>
+                        <div id="preview-phone" class="editable" contenteditable="true">....................................</div>
+                        
+                        <div class="font-semibold">Ngân hàng:</div>
+                        <div class="flex flex-wrap gap-x-1">
+                            <span>STK</span>
+                            <span id="preview-bank-acc" class="editable font-medium" contenteditable="true">....................</span>
+                            <span>tại</span>
+                            <span id="preview-bank-name" class="editable" contenteditable="true">....................</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nội dung điều khoản -->
+                <div class="text-justify space-y-2 text-[10.5pt]">
+                    <p class="mb-1">Hai bên thống nhất ký kết hợp đồng cộng tác với các điều khoản sau:</p>
+
+                    <div>
+                        <strong class="block text-sm uppercase text-gray-800">ĐIỀU 1: NỘI DUNG HỢP TÁC</strong>
+                        <p>Bên A đồng ý để Bên B làm Cộng tác viên (CTV) tìm kiếm, tư vấn và tuyển sinh các khóa học tiếng Trung tại HANAI LAB. Bên B sẽ được hưởng thù lao dựa trên kết quả kinh doanh thực tế.</p>
+                    </div>
+
+                    <div>
+                        <strong class="block text-sm uppercase text-gray-800">ĐIỀU 2: QUY ĐỊNH VỀ TÀI CHÍNH (BẮT BUỘC)</strong>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Quy tắc nhận học phí:</strong> Bên B <span class="font-bold text-red-600">TUYỆT ĐỐI KHÔNG</span> được phép trực tiếp thu tiền mặt hoặc nhận chuyển khoản học phí từ học viên vào tài khoản cá nhân.</li>
+                            <li><strong>Tài khoản thụ hưởng:</strong> Mọi giao dịch học phí phải được thực hiện trực tiếp vào tài khoản ngân hàng chính thức của HANAI LAB.</li>
+                            <li><strong>Chế tài:</strong> Việc Bên B tự ý thu học phí vào tài khoản cá nhân được coi là hành vi lừa đảo. Bên A có quyền chấm dứt hợp tác ngay lập tức, hủy bỏ mọi thù lao và chuyển hồ sơ sang cơ quan công an.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <strong class="block text-sm uppercase text-gray-800">ĐIỀU 3: CHẾ ĐỘ HOA HỒNG VÀ THƯỞNG</strong>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Hoa hồng:</strong> Tính khi học viên hoàn tất đóng 100% học phí.</li>
+                            <li><strong>Thưởng doanh số:</strong> Đạt từ 10 học viên/tháng thưởng <strong>500.000 VNĐ</strong> (cộng dồn). <strong>Số liệu thưởng sẽ được chốt và tổng kết vào ngày cuối cùng của tháng thứ 3 trong mỗi Quý.</strong></li>
+                            <li><strong>Thanh toán:</strong> Sau khi chốt sổ quý, Bên B gửi báo cáo đối soát cho Cô Hạ để nhận giải ngân.</li>
+                        </ul>
+                    </div>
+
+                    <!-- ĐÃ THÊM LẠI ĐIỀU KHOẢN SỞ HỮU TRÍ TUỆ -->
+                    <div>
+                        <strong class="block text-sm uppercase text-gray-800">ĐIỀU 4: BẢO MẬT VÀ SỞ HỮU TRÍ TUỆ</strong>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Bảo mật thông tin:</strong> Bên B cam kết bảo mật tuyệt đối thông tin cá nhân của học viên. Dữ liệu này thuộc quyền sở hữu duy nhất của Bên A.</li>
+                            <li><strong>Quyền Sở hữu Trí tuệ (SHTT):</strong> Toàn bộ quy trình tuyển sinh, giáo trình đào tạo, cơ sở dữ liệu và các ứng dụng AI tích hợp của HANAI LAB là tài sản trí tuệ độc quyền của Bên A. Bên B cam kết không sao chép, phát tán hoặc sử dụng cho mục đích cá nhân/thương mại ngoài phạm vi hợp đồng này.</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <strong class="block text-sm uppercase text-gray-800">ĐIỀU 5: HỒ SƠ VÀ CAM KẾT</strong>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Hồ sơ pháp lý:</strong> Bên B có trách nhiệm cung cấp hình ảnh CCCD (2 mặt) ngay trên hợp đồng này để hoàn thiện hồ sơ nhân sự.</li>
+                            <li><strong>Cam kết:</strong> Bên B đã đọc, hiểu rõ và đồng ý tuân thủ mọi quy định. Nếu vi phạm, Bên B chịu trách nhiệm bồi thường thiệt hại và chịu trách nhiệm trước pháp luật.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Chữ ký -->
+                <div class="grid grid-cols-2 mt-6 mb-4 gap-10">
+                    <div class="text-center">
+                        <p class="font-bold uppercase">Đại diện Bên A</p>
+                        <p class="text-sm italic mb-12">(Ký và ghi rõ họ tên)</p>
+                        <p class="font-bold editable" contenteditable="true">Lê Thiên Giao Hạ</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="italic text-sm editable" contenteditable="true">Ngày ..... tháng ..... năm 2026</p>
+                        <p class="font-bold uppercase">Đại diện Bên B</p>
+                        <p class="text-sm italic mb-12">(Ký, ghi rõ họ tên)</p>
+                        <p class="font-bold text-gray-400" id="sign-name">[Chưa ký]</p>
+                    </div>
+                </div>
+
+                <!-- Khu vực hiển thị ảnh CCCD -->
+                <div class="border-t-2 border-dashed border-gray-300 pt-2 break-inside-avoid">
+                    <h3 class="text-xs font-bold uppercase mb-2 text-gray-600">HỒ SƠ ĐÍNH KÈM (CCCD)</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Thêm src="data:image/png..." để tránh lỗi html2canvas khi img rỗng -->
+                        <div class="border border-gray-200 rounded-lg p-1 h-40 flex items-center justify-center bg-gray-50 relative">
+                            <img id="img-front-preview" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" class="max-h-full max-w-full object-contain hidden" alt="Mặt trước CCCD">
+                            <span id="placeholder-front" class="text-xs text-gray-400 text-center">Mặt trước CCCD<br>(Chưa tải lên)</span>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-1 h-40 flex items-center justify-center bg-gray-50 relative">
+                            <img id="img-back-preview" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" class="max-h-full max-w-full object-contain hidden" alt="Mặt sau CCCD">
+                            <span id="placeholder-back" class="text-xs text-gray-400 text-center">Mặt sau CCCD<br>(Chưa tải lên)</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Mapping Input Inputs to Preview (giữ lại để hỗ trợ nhập nhanh)
+        const fields = [
+            { input: 'input-name', preview: 'preview-name', default: '......................................................' },
+            { input: 'input-name', preview: 'sign-name', default: '[Chưa ký]' },
+            { input: 'input-cccd', preview: 'preview-cccd', default: '.......................' },
+            { input: 'input-date-issue', preview: 'preview-date-issue', default: '.../.../......' },
+            { input: 'input-place-issue', preview: 'preview-place-issue', default: '......................................................................' },
+            { input: 'input-address', preview: 'preview-address', default: '......................................................................' },
+            { input: 'input-phone', preview: 'preview-phone', default: '....................................' },
+            { input: 'input-bank-acc', preview: 'preview-bank-acc', default: '....................' },
+            { input: 'input-bank-name', preview: 'preview-bank-name', default: '....................' }
+        ];
+
+        fields.forEach(field => {
+            const inputEl = document.getElementById(field.input);
+            const previewEl = document.getElementById(field.preview);
+            
+            if(inputEl && previewEl) {
+                inputEl.addEventListener('input', (e) => {
+                    const val = e.target.value;
+                    if (field.preview === 'sign-name') {
+                         previewEl.textContent = val ? val.toUpperCase() : field.default;
+                         previewEl.classList.toggle('text-gray-400', !val);
+                         previewEl.classList.toggle('text-black', !!val);
+                    } else {
+                        previewEl.textContent = val || field.default;
+                    }
+                });
+            }
+        });
+
+        // Xử lý ảnh CCCD với giới hạn 500KB
+        function handleImageUpload(inputId, imgPreviewId, placeholderId, errorId) {
+            document.getElementById(inputId).addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                const errorEl = document.getElementById(errorId);
+                const imgEl = document.getElementById(imgPreviewId);
+                const placeholderEl = document.getElementById(placeholderId);
+
+                if (!file) return;
+
+                // Kiểm tra dung lượng (500KB = 500 * 1024 bytes)
+                if (file.size > 500 * 1024) {
+                    errorEl.classList.remove('hidden');
+                    this.value = ''; // Reset input
+                    imgEl.classList.add('hidden');
+                    placeholderEl.classList.remove('hidden');
+                    
+                    // Reset to default transparent image if error
+                    imgEl.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+                    return;
+                }
+
+                errorEl.classList.add('hidden');
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imgEl.src = event.target.result;
+                    imgEl.classList.remove('hidden');
+                    placeholderEl.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        handleImageUpload('file-front', 'img-front-preview', 'placeholder-front', 'error-front');
+        handleImageUpload('file-back', 'img-back-preview', 'placeholder-back', 'error-back');
+
+        // Tạo PDF
+        function generatePDF() {
+            const element = document.getElementById('contract-content');
+            const btn = document.getElementById('btn-export');
+            const originalText = btn.innerHTML;
+            const name = document.getElementById('input-name').value || 'CTV';
+
+            btn.innerHTML = '<span>Đang tạo file...</span>';
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            const opt = {
+                margin:       [10, 10, 10, 10], 
+                filename:     `HopDong_HANAI_LAB_${name.replace(/\s+/g, '_')}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    logging: false,
+                    scrollY: 0, // Fix issue with scrolled content
+                    allowTaint: true // Allow images to be rendered
+                },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                }, 1000);
+            }).catch(err => {
+                console.error("PDF Generation Error:", err);
+                alert("Có lỗi khi tạo PDF. Hãy thử tải lại trang hoặc kiểm tra hình ảnh.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+            });
+        }
+    </script>
+</body>
+</html>
